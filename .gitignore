@@ -1,0 +1,18 @@
+# renv - don't track the local library, only the lockfile
+renv/library/
+renv/staging/
+renv/sandbox/
+
+# R session artifacts
+.Rhistory
+.RData
+.Rproj.user/
+
+# bookdown output (will be generated on build)
+_book/
+
+# BUT keep docs/ — GitHub Pages serves from there
+# so do NOT ignore docs/
+
+# macOS
+.DS_Store
