@@ -1,0 +1,50 @@
+---
+title: "Example notebook"
+output: html_notebook
+---
+
+A good starting point for any analyses is to create the so-called "R-markdown notebook". Why?
+
+Notebooks are useful to sketch what you want to do, to explore the dataset, to try code and see real-time plots; moreover, it can provide clear and nice reports, with comments and notes that you can share with everybody.
+
+## Code chunks
+
+Code chunks are the actual chunks of the notebook in which you can write your code, execute it and see the results. For example:
+
+```{r}
+2 + 2
+```
+
+When you save the notebook, you will see both the code and the result in the html report.
+
+## Language
+
+Markdown notebooks are written using the Markdown language, a simple and readable syntax that allows you to format text in different ways when it is rendered.
+
+For example:
+
+* **Titles and subtitles** are created with hashtags:
+
+  * `# Title` → renders as a large heading
+  
+  * `## Subtitle` → renders as a smaller heading
+  
+  * `### Subsubtitle` → renders an even smaller heading
+
+* **Quotes** are written using the `>` symbol:
+  `> This is a quote`
+
+* **Italic text** is created with single asterisks or underscores:
+  `*italic*` or `_italic_`: *example of italic text*
+
+* **Bold text** uses double asterisks or underscores:
+  `**bold**` or `__bold__`: **example of bold text**
+
+Markdown is widely used in tools like Jupyter Notebooks, GitHub, and documentation platforms because it is easy to learn and keeps documents clean and readable.
+
+Here are some useful resources to learn more:
+
+* [https://www.markdownguide.org](https://www.markdownguide.org)
+* [https://commonmark.org/help/](https://commonmark.org/help/)
+* [https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+
