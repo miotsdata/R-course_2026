@@ -149,6 +149,15 @@ A: We need to know the lenght of the vector and use it as index. To get the leng
 Which is the 5th value of the intensity column of the dataframe? 
 
 
+#### Replace a value by index
+
+We can replace of a vector using indexes. 
+
+**Note**: new values should be of the same type (numbers for numbers, strings for strings ecc), otherwise everything will be changed to strings (most of the time).
+
+To change a single value, we can type `variable_name[position] <- new_value`; to change multiple values `variable_name[start:end] <- new_values`.
+
+--- 
 
 ### Numbers in R
 

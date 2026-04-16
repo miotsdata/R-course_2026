@@ -187,6 +187,16 @@ print(fifth_intensity)
 </details>
 
 
+#### Replace a value by index
+
+We can replace of a vector using indexes. 
+
+**Note**: new values should be of the same type (numbers for numbers, strings for strings ecc), otherwise everything will be changed to strings (most of the time).
+
+To change a single value, we can type `variable_name[position] <- new_value`; to change multiple values `variable_name[start:end] <- new_values`.
+
+--- 
+
 ### Numbers in R
 
 Now that we know how to get and extract numbers from numeric vectors, let's see what we can do with numbers in R.
@@ -432,6 +442,8 @@ write.csv(patient_df, # what we want to save
           row.names = FALSE) # we'll see row names in day 2
 ```
 
+
+<!-- Install tidyverse -->
 
 ## Home exercise
 

@@ -1,0 +1,510 @@
+---
+title: "Strings, Factors and Dataframe Handling"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Strings, Factors and Dataframe Handling
+
+## What we will see today
+
+Today we will look at some patient data, and we will answer these questions:
+
+* Are data consistent?
+
+* Which is the mean and sd values of glucose in each treatment group? How many patients we have per treatment group?
+
+* Which group has the highest mean creatinine? (2 different datasets)
+
+
+## Strings and Factors
+
+
+Today we will work with a clinical dataset containing information about patients enrolled in a multi-site trial. Let's import it and, as always, **inspect it first**:
+
+```{r}
+library(tidyverse)
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+You will notice that several columns contain text: `patient_id`, `sex`, `treatment`, `stage`, `smoking`, `site`, `diagnosis_code`. In R, text data can be represented in two fundamentally different ways: as **strings** (also called *characters*) or as **factors**. Let's understand the difference.
+
+---
+
+A **string** (or character) is simply a sequence of text. R treats it as a raw piece of text and does not impose any structure on it.
+
+A **factor** is a *categorical variable*: it has a fixed, predefined set of allowed values called **levels**. Under the hood, R stores factors as integers (one integer per level) and keeps a table that maps integers to labels. This makes factors memory-efficient and very useful for statistical modelling (e.g., in regression, factors are automatically handled as categorical predictors) and for plotting purposes.
+
+**When to use strings and when factors?**
+
+| Use **string** when... | Use **factor** when... |
+|---|---|
+| Text is free-form or unpredictable | The variable takes a limited set of known values |
+| You need to manipulate the text | Order matters (e.g., stage I < II < III < IV) |
+| Unique identifiers (patient IDs) | Input to statistical models |
+
+As some of our columns fall in the conditions for factors, let's convert them with the function `factor`:
+
+```{r}
+
+```
+
+Now `summary` gives us much more useful information on those columns:
+
+```{r}
+
+```
+
+Notice how `summary` now shows the count per level for factors (e.g. how many Male vs Female), while before it just said `character`.
+
+Moreover, we can see that in smoking column, we have different labels with the same meaning (never, Never, never smoker for never). R (as well as any programming language) is case sensitive, so it treats those 3 as different labels, even if for us they mean the same thing.
+
+**IMPORTANT**: labels should be consistent across datasets when you fill them.
+
+As we want to edit those to be consistent, we need to change the column back to be a character, with `as.character` function:
+
+```{r}
+
+```
+
+We can now proceed.
+
+### Operations on strings
+
+The main package for string operations in R (and the one we will use throughout the course) is `stringr`, which is part of the `tidyverse`. All its functions start with `str_` to make them easy to remember.
+
+#### Character substitution
+Let's start by looking at how to change characters in a string: from "Curent" to "current" using `str_replace(vector, old_pattern, new_pattern)`.
+
+```{r}
+
+```
+
+Then we can unify "FORMER" and "former" by transforming the former to lowercase with `str_to_lower`:
+
+```{r}
+
+```
+
+We have converted both FORMER to former and Never to never. We lastly have to change "never smoker" to "smoker".
+
+::: {.exercise #factor}
+
+Change "never smoker" to "smoker" and make smoker as factor.
+
+:::
+
+<details>
+  <summary>Solution</summary>
+
+```{r}
+
+```
+
+</details>
+
+For sake of completeness, we could have done all of this with a single function `replace_values`:
+
+```{r, eval=FALSE}
+
+```
+
+
+Q: *Why there are 2 Turin?*
+A: Let's check in details the possible labels of that column with function `levels`:
+
+```{r}
+
+```
+
+Here's the hitch, some have a trailing space after Turin. We can get rid of them using `str_trim` function:
+
+```{r}
+
+```
+
+#### Other useful functions to handle strings
+
+A few more `stringr` functions you will find very useful:
+
+| Function | What it does |
+|---|---|
+| `str_detect(x, pattern)` | Returns TRUE/FALSE: does the string contain the pattern? |
+| `str_starts(x, pattern)` | Does the string *start* with the pattern? |
+| `str_ends(x, pattern)` | Does the string *end* with the pattern? |
+| `str_pad(x, width, side, pad)` | Pads a string to a given width |
+| `str_sub(x, start, end)` | Extracts a substring by position |
+
+---
+
+### Operations on multiple columns
+
+#### Split a column and merge multiple columns
+
+Sometimes a single column contains multiple pieces of information that could be split into separate columns. Look at `visit_date`:
+
+```{r}
+
+```
+
+We can see that the year of visit varies a lot, maybe we should take it into account. We can split this into 3 separate columns using `separate` function:
+
+```{r}
+
+```
+
+
+The opposite operation — merging multiple columns into one — is done with `unite`:
+
+```{r}
+
+```
+
+---
+
+### Column and row names
+
+Every dataframe has **column names** (the variable names) and **row names** (by default a number, but we can change it).
+
+To retrieve column names:
+
+```{r}
+
+```
+
+To rename specific columns, we can assign a new vector of names to `colnames`, or use the tidyverse function `rename` (we will see this with `dplyr` below):
+
+```{r}
+
+```
+
+For row names:
+
+```{r}
+
+```
+
+However, **be careful** with row names: they are not a proper column of the dataframe, so they don't follow along easily in many tidyverse operations. It is generally better to keep your identifiers as a regular column.
+
+---
+
+## Dataframe Handling
+
+The main verbs we will learn today are:
+
+* `mutate` — add or modify columns
+* `select` — choose which columns to keep
+* `filter`/`filter_out` — keep/remove rows that satisfy a condition
+* `group_by` + `summarize` / `reframe` — aggregate data by groups
+* `left_join` / `inner_join` — merge two dataframes
+
+
+
+### Create new columns with mutate
+
+`mutate` creates new columns or modifies existing ones.
+
+A key feature of `dplyr` is the **pipe operator** `|>` (or `%>%` in older tidyverse style). It passes the result of one operation directly to the next, making code much more readable:
+
+You can read `|>` as *"and then"*.
+
+```{r}
+
+```
+
+`mutate` can also create columns based on conditions, using `if_else` or `case_when`:
+
+```{r}
+
+```
+
+
+---
+
+### select
+
+`select` chooses which **columns** to keep (or drop). This is useful when working with wide dataframes where you only need a subset of variables.
+
+```{r}
+
+```
+
+To **drop** specific columns, use `-` before the column name:
+
+```{r}
+
+```
+
+
+---
+
+### Boolean Operators
+
+A **boolean** (or logical) is a data type that can only take two values: `TRUE` or `FALSE`. It is the backbone of filtering and conditional logic in R.
+
+**A boolean is the answer to a yes/no question.**
+
+For example: *"Is this patient in stage III or IV?"* → `TRUE` or `FALSE`.
+
+
+#### Comparison operators
+
+These operators compare two values and return a boolean:
+
+| Operator | Meaning | Example | Result |
+|---|---|---|---|
+| `==` | equal to | `3 == 3` | `TRUE` |
+| `!=` | not equal to | `3 != 4` | `TRUE` |
+| `>`  | greater than | `5 > 3` | `TRUE` |
+| `<`  | less than | `2 < 1` | `FALSE` |
+| `>=` | greater or equal | `3 >= 3` | `TRUE` |
+| `<=` | less or equal | `2 <= 1` | `FALSE` |
+
+```{r}
+# simple examples
+
+```
+
+When applied to a **vector**, the comparison is done **element-wise** and returns a boolean vector:
+
+```{r}
+
+```
+
+Under the hood, TRUE is stored as a 1, while FALSE as 0. This is useful when we want to get the number of TRUE values of a vector. How? By summing up all the values:
+
+```{r}
+
+```
+
+
+#### Logical operators
+
+We often need to combine multiple conditions. This is done with **logical operators**:
+
+| Operator | Meaning | Example |
+|---|---|---|
+| `&`  | AND — both conditions must be true | `age > 50 & sex == "Female"` |
+| `\|` | OR — at least one condition must be true | `stage == "III" \| stage == "IV"` |
+| `!`  | NOT — negates a condition | `!is.na(crp_ngml)` |
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+A very useful operator when checking membership in a list of values is `%in%`:
+
+```{r}
+
+```
+
+
+**Exercise**
+How many patients have been diagnosed as stage I, in Turin in 2018?
+
+
+```{r}
+
+```
+  
+
+### filter and filter out
+
+`filter` keeps only the **rows** that satisfy one or more conditions:
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+To **filter out** (i.e., *exclude* rows matching a condition), use `filter_out`:
+
+```{r}
+
+```
+
+Pipes shine when you chain multiple operations:
+
+```{r}
+
+```
+
+Note: inside `filter`, multiple conditions separated by commas are treated as AND.
+
+**Exercise**
+
+From the full dataset, extract patients who:
+
+- are in stage II or III,
+- have a glucose level between 90 and 130 mg/dL (inclusive),
+- are assigned to Drug_A or Drug_B.
+
+Keep only `patient_id`, `site`, `stage`, `treatment`, and `glucose_mgdl`.
+
+
+```{r}
+
+```
+
+
+
+---
+
+### group_by, summarize and reframe
+
+One of the most powerful operations in data analysis is **grouping** data and computing summaries per group. In R, this is done with `group_by` + `summarize`.
+
+**How it works:**
+
+1. `group_by(column)` tells R: *"split the dataframe into groups based on the values of this column"*
+2. `summarize(...)` computes one summary value per group
+
+<p align="center">
+```
+Original data:                 After group_by(treatment):
+
+patient  treatment  glucose       GROUP: Control
+PT-001   Control    105           PT-001  Control  105
+PT-002   Drug_A     118    --->   PT-007  Control  98
+PT-003   Drug_B     97            ...
+PT-007   Control    98     --->   GROUP: Drug_A
+...                               PT-002  Drug_A  118
+                                  ...
+```
+</p>
+
+We can perform several operation with this combo, and answer many questions. For example "*Which is the mean and sd values of glucose in each treatment group? How many patients we have per treatment group?*".
+
+```{r}
+
+```
+
+You can also group by multiple columns at once. 
+
+"*For each treatment/sex combination, which is the mean BMI and the median of the age?*"
+
+```{r}
+
+```
+
+
+
+**Exercise**
+
+For each combination of `site` and `sex`, compute:
+- the number of patients,
+- the mean systolic blood pressure,
+- the proportion of hypertensive patients (hint: hypertension is when systolic blood pression is > 140).
+
+
+```{r}
+
+```
+
+
+
+---
+
+### Join / Merge
+
+In real-world analyses, data about the same subjects often lives in **separate files**: demographic data here, lab results there, outcomes somewhere else. To combine them, we **join** them on a shared key column (usually a patient ID).
+
+Let's load the separate lab results file:
+
+```{r}
+
+```
+
+The key column is `patient_id`. Not all patients have lab results. Depending on how we want to handle this, we choose different types of join:
+
+| Join type | What it does |
+|---|---|
+| `left_join(x, y)` | Keep **all rows from x**, add y columns where available (NA if no match) |
+| `right_join(x, y)` | Keep all rows from y |
+| `inner_join(x, y)` | Keep only rows that exist in **both** x and y |
+| `full_join(x, y)` | Keep all rows from both, NA where no match |
+
+
+Let's see all approaches:
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+In most clinical research scenarios, `left_join` is the most common choice: you start with your full patient list and enrich it with additional data, accepting that some patients may lack certain measurements (NAs).
+
+**Exercise**
+1. Perform a `left_join` of `clinical_data` with `lab_data`.
+2. Among patients who have lab data available, compute the mean hemoglobin and mean creatinine per treatment group.
+3. Which group has the highest mean creatinine?
+
+
+```{r}
+
+```
+
+
+---
+
+## Save results
+
+After all this work, let's save the enriched and cleaned dataset:
+
+```{r}
+
+```
+
+---
+
+## Home exercise
+
+Try to do the following on your own:
+
+1. Load `clinical_data_enriched.csv` from the output folder.
+2. Clean up: keep only the columns `patient_id`, `site`, `sex`, `age`, `treatment`, `stage`, `BMI`, `BMI_class`, `glucose_mgdl`, `cholesterol_mgdl`, `crp_ngml`, `hemoglobin_gdl`, `creatinine_mgdl`.
+3. Restrict to patients who have complete data (no NAs) — hint: use function `drop_na()`, see [this](https://www.r-bloggers.com/2024/12/how-to-use-drop_na-to-drop-rows-with-missing-values-in-r-a-complete-guide/).
+4. For each stage, compute: number of patients, mean age, mean BMI, and proportion of obese patients.
+5. Save the summary table to `output/summary_by_stage.csv`.
+
+
