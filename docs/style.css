@@ -1,0 +1,31 @@
+summary {
+  margin-bottom: 4vh;
+}
+
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+
+.plist {
+  margin-bottom: 0px !important;
+}
+
+.code-out {
+  background-color: white !important;
+  border: 1px solid black !important;
+}
+
+.book .book-body .page-wrapper .page-inner {
+    max-width: 90%;
+}

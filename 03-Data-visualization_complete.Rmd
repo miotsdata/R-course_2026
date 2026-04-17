@@ -1,3 +1,4 @@
+
 # Data visualization
 
 Data visualization is a crucial step of data analysis, as it can help us in:

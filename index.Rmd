@@ -1,0 +1,28 @@
+---
+title: "R and clinical/lab data"
+subtitle: "2026 edition"
+author: "Matteo Miotto"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: []
+description: "A practical R course on how to handle clinical/lab data"
+link-citations: yes
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "",
+  class.output = "code-out",
+  out.width = "85%",
+  dev='png',
+  fig.height = 7, 
+  fig.width = 7, 
+  fig.align='center'
+  
+)
+```
+
+# Welcome {-}
+
+Welcome to this course, here you can find the notebooks used in the PhD course of 2026.

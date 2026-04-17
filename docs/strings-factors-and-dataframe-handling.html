@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Strings, Factors and Dataframe Handling | R and clinical/lab data</title>
+  <meta name="description" content="A practical R course on how to handle clinical/lab data" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Strings, Factors and Dataframe Handling | R and clinical/lab data" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="A practical R course on how to handle clinical/lab data" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Strings, Factors and Dataframe Handling | R and clinical/lab data" />
+  
+  <meta name="twitter:description" content="A practical R course on how to handle clinical/lab data" />
+  
+
+<meta name="author" content="Matteo Miotto" />
+
+
+<meta name="date" content="2026-04-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="dataframes-vectors-and-numbers.html"/>
+<link rel="next" href="data-visualization.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<meta property="og:description" content="To you, dad!">
+<meta name="keywords" content="R, biology, data analysis">
+<meta name="author" content="Matteo Miotto">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YDEBEF61BH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YDEBEF61BH');
+</script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R course 2026</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html"><i class="fa fa-check"></i><b>1</b> Dataframes, vectors and numbers</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#dataframes"><i class="fa fa-check"></i><b>1.1</b> Dataframes</a></li>
+<li class="chapter" data-level="1.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#import-file"><i class="fa fa-check"></i><b>1.2</b> Import file</a>
+<ul>
+<li class="chapter" data-level="1.2.0.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#notes-about-variables"><i class="fa fa-check"></i><b>1.2.0.1</b> Notes about variables</a></li>
+<li class="chapter" data-level="1.2.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#first-steps-on-a-dataframe"><i class="fa fa-check"></i><b>1.2.1</b> First steps on a dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#vectors"><i class="fa fa-check"></i><b>1.3</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#accessing-dataframe-columns"><i class="fa fa-check"></i><b>1.3.1</b> Accessing dataframe columns</a></li>
+<li class="chapter" data-level="1.3.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#accessing-values-of-a-vector-slicing"><i class="fa fa-check"></i><b>1.3.2</b> Accessing values of a vector: slicing</a>
+<ul>
+<li class="chapter" data-level="1.3.2.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#replace-a-value-by-index"><i class="fa fa-check"></i><b>1.3.2.1</b> Replace a value by index</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3.3" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#numbers-in-r"><i class="fa fa-check"></i><b>1.3.3</b> Numbers in R</a>
+<ul>
+<li class="chapter" data-level="1.3.3.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#declare-a-new-numeric-variable"><i class="fa fa-check"></i><b>1.3.3.1</b> Declare a new numeric variable</a></li>
+<li class="chapter" data-level="1.3.3.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#arithmetical-operations"><i class="fa fa-check"></i><b>1.3.3.2</b> Arithmetical operations</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3.4" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#vector-number-operations"><i class="fa fa-check"></i><b>1.3.4</b> Vector-number operations</a></li>
+<li class="chapter" data-level="1.3.5" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#operations-between-vectors"><i class="fa fa-check"></i><b>1.3.5</b> Operations between vectors</a></li>
+<li class="chapter" data-level="1.3.6" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#sumamry-statistics-of-numeric-vectors"><i class="fa fa-check"></i><b>1.3.6</b> Sumamry statistics of numeric vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#save-a-dataframe"><i class="fa fa-check"></i><b>1.4</b> Save a dataframe</a></li>
+<li class="chapter" data-level="1.5" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#home-exercise"><i class="fa fa-check"></i><b>1.5</b> Home exercise</a></li>
+<li class="chapter" data-level="1.6" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#bonus-how-patient-data-were-created"><i class="fa fa-check"></i><b>1.6</b> Bonus: how patient data were created</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html"><i class="fa fa-check"></i><b>2</b> Strings, Factors and Dataframe Handling</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#what-we-will-see-today"><i class="fa fa-check"></i><b>2.1</b> What we will see today</a></li>
+<li class="chapter" data-level="2.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#strings-and-factors"><i class="fa fa-check"></i><b>2.2</b> Strings and Factors</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#operations-on-strings"><i class="fa fa-check"></i><b>2.2.1</b> Operations on strings</a>
+<ul>
+<li class="chapter" data-level="2.2.1.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#character-substitution"><i class="fa fa-check"></i><b>2.2.1.1</b> Character substitution</a></li>
+<li class="chapter" data-level="2.2.1.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#other-useful-functions-to-handle-strings"><i class="fa fa-check"></i><b>2.2.1.2</b> Other useful functions to handle strings</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#operations-on-multiple-columns"><i class="fa fa-check"></i><b>2.2.2</b> Operations on multiple columns</a>
+<ul>
+<li class="chapter" data-level="2.2.2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#split-a-column-and-merge-multiple-columns"><i class="fa fa-check"></i><b>2.2.2.1</b> Split a column and merge multiple columns</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#column-and-row-names"><i class="fa fa-check"></i><b>2.2.3</b> Column and row names</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#dataframe-handling"><i class="fa fa-check"></i><b>2.3</b> Dataframe Handling</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#create-new-columns-with-mutate"><i class="fa fa-check"></i><b>2.3.1</b> Create new columns with mutate</a></li>
+<li class="chapter" data-level="2.3.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#select"><i class="fa fa-check"></i><b>2.3.2</b> select</a></li>
+<li class="chapter" data-level="2.3.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#boolean-operators"><i class="fa fa-check"></i><b>2.3.3</b> Boolean Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.3.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#comparison-operators"><i class="fa fa-check"></i><b>2.3.3.1</b> Comparison operators</a></li>
+<li class="chapter" data-level="2.3.3.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#logical-operators"><i class="fa fa-check"></i><b>2.3.3.2</b> Logical operators</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3.4" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#filter-and-filter-out"><i class="fa fa-check"></i><b>2.3.4</b> filter and filter out</a></li>
+<li class="chapter" data-level="2.3.5" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#group_by-summarize-and-reframe"><i class="fa fa-check"></i><b>2.3.5</b> group_by, summarize and reframe</a></li>
+<li class="chapter" data-level="2.3.6" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#join-merge"><i class="fa fa-check"></i><b>2.3.6</b> Join / Merge</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#save-your-results"><i class="fa fa-check"></i><b>2.4</b> Save your results</a></li>
+<li class="chapter" data-level="2.5" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#home-exercise-1"><i class="fa fa-check"></i><b>2.5</b> Home exercise</a></li>
+<li class="chapter" data-level="2.6" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#bonus-how-the-clinical-data-were-created"><i class="fa fa-check"></i><b>2.6</b> Bonus: how the clinical data were created</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i><b>3</b> Data visualization</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-visualization.html"><a href="data-visualization.html#data-visualization-in-r-with-ggplot2"><i class="fa fa-check"></i><b>3.1</b> Data visualization in R with ggplot2</a></li>
+<li class="chapter" data-level="3.2" data-path="data-visualization.html"><a href="data-visualization.html#geom"><i class="fa fa-check"></i><b>3.2</b> Geom</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data-visualization.html"><a href="data-visualization.html#barplot"><i class="fa fa-check"></i><b>3.2.1</b> Barplot</a>
+<ul>
+<li class="chapter" data-level="3.2.1.1" data-path="data-visualization.html"><a href="data-visualization.html#stat-identity"><i class="fa fa-check"></i><b>3.2.1.1</b> Stat identity</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2.2" data-path="data-visualization.html"><a href="data-visualization.html#scatter-plot"><i class="fa fa-check"></i><b>3.2.2</b> Scatter plot</a></li>
+<li class="chapter" data-level="3.2.3" data-path="data-visualization.html"><a href="data-visualization.html#boxplot"><i class="fa fa-check"></i><b>3.2.3</b> Boxplot</a></li>
+<li class="chapter" data-level="3.2.4" data-path="data-visualization.html"><a href="data-visualization.html#density-plot"><i class="fa fa-check"></i><b>3.2.4</b> Density plot</a></li>
+<li class="chapter" data-level="3.2.5" data-path="data-visualization.html"><a href="data-visualization.html#combine-geom"><i class="fa fa-check"></i><b>3.2.5</b> Combine geom</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-visualization.html"><a href="data-visualization.html#labs"><i class="fa fa-check"></i><b>3.3</b> Labs</a></li>
+<li class="chapter" data-level="3.4" data-path="data-visualization.html"><a href="data-visualization.html#scales"><i class="fa fa-check"></i><b>3.4</b> Scales</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="data-visualization.html"><a href="data-visualization.html#axis"><i class="fa fa-check"></i><b>3.4.1</b> Axis</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-visualization.html"><a href="data-visualization.html#colors"><i class="fa fa-check"></i><b>3.4.2</b> Colors</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-visualization.html"><a href="data-visualization.html#facet"><i class="fa fa-check"></i><b>3.5</b> Facet</a></li>
+<li class="chapter" data-level="3.6" data-path="data-visualization.html"><a href="data-visualization.html#theme"><i class="fa fa-check"></i><b>3.6</b> Theme</a></li>
+<li class="chapter" data-level="3.7" data-path="data-visualization.html"><a href="data-visualization.html#save-the-plots"><i class="fa fa-check"></i><b>3.7</b> Save the plots</a></li>
+<li class="chapter" data-level="3.8" data-path="data-visualization.html"><a href="data-visualization.html#advanced-examples"><i class="fa fa-check"></i><b>3.8</b> Advanced examples</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/miotsdata/R-course_2026">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R and clinical/lab data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="strings-factors-and-dataframe-handling" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Strings, Factors and Dataframe Handling<a href="strings-factors-and-dataframe-handling.html#strings-factors-and-dataframe-handling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="what-we-will-see-today" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> What we will see today<a href="strings-factors-and-dataframe-handling.html#what-we-will-see-today" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Today we will look at some patient data, and we will answer these questions:</p>
+<ul>
+<li><p>Are data consistent?</p></li>
+<li><p>Which is the mean and sd values of glucose in each treatment group? How many patients we have per treatment group?</p></li>
+<li><p>Which group has the highest mean creatinine? (2 different datasets)</p></li>
+</ul>
+</div>
+<div id="strings-and-factors" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Strings and Factors<a href="strings-factors-and-dataframe-handling.html#strings-and-factors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Today we will work with a clinical dataset containing information about patients enrolled in a multi-site trial. Let’s import it and, as always, <strong>inspect it first</strong>:</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="strings-factors-and-dataframe-handling.html#cb99-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.1     ✔ readr     2.2.0
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.2     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="strings-factors-and-dataframe-handling.html#cb101-1" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/clinical_data.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="strings-factors-and-dataframe-handling.html#cb102-1" tabindex="-1"></a><span class="fu">str</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   240 obs. of  15 variables:
+ $ patient_id      : chr  &quot;PT-001&quot; &quot;PT-002&quot; &quot;PT-003&quot; &quot;PT-004&quot; ...
+ $ site            : chr  &quot;Milan&quot; &quot;Milan&quot; &quot;Turin &quot; &quot;Milan&quot; ...
+ $ visit_date      : chr  &quot;2020-03-23&quot; &quot;2023-10-31&quot; &quot;2023-06-27&quot; &quot;2018-10-25&quot; ...
+ $ age             : int  66 62 54 64 51 55 71 63 61 55 ...
+ $ sex             : chr  &quot;Male&quot; &quot;Male&quot; &quot;Female&quot; &quot;Male&quot; ...
+ $ smoking         : chr  &quot;FORMER&quot; &quot;current&quot; &quot;Curent&quot; &quot;Never&quot; ...
+ $ treatment       : chr  &quot;Control&quot; &quot;Drug_B&quot; &quot;Drug_B&quot; &quot;Drug_A&quot; ...
+ $ stage           : chr  &quot;I&quot; &quot;II&quot; &quot;III&quot; &quot;IV&quot; ...
+ $ weight_kg       : num  78.8 87.6 61.6 79.2 96.1 69 74.1 59.8 88.2 71 ...
+ $ height_cm       : num  181 170 162 178 182 ...
+ $ sbp_mmhg        : int  143 138 144 122 127 142 125 113 105 179 ...
+ $ dbp_mmhg        : int  90 78 84 93 89 92 62 84 80 75 ...
+ $ glucose_mgdl    : int  102 53 80 103 123 110 119 82 138 131 ...
+ $ cholesterol_mgdl: int  250 207 180 129 178 173 239 212 173 204 ...
+ $ crp_ngml        : num  1.37 11.09 0.81 1.63 1.25 ...</code></pre>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="strings-factors-and-dataframe-handling.html#cb104-1" tabindex="-1"></a><span class="fu">summary</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id            site            visit_date             age       
+ Length:240         Length:240         Length:240         Min.   :28.00  
+ Class :character   Class :character   Class :character   1st Qu.:50.75  
+ Mode  :character   Mode  :character   Mode  :character   Median :58.00  
+                                                          Mean   :57.83  
+                                                          3rd Qu.:66.25  
+                                                          Max.   :97.00  
+     sex              smoking           treatment            stage          
+ Length:240         Length:240         Length:240         Length:240        
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+   weight_kg        height_cm        sbp_mmhg        dbp_mmhg     
+ Min.   : 38.40   Min.   :147.4   Min.   : 89.0   Min.   : 52.00  
+ 1st Qu.: 66.33   1st Qu.:162.8   1st Qu.:117.0   1st Qu.: 75.00  
+ Median : 73.25   Median :168.5   Median :130.5   Median : 82.00  
+ Mean   : 73.60   Mean   :169.3   Mean   :131.4   Mean   : 82.02  
+ 3rd Qu.: 82.60   3rd Qu.:176.2   3rd Qu.:143.2   3rd Qu.: 89.25  
+ Max.   :104.40   Max.   :193.4   Max.   :195.0   Max.   :108.00  
+  glucose_mgdl    cholesterol_mgdl    crp_ngml     
+ Min.   : 43.00   Min.   : 88.0    Min.   : 0.260  
+ 1st Qu.: 89.75   1st Qu.:177.0    1st Qu.: 2.140  
+ Median :104.00   Median :197.0    Median : 3.600  
+ Mean   :104.43   Mean   :197.1    Mean   : 4.673  
+ 3rd Qu.:119.00   3rd Qu.:219.5    3rd Qu.: 5.742  
+ Max.   :181.00   Max.   :295.0    Max.   :28.150  </code></pre>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="strings-factors-and-dataframe-handling.html#cb106-1" tabindex="-1"></a><span class="fu">head</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id   site visit_date age    sex      smoking treatment stage
+1     PT-001  Milan 2020-03-23  66   Male       FORMER   Control     I
+2     PT-002  Milan 2023-10-31  62   Male      current    Drug_B    II
+3     PT-003 Turin  2023-06-27  54 Female       Curent    Drug_B   III
+4     PT-004  Milan 2018-10-25  64   Male        Never    Drug_A    IV
+5     PT-005  Milan 2018-02-19  51   Male       FORMER    Drug_B     I
+6     PT-006  Milan 2023-02-06  55 Female never smoker   Control    II
+  weight_kg height_cm sbp_mmhg dbp_mmhg glucose_mgdl cholesterol_mgdl crp_ngml
+1      78.8     181.4      143       90          102              250     1.37
+2      87.6     169.9      138       78           53              207    11.09
+3      61.6     162.1      144       84           80              180     0.81
+4      79.2     178.2      122       93          103              129     1.63
+5      96.1     182.3      127       89          123              178     1.25
+6      69.0     165.9      142       92          110              173     3.46</code></pre>
+<p>You will notice that several columns contain text: <code>patient_id</code>, <code>sex</code>, <code>treatment</code>, <code>stage</code>, <code>smoking</code>, <code>site</code>, <code>diagnosis_code</code>. In R, text data can be represented in two fundamentally different ways: as <strong>strings</strong> (also called <em>characters</em>) or as <strong>factors</strong>. Let’s understand the difference.</p>
+<hr />
+<p>A <strong>string</strong> (or character) is simply a sequence of text. R treats it as a raw piece of text and does not impose any structure on it.</p>
+<p>A <strong>factor</strong> is a <em>categorical variable</em>: it has a fixed, predefined set of allowed values called <strong>levels</strong>. Under the hood, R stores factors as integers (one integer per level) and keeps a table that maps integers to labels. This makes factors memory-efficient and very useful for statistical modelling (e.g., in regression, factors are automatically handled as categorical predictors) and for plotting purposes.</p>
+<p><strong>When to use strings and when factors?</strong></p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Use <strong>string</strong> when…</th>
+<th>Use <strong>factor</strong> when…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Text is free-form or unpredictable</td>
+<td>The variable takes a limited set of known values</td>
+</tr>
+<tr class="even">
+<td>You need to manipulate the text</td>
+<td>Order matters (e.g., stage I &lt; II &lt; III &lt; IV)</td>
+</tr>
+<tr class="odd">
+<td>Unique identifiers (patient IDs)</td>
+<td>Input to statistical models</td>
+</tr>
+</tbody>
+</table>
+<p>As some of our columns fall in the conditions for factors, let’s convert them with the function <code>factor</code>:</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="strings-factors-and-dataframe-handling.html#cb108-1" tabindex="-1"></a>clinical_data<span class="sc">$</span>sex       <span class="ot">&lt;-</span> <span class="fu">factor</span>(clinical_data<span class="sc">$</span>sex)</span>
+<span id="cb108-2"><a href="strings-factors-and-dataframe-handling.html#cb108-2" tabindex="-1"></a>clinical_data<span class="sc">$</span>treatment <span class="ot">&lt;-</span> <span class="fu">factor</span>(clinical_data<span class="sc">$</span>treatment)</span>
+<span id="cb108-3"><a href="strings-factors-and-dataframe-handling.html#cb108-3" tabindex="-1"></a>clinical_data<span class="sc">$</span>site      <span class="ot">&lt;-</span> <span class="fu">factor</span>(clinical_data<span class="sc">$</span>site)</span>
+<span id="cb108-4"><a href="strings-factors-and-dataframe-handling.html#cb108-4" tabindex="-1"></a>clinical_data<span class="sc">$</span>smoking   <span class="ot">&lt;-</span> <span class="fu">factor</span>(clinical_data<span class="sc">$</span>smoking)</span>
+<span id="cb108-5"><a href="strings-factors-and-dataframe-handling.html#cb108-5" tabindex="-1"></a></span>
+<span id="cb108-6"><a href="strings-factors-and-dataframe-handling.html#cb108-6" tabindex="-1"></a><span class="co"># For stage, the categories have a natural ORDER: we declare an ordered factor</span></span>
+<span id="cb108-7"><a href="strings-factors-and-dataframe-handling.html#cb108-7" tabindex="-1"></a>clinical_data<span class="sc">$</span>stage <span class="ot">&lt;-</span> <span class="fu">factor</span>(clinical_data<span class="sc">$</span>stage,</span>
+<span id="cb108-8"><a href="strings-factors-and-dataframe-handling.html#cb108-8" tabindex="-1"></a>                               <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;I&quot;</span>, <span class="st">&quot;II&quot;</span>, <span class="st">&quot;III&quot;</span>, <span class="st">&quot;IV&quot;</span>),</span>
+<span id="cb108-9"><a href="strings-factors-and-dataframe-handling.html#cb108-9" tabindex="-1"></a>                               <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb108-10"><a href="strings-factors-and-dataframe-handling.html#cb108-10" tabindex="-1"></a></span>
+<span id="cb108-11"><a href="strings-factors-and-dataframe-handling.html#cb108-11" tabindex="-1"></a><span class="fu">str</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   240 obs. of  15 variables:
+ $ patient_id      : chr  &quot;PT-001&quot; &quot;PT-002&quot; &quot;PT-003&quot; &quot;PT-004&quot; ...
+ $ site            : Factor w/ 4 levels &quot;Milan&quot;,&quot;Rome&quot;,..: 1 1 4 1 1 1 1 1 1 1 ...
+ $ visit_date      : chr  &quot;2020-03-23&quot; &quot;2023-10-31&quot; &quot;2023-06-27&quot; &quot;2018-10-25&quot; ...
+ $ age             : int  66 62 54 64 51 55 71 63 61 55 ...
+ $ sex             : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 1 2 2 1 2 1 2 2 ...
+ $ smoking         : Factor w/ 7 levels &quot;Curent&quot;,&quot;current&quot;,..: 4 2 1 6 4 7 3 6 2 1 ...
+ $ treatment       : Factor w/ 3 levels &quot;Control&quot;,&quot;Drug_A&quot;,..: 1 3 3 2 3 1 1 1 2 1 ...
+ $ stage           : Ord.factor w/ 4 levels &quot;I&quot;&lt;&quot;II&quot;&lt;&quot;III&quot;&lt;..: 1 2 3 4 1 2 1 3 3 2 ...
+ $ weight_kg       : num  78.8 87.6 61.6 79.2 96.1 69 74.1 59.8 88.2 71 ...
+ $ height_cm       : num  181 170 162 178 182 ...
+ $ sbp_mmhg        : int  143 138 144 122 127 142 125 113 105 179 ...
+ $ dbp_mmhg        : int  90 78 84 93 89 92 62 84 80 75 ...
+ $ glucose_mgdl    : int  102 53 80 103 123 110 119 82 138 131 ...
+ $ cholesterol_mgdl: int  250 207 180 129 178 173 239 212 173 204 ...
+ $ crp_ngml        : num  1.37 11.09 0.81 1.63 1.25 ...</code></pre>
+<p>Now <code>summary</code> gives us much more useful information on those columns:</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="strings-factors-and-dataframe-handling.html#cb110-1" tabindex="-1"></a><span class="fu">summary</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id            site      visit_date             age       
+ Length:240         Milan :109   Length:240         Min.   :28.00  
+ Class :character   Rome  : 61   Class :character   1st Qu.:50.75  
+ Mode  :character   Turin : 33   Mode  :character   Median :58.00  
+                    Turin : 37                      Mean   :57.83  
+                                                    3rd Qu.:66.25  
+                                                    Max.   :97.00  
+                                                                   
+     sex              smoking     treatment  stage      weight_kg     
+ Female:118   Curent      :20   Control:81   I  :71   Min.   : 38.40  
+ Male  :122   current     :34   Drug_A :85   II :83   1st Qu.: 66.33  
+              former      :32   Drug_B :74   III:58   Median : 73.25  
+              FORMER      :25                IV :28   Mean   : 73.60  
+              never       :32                         3rd Qu.: 82.60  
+              Never       :41                         Max.   :104.40  
+              never smoker:56                                         
+   height_cm        sbp_mmhg        dbp_mmhg       glucose_mgdl   
+ Min.   :147.4   Min.   : 89.0   Min.   : 52.00   Min.   : 43.00  
+ 1st Qu.:162.8   1st Qu.:117.0   1st Qu.: 75.00   1st Qu.: 89.75  
+ Median :168.5   Median :130.5   Median : 82.00   Median :104.00  
+ Mean   :169.3   Mean   :131.4   Mean   : 82.02   Mean   :104.43  
+ 3rd Qu.:176.2   3rd Qu.:143.2   3rd Qu.: 89.25   3rd Qu.:119.00  
+ Max.   :193.4   Max.   :195.0   Max.   :108.00   Max.   :181.00  
+                                                                  
+ cholesterol_mgdl    crp_ngml     
+ Min.   : 88.0    Min.   : 0.260  
+ 1st Qu.:177.0    1st Qu.: 2.140  
+ Median :197.0    Median : 3.600  
+ Mean   :197.1    Mean   : 4.673  
+ 3rd Qu.:219.5    3rd Qu.: 5.742  
+ Max.   :295.0    Max.   :28.150  
+                                  </code></pre>
+<p>Notice how <code>summary</code> now shows the count per level for factors (e.g. how many Male vs Female), while before it just said <code>character</code>.</p>
+<p>Moreover, we can see that in smoking column, we have different labels with the same meaning (never, Never, never smoker for never). R (as well as any programming language) is case sensitive, so it treats those 3 as different labels, even if for us they mean the same thing.</p>
+<p><strong>IMPORTANT</strong>: labels should be consistent across datasets when you fill them.</p>
+<p>As we want to edit those to be consistent, we need to change the column back to be a character, with <code>as.character</code> function:</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="strings-factors-and-dataframe-handling.html#cb112-1" tabindex="-1"></a>clinical_data<span class="sc">$</span>smoking   <span class="ot">&lt;-</span> <span class="fu">as.character</span>(clinical_data<span class="sc">$</span>smoking)</span>
+<span id="cb112-2"><a href="strings-factors-and-dataframe-handling.html#cb112-2" tabindex="-1"></a><span class="fu">str</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   240 obs. of  15 variables:
+ $ patient_id      : chr  &quot;PT-001&quot; &quot;PT-002&quot; &quot;PT-003&quot; &quot;PT-004&quot; ...
+ $ site            : Factor w/ 4 levels &quot;Milan&quot;,&quot;Rome&quot;,..: 1 1 4 1 1 1 1 1 1 1 ...
+ $ visit_date      : chr  &quot;2020-03-23&quot; &quot;2023-10-31&quot; &quot;2023-06-27&quot; &quot;2018-10-25&quot; ...
+ $ age             : int  66 62 54 64 51 55 71 63 61 55 ...
+ $ sex             : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 1 2 2 1 2 1 2 2 ...
+ $ smoking         : chr  &quot;FORMER&quot; &quot;current&quot; &quot;Curent&quot; &quot;Never&quot; ...
+ $ treatment       : Factor w/ 3 levels &quot;Control&quot;,&quot;Drug_A&quot;,..: 1 3 3 2 3 1 1 1 2 1 ...
+ $ stage           : Ord.factor w/ 4 levels &quot;I&quot;&lt;&quot;II&quot;&lt;&quot;III&quot;&lt;..: 1 2 3 4 1 2 1 3 3 2 ...
+ $ weight_kg       : num  78.8 87.6 61.6 79.2 96.1 69 74.1 59.8 88.2 71 ...
+ $ height_cm       : num  181 170 162 178 182 ...
+ $ sbp_mmhg        : int  143 138 144 122 127 142 125 113 105 179 ...
+ $ dbp_mmhg        : int  90 78 84 93 89 92 62 84 80 75 ...
+ $ glucose_mgdl    : int  102 53 80 103 123 110 119 82 138 131 ...
+ $ cholesterol_mgdl: int  250 207 180 129 178 173 239 212 173 204 ...
+ $ crp_ngml        : num  1.37 11.09 0.81 1.63 1.25 ...</code></pre>
+<p>We can now proceed.</p>
+<div id="operations-on-strings" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Operations on strings<a href="strings-factors-and-dataframe-handling.html#operations-on-strings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The main package for string operations in R (and the one we will use throughout the course) is <code>stringr</code>, which is part of the <code>tidyverse</code>. All its functions start with <code>str_</code> to make them easy to remember.</p>
+<div id="character-substitution" class="section level4 hasAnchor" number="2.2.1.1">
+<h4><span class="header-section-number">2.2.1.1</span> Character substitution<a href="strings-factors-and-dataframe-handling.html#character-substitution" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Let’s start by looking at how to change characters in a string: from “Curent” to “current” using <code>str_replace(vector, old_pattern, new_pattern)</code>.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="strings-factors-and-dataframe-handling.html#cb114-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">unique</span>(clinical_data<span class="sc">$</span>smoking))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;FORMER&quot;       &quot;current&quot;      &quot;Curent&quot;       &quot;Never&quot;        &quot;never smoker&quot;
+[6] &quot;former&quot;       &quot;never&quot;       </code></pre>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="strings-factors-and-dataframe-handling.html#cb116-1" tabindex="-1"></a>clinical_data<span class="sc">$</span>smoking <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(clinical_data<span class="sc">$</span>smoking, <span class="st">&quot;Curent&quot;</span>, <span class="st">&quot;current&quot;</span>)</span>
+<span id="cb116-2"><a href="strings-factors-and-dataframe-handling.html#cb116-2" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">unique</span>(clinical_data<span class="sc">$</span>smoking))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;FORMER&quot;       &quot;current&quot;      &quot;Never&quot;        &quot;never smoker&quot; &quot;former&quot;      
+[6] &quot;never&quot;       </code></pre>
+<p>Then we can unify “FORMER” and “former” by transforming the former to lowercase with <code>str_to_lower</code>:</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="strings-factors-and-dataframe-handling.html#cb118-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">unique</span>(clinical_data<span class="sc">$</span>smoking))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;FORMER&quot;       &quot;current&quot;      &quot;Never&quot;        &quot;never smoker&quot; &quot;former&quot;      
+[6] &quot;never&quot;       </code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="strings-factors-and-dataframe-handling.html#cb120-1" tabindex="-1"></a>clinical_data<span class="sc">$</span>smoking <span class="ot">&lt;-</span> <span class="fu">str_to_lower</span>(clinical_data<span class="sc">$</span>smoking)</span>
+<span id="cb120-2"><a href="strings-factors-and-dataframe-handling.html#cb120-2" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">unique</span>(clinical_data<span class="sc">$</span>smoking))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;former&quot;       &quot;current&quot;      &quot;never&quot;        &quot;never smoker&quot;</code></pre>
+<p>We have converted both FORMER to former and Never to never. We lastly have to change “never smoker” to “smoker”.</p>
+<div class="exercise">
+<p><span id="exr:factor" class="exercise"><strong>Exercise 2.1  </strong></span>Change “never smoker” to “smoker” and make smoker as factor.</p>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="strings-factors-and-dataframe-handling.html#cb122-1" tabindex="-1"></a>clinical_data<span class="sc">$</span>smoking <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(clinical_data<span class="sc">$</span>smoking, <span class="st">&quot;never smoker&quot;</span>, <span class="st">&quot;never&quot;</span>)</span>
+<span id="cb122-2"><a href="strings-factors-and-dataframe-handling.html#cb122-2" tabindex="-1"></a>clinical_data<span class="sc">$</span>smoking <span class="ot">&lt;-</span> <span class="fu">factor</span>(clinical_data<span class="sc">$</span>smoking, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;never&quot;</span>, <span class="st">&quot;former&quot;</span>, <span class="st">&quot;current&quot;</span>))</span>
+<span id="cb122-3"><a href="strings-factors-and-dataframe-handling.html#cb122-3" tabindex="-1"></a></span>
+<span id="cb122-4"><a href="strings-factors-and-dataframe-handling.html#cb122-4" tabindex="-1"></a><span class="fu">summary</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id            site      visit_date             age       
+ Length:240         Milan :109   Length:240         Min.   :28.00  
+ Class :character   Rome  : 61   Class :character   1st Qu.:50.75  
+ Mode  :character   Turin : 33   Mode  :character   Median :58.00  
+                    Turin : 37                      Mean   :57.83  
+                                                    3rd Qu.:66.25  
+                                                    Max.   :97.00  
+     sex         smoking      treatment  stage      weight_kg     
+ Female:118   never  :129   Control:81   I  :71   Min.   : 38.40  
+ Male  :122   former : 57   Drug_A :85   II :83   1st Qu.: 66.33  
+              current: 54   Drug_B :74   III:58   Median : 73.25  
+                                         IV :28   Mean   : 73.60  
+                                                  3rd Qu.: 82.60  
+                                                  Max.   :104.40  
+   height_cm        sbp_mmhg        dbp_mmhg       glucose_mgdl   
+ Min.   :147.4   Min.   : 89.0   Min.   : 52.00   Min.   : 43.00  
+ 1st Qu.:162.8   1st Qu.:117.0   1st Qu.: 75.00   1st Qu.: 89.75  
+ Median :168.5   Median :130.5   Median : 82.00   Median :104.00  
+ Mean   :169.3   Mean   :131.4   Mean   : 82.02   Mean   :104.43  
+ 3rd Qu.:176.2   3rd Qu.:143.2   3rd Qu.: 89.25   3rd Qu.:119.00  
+ Max.   :193.4   Max.   :195.0   Max.   :108.00   Max.   :181.00  
+ cholesterol_mgdl    crp_ngml     
+ Min.   : 88.0    Min.   : 0.260  
+ 1st Qu.:177.0    1st Qu.: 2.140  
+ Median :197.0    Median : 3.600  
+ Mean   :197.1    Mean   : 4.673  
+ 3rd Qu.:219.5    3rd Qu.: 5.742  
+ Max.   :295.0    Max.   :28.150  </code></pre>
+</details>
+<p>For sake of completeness, we could have done all of this with a single function <code>replace_values</code>:</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="strings-factors-and-dataframe-handling.html#cb124-1" tabindex="-1"></a>clinical_data<span class="sc">$</span>smoking <span class="ot">&lt;-</span> <span class="fu">replace_values</span>(clinical_data<span class="sc">$</span>smoking, <span class="fu">c</span>(<span class="st">&quot;never smoker&quot;</span>, <span class="st">&quot;Never&quot;</span>) <span class="sc">~</span> <span class="st">&quot;never&quot;</span>,</span>
+<span id="cb124-2"><a href="strings-factors-and-dataframe-handling.html#cb124-2" tabindex="-1"></a>                                        <span class="fu">c</span>(<span class="st">&quot;Curent&quot;</span>) <span class="sc">~</span> <span class="st">&quot;current&quot;</span>,</span>
+<span id="cb124-3"><a href="strings-factors-and-dataframe-handling.html#cb124-3" tabindex="-1"></a>                                        <span class="fu">c</span>(<span class="st">&quot;FORMER&quot;</span>) <span class="sc">~</span> <span class="st">&quot;former&quot;</span>)</span></code></pre></div>
+<p>Q: <em>Why there are 2 Turin?</em>
+A: Let’s check in details the possible labels of that column with function <code>levels</code>:</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="strings-factors-and-dataframe-handling.html#cb125-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">levels</span>(clinical_data<span class="sc">$</span>site))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;Milan&quot;  &quot;Rome&quot;   &quot;Turin&quot;  &quot;Turin &quot;</code></pre>
+<p>Here’s the hitch, some have a trailing space after Turin. We can get rid of them using <code>str_trim</code> function:</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="strings-factors-and-dataframe-handling.html#cb127-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">levels</span>(clinical_data<span class="sc">$</span>site))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;Milan&quot;  &quot;Rome&quot;   &quot;Turin&quot;  &quot;Turin &quot;</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="strings-factors-and-dataframe-handling.html#cb129-1" tabindex="-1"></a>clinical_data<span class="sc">$</span>site <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">str_trim</span>(clinical_data<span class="sc">$</span>site))</span>
+<span id="cb129-2"><a href="strings-factors-and-dataframe-handling.html#cb129-2" tabindex="-1"></a></span>
+<span id="cb129-3"><a href="strings-factors-and-dataframe-handling.html#cb129-3" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">levels</span>(clinical_data<span class="sc">$</span>site))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;Milan&quot; &quot;Rome&quot;  &quot;Turin&quot;</code></pre>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="strings-factors-and-dataframe-handling.html#cb131-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(clinical_data))</span></code></pre></div>
+<pre class="code-out"><code>  patient_id           site      visit_date             age            sex     
+ Length:240         Milan:109   Length:240         Min.   :28.00   Female:118  
+ Class :character   Rome : 61   Class :character   1st Qu.:50.75   Male  :122  
+ Mode  :character   Turin: 70   Mode  :character   Median :58.00               
+                                                   Mean   :57.83               
+                                                   3rd Qu.:66.25               
+                                                   Max.   :97.00               
+    smoking      treatment  stage      weight_kg        height_cm    
+ never  :129   Control:81   I  :71   Min.   : 38.40   Min.   :147.4  
+ former : 57   Drug_A :85   II :83   1st Qu.: 66.33   1st Qu.:162.8  
+ current: 54   Drug_B :74   III:58   Median : 73.25   Median :168.5  
+                            IV :28   Mean   : 73.60   Mean   :169.3  
+                                     3rd Qu.: 82.60   3rd Qu.:176.2  
+                                     Max.   :104.40   Max.   :193.4  
+    sbp_mmhg        dbp_mmhg       glucose_mgdl    cholesterol_mgdl
+ Min.   : 89.0   Min.   : 52.00   Min.   : 43.00   Min.   : 88.0   
+ 1st Qu.:117.0   1st Qu.: 75.00   1st Qu.: 89.75   1st Qu.:177.0   
+ Median :130.5   Median : 82.00   Median :104.00   Median :197.0   
+ Mean   :131.4   Mean   : 82.02   Mean   :104.43   Mean   :197.1   
+ 3rd Qu.:143.2   3rd Qu.: 89.25   3rd Qu.:119.00   3rd Qu.:219.5   
+ Max.   :195.0   Max.   :108.00   Max.   :181.00   Max.   :295.0   
+    crp_ngml     
+ Min.   : 0.260  
+ 1st Qu.: 2.140  
+ Median : 3.600  
+ Mean   : 4.673  
+ 3rd Qu.: 5.742  
+ Max.   :28.150  </code></pre>
+</div>
+<div id="other-useful-functions-to-handle-strings" class="section level4 hasAnchor" number="2.2.1.2">
+<h4><span class="header-section-number">2.2.1.2</span> Other useful functions to handle strings<a href="strings-factors-and-dataframe-handling.html#other-useful-functions-to-handle-strings" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A few more <code>stringr</code> functions you will find very useful:</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>str_detect(x, pattern)</code></td>
+<td>Returns TRUE/FALSE: does the string contain the pattern?</td>
+</tr>
+<tr class="even">
+<td><code>str_starts(x, pattern)</code></td>
+<td>Does the string <em>start</em> with the pattern?</td>
+</tr>
+<tr class="odd">
+<td><code>str_ends(x, pattern)</code></td>
+<td>Does the string <em>end</em> with the pattern?</td>
+</tr>
+<tr class="even">
+<td><code>str_pad(x, width, side, pad)</code></td>
+<td>Pads a string to a given width</td>
+</tr>
+<tr class="odd">
+<td><code>str_sub(x, start, end)</code></td>
+<td>Extracts a substring by position</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+</div>
+<div id="operations-on-multiple-columns" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Operations on multiple columns<a href="strings-factors-and-dataframe-handling.html#operations-on-multiple-columns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="split-a-column-and-merge-multiple-columns" class="section level4 hasAnchor" number="2.2.2.1">
+<h4><span class="header-section-number">2.2.2.1</span> Split a column and merge multiple columns<a href="strings-factors-and-dataframe-handling.html#split-a-column-and-merge-multiple-columns" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Sometimes a single column contains multiple pieces of information that could be split into separate columns. Look at <code>visit_date</code>:</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="strings-factors-and-dataframe-handling.html#cb133-1" tabindex="-1"></a><span class="fu">head</span>(clinical_data<span class="sc">$</span>visit_date)</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;2020-03-23&quot; &quot;2023-10-31&quot; &quot;2023-06-27&quot; &quot;2018-10-25&quot; &quot;2018-02-19&quot;
+[6] &quot;2023-02-06&quot;</code></pre>
+<p>We can see that the year of visit varies a lot, maybe we should take it into account. We can split this into 3 separate columns using <code>separate</code> function:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="strings-factors-and-dataframe-handling.html#cb135-1" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> <span class="fu">separate</span>(clinical_data,</span>
+<span id="cb135-2"><a href="strings-factors-and-dataframe-handling.html#cb135-2" tabindex="-1"></a>                           <span class="at">col =</span> visit_date,         <span class="co"># column to split</span></span>
+<span id="cb135-3"><a href="strings-factors-and-dataframe-handling.html#cb135-3" tabindex="-1"></a>                           <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;visit_year&quot;</span>, <span class="st">&quot;visit_month&quot;</span>, <span class="st">&quot;visit_day&quot;</span>), <span class="co"># new column names</span></span>
+<span id="cb135-4"><a href="strings-factors-and-dataframe-handling.html#cb135-4" tabindex="-1"></a>                           <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,                <span class="co"># separator</span></span>
+<span id="cb135-5"><a href="strings-factors-and-dataframe-handling.html#cb135-5" tabindex="-1"></a>                           <span class="at">remove =</span> <span class="cn">FALSE</span>)           <span class="co"># keep the original column</span></span>
+<span id="cb135-6"><a href="strings-factors-and-dataframe-handling.html#cb135-6" tabindex="-1"></a></span>
+<span id="cb135-7"><a href="strings-factors-and-dataframe-handling.html#cb135-7" tabindex="-1"></a><span class="fu">head</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id  site visit_date visit_year visit_month visit_day age    sex
+1     PT-001 Milan 2020-03-23       2020          03        23  66   Male
+2     PT-002 Milan 2023-10-31       2023          10        31  62   Male
+3     PT-003 Turin 2023-06-27       2023          06        27  54 Female
+4     PT-004 Milan 2018-10-25       2018          10        25  64   Male
+5     PT-005 Milan 2018-02-19       2018          02        19  51   Male
+6     PT-006 Milan 2023-02-06       2023          02        06  55 Female
+  smoking treatment stage weight_kg height_cm sbp_mmhg dbp_mmhg glucose_mgdl
+1  former   Control     I      78.8     181.4      143       90          102
+2 current    Drug_B    II      87.6     169.9      138       78           53
+3 current    Drug_B   III      61.6     162.1      144       84           80
+4   never    Drug_A    IV      79.2     178.2      122       93          103
+5  former    Drug_B     I      96.1     182.3      127       89          123
+6   never   Control    II      69.0     165.9      142       92          110
+  cholesterol_mgdl crp_ngml
+1              250     1.37
+2              207    11.09
+3              180     0.81
+4              129     1.63
+5              178     1.25
+6              173     3.46</code></pre>
+<p>The opposite operation — merging multiple columns into one — is done with <code>unite</code>:</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="strings-factors-and-dataframe-handling.html#cb137-1" tabindex="-1"></a><span class="co"># example: unite back together</span></span>
+<span id="cb137-2"><a href="strings-factors-and-dataframe-handling.html#cb137-2" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> <span class="fu">unite</span>(clinical_data,</span>
+<span id="cb137-3"><a href="strings-factors-and-dataframe-handling.html#cb137-3" tabindex="-1"></a>                       <span class="at">col =</span> <span class="st">&quot;visit_year_month&quot;</span>,         <span class="co"># name of the new column</span></span>
+<span id="cb137-4"><a href="strings-factors-and-dataframe-handling.html#cb137-4" tabindex="-1"></a>                       visit_year, visit_month,           <span class="co"># columns to merge</span></span>
+<span id="cb137-5"><a href="strings-factors-and-dataframe-handling.html#cb137-5" tabindex="-1"></a>                       <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,                      <span class="co"># separator</span></span>
+<span id="cb137-6"><a href="strings-factors-and-dataframe-handling.html#cb137-6" tabindex="-1"></a>                       <span class="at">remove =</span> <span class="cn">FALSE</span>)                 <span class="co"># keep original columns</span></span>
+<span id="cb137-7"><a href="strings-factors-and-dataframe-handling.html#cb137-7" tabindex="-1"></a></span>
+<span id="cb137-8"><a href="strings-factors-and-dataframe-handling.html#cb137-8" tabindex="-1"></a><span class="fu">head</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id  site visit_date visit_year_month visit_year visit_month visit_day
+1     PT-001 Milan 2020-03-23          2020-03       2020          03        23
+2     PT-002 Milan 2023-10-31          2023-10       2023          10        31
+3     PT-003 Turin 2023-06-27          2023-06       2023          06        27
+4     PT-004 Milan 2018-10-25          2018-10       2018          10        25
+5     PT-005 Milan 2018-02-19          2018-02       2018          02        19
+6     PT-006 Milan 2023-02-06          2023-02       2023          02        06
+  age    sex smoking treatment stage weight_kg height_cm sbp_mmhg dbp_mmhg
+1  66   Male  former   Control     I      78.8     181.4      143       90
+2  62   Male current    Drug_B    II      87.6     169.9      138       78
+3  54 Female current    Drug_B   III      61.6     162.1      144       84
+4  64   Male   never    Drug_A    IV      79.2     178.2      122       93
+5  51   Male  former    Drug_B     I      96.1     182.3      127       89
+6  55 Female   never   Control    II      69.0     165.9      142       92
+  glucose_mgdl cholesterol_mgdl crp_ngml
+1          102              250     1.37
+2           53              207    11.09
+3           80              180     0.81
+4          103              129     1.63
+5          123              178     1.25
+6          110              173     3.46</code></pre>
+<hr />
+</div>
+</div>
+<div id="column-and-row-names" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Column and row names<a href="strings-factors-and-dataframe-handling.html#column-and-row-names" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Every dataframe has <strong>column names</strong> (the variable names) and <strong>row names</strong> (by default a number, but we can change it).</p>
+<p>To retrieve column names:</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="strings-factors-and-dataframe-handling.html#cb139-1" tabindex="-1"></a><span class="fu">colnames</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code> [1] &quot;patient_id&quot;       &quot;site&quot;             &quot;visit_date&quot;       &quot;visit_year_month&quot;
+ [5] &quot;visit_year&quot;       &quot;visit_month&quot;      &quot;visit_day&quot;        &quot;age&quot;             
+ [9] &quot;sex&quot;              &quot;smoking&quot;          &quot;treatment&quot;        &quot;stage&quot;           
+[13] &quot;weight_kg&quot;        &quot;height_cm&quot;        &quot;sbp_mmhg&quot;         &quot;dbp_mmhg&quot;        
+[17] &quot;glucose_mgdl&quot;     &quot;cholesterol_mgdl&quot; &quot;crp_ngml&quot;        </code></pre>
+<p>To rename specific columns, we can assign a new vector of names to <code>colnames</code>, or use the tidyverse function <code>rename</code> (we will see this with <code>dplyr</code> below):</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="strings-factors-and-dataframe-handling.html#cb141-1" tabindex="-1"></a>clinical_data <span class="ot">=</span> <span class="fu">rename</span>(clinical_data, <span class="st">&quot;diastolic_bp_mmhg&quot;</span> <span class="ot">=</span> <span class="st">&quot;dbp_mmhg&quot;</span>, <span class="st">&quot;systolic_bp_mmhg&quot;</span> <span class="ot">=</span> <span class="st">&quot;sbp_mmhg&quot;</span>)</span>
+<span id="cb141-2"><a href="strings-factors-and-dataframe-handling.html#cb141-2" tabindex="-1"></a></span>
+<span id="cb141-3"><a href="strings-factors-and-dataframe-handling.html#cb141-3" tabindex="-1"></a><span class="fu">colnames</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code> [1] &quot;patient_id&quot;        &quot;site&quot;              &quot;visit_date&quot;       
+ [4] &quot;visit_year_month&quot;  &quot;visit_year&quot;        &quot;visit_month&quot;      
+ [7] &quot;visit_day&quot;         &quot;age&quot;               &quot;sex&quot;              
+[10] &quot;smoking&quot;           &quot;treatment&quot;         &quot;stage&quot;            
+[13] &quot;weight_kg&quot;         &quot;height_cm&quot;         &quot;systolic_bp_mmhg&quot; 
+[16] &quot;diastolic_bp_mmhg&quot; &quot;glucose_mgdl&quot;      &quot;cholesterol_mgdl&quot; 
+[19] &quot;crp_ngml&quot;         </code></pre>
+<p>For row names:</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="strings-factors-and-dataframe-handling.html#cb143-1" tabindex="-1"></a><span class="co"># by default, row names are row numbers</span></span>
+<span id="cb143-2"><a href="strings-factors-and-dataframe-handling.html#cb143-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">rownames</span>(clinical_data))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot; &quot;6&quot;</code></pre>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="strings-factors-and-dataframe-handling.html#cb145-1" tabindex="-1"></a><span class="co"># we could set patient_id as row names</span></span>
+<span id="cb145-2"><a href="strings-factors-and-dataframe-handling.html#cb145-2" tabindex="-1"></a><span class="fu">rownames</span>(clinical_data) <span class="ot">&lt;-</span> clinical_data<span class="sc">$</span>patient_id</span>
+<span id="cb145-3"><a href="strings-factors-and-dataframe-handling.html#cb145-3" tabindex="-1"></a></span>
+<span id="cb145-4"><a href="strings-factors-and-dataframe-handling.html#cb145-4" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">rownames</span>(clinical_data))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;PT-001&quot; &quot;PT-002&quot; &quot;PT-003&quot; &quot;PT-004&quot; &quot;PT-005&quot; &quot;PT-006&quot;</code></pre>
+<p>However, <strong>be careful</strong> with row names: they are not a proper column of the dataframe, so they don’t follow along easily in many tidyverse operations. It is generally better to keep your identifiers as a regular column.</p>
+<hr />
+</div>
+</div>
+<div id="dataframe-handling" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Dataframe Handling<a href="strings-factors-and-dataframe-handling.html#dataframe-handling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The main verbs we will learn today are:</p>
+<ul>
+<li><code>mutate</code> — add or modify columns</li>
+<li><code>select</code> — choose which columns to keep</li>
+<li><code>filter</code>/<code>filter_out</code> — keep/remove rows that satisfy a condition</li>
+<li><code>group_by</code> + <code>summarize</code> / <code>reframe</code> — aggregate data by groups</li>
+<li><code>left_join</code> / <code>inner_join</code> — merge two dataframes</li>
+</ul>
+<div id="create-new-columns-with-mutate" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Create new columns with mutate<a href="strings-factors-and-dataframe-handling.html#create-new-columns-with-mutate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>mutate</code> creates new columns or modifies existing ones.</p>
+<p>A key feature of <code>dplyr</code> is the <strong>pipe operator</strong> <code>|&gt;</code> (or <code>%&gt;%</code> in older tidyverse style). It passes the result of one operation directly to the next, making code much more readable:</p>
+<p>You can read <code>|&gt;</code> as <em>“and then”</em>.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="strings-factors-and-dataframe-handling.html#cb147-1" tabindex="-1"></a><span class="co"># Add a BMI column (we already know this formula!)</span></span>
+<span id="cb147-2"><a href="strings-factors-and-dataframe-handling.html#cb147-2" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span> <span class="co"># take clinical_data and then</span></span>
+<span id="cb147-3"><a href="strings-factors-and-dataframe-handling.html#cb147-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">height_m =</span> height_cm <span class="sc">/</span> <span class="dv">100</span>,</span>
+<span id="cb147-4"><a href="strings-factors-and-dataframe-handling.html#cb147-4" tabindex="-1"></a>         <span class="at">BMI =</span> weight_kg <span class="sc">/</span> height_m<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb147-5"><a href="strings-factors-and-dataframe-handling.html#cb147-5" tabindex="-1"></a>         <span class="at">BMI =</span> <span class="fu">round</span>(BMI, <span class="dv">1</span>))</span>
+<span id="cb147-6"><a href="strings-factors-and-dataframe-handling.html#cb147-6" tabindex="-1"></a></span>
+<span id="cb147-7"><a href="strings-factors-and-dataframe-handling.html#cb147-7" tabindex="-1"></a><span class="fu">head</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code>       patient_id  site visit_date visit_year_month visit_year visit_month
+PT-001     PT-001 Milan 2020-03-23          2020-03       2020          03
+PT-002     PT-002 Milan 2023-10-31          2023-10       2023          10
+PT-003     PT-003 Turin 2023-06-27          2023-06       2023          06
+PT-004     PT-004 Milan 2018-10-25          2018-10       2018          10
+PT-005     PT-005 Milan 2018-02-19          2018-02       2018          02
+PT-006     PT-006 Milan 2023-02-06          2023-02       2023          02
+       visit_day age    sex smoking treatment stage weight_kg height_cm
+PT-001        23  66   Male  former   Control     I      78.8     181.4
+PT-002        31  62   Male current    Drug_B    II      87.6     169.9
+PT-003        27  54 Female current    Drug_B   III      61.6     162.1
+PT-004        25  64   Male   never    Drug_A    IV      79.2     178.2
+PT-005        19  51   Male  former    Drug_B     I      96.1     182.3
+PT-006        06  55 Female   never   Control    II      69.0     165.9
+       systolic_bp_mmhg diastolic_bp_mmhg glucose_mgdl cholesterol_mgdl
+PT-001              143                90          102              250
+PT-002              138                78           53              207
+PT-003              144                84           80              180
+PT-004              122                93          103              129
+PT-005              127                89          123              178
+PT-006              142                92          110              173
+       crp_ngml height_m  BMI
+PT-001     1.37    1.814 23.9
+PT-002    11.09    1.699 30.3
+PT-003     0.81    1.621 23.4
+PT-004     1.63    1.782 24.9
+PT-005     1.25    1.823 28.9
+PT-006     3.46    1.659 25.1</code></pre>
+<p><code>mutate</code> can also create columns based on conditions, using <code>if_else</code> or <code>case_when</code>:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="strings-factors-and-dataframe-handling.html#cb149-1" tabindex="-1"></a><span class="co"># Classify BMI into categories</span></span>
+<span id="cb149-2"><a href="strings-factors-and-dataframe-handling.html#cb149-2" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb149-3"><a href="strings-factors-and-dataframe-handling.html#cb149-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BMI_class =</span> <span class="fu">case_when</span>(</span>
+<span id="cb149-4"><a href="strings-factors-and-dataframe-handling.html#cb149-4" tabindex="-1"></a>    BMI <span class="sc">&lt;</span> <span class="fl">18.5</span> <span class="sc">~</span> <span class="st">&quot;Underweight&quot;</span>,</span>
+<span id="cb149-5"><a href="strings-factors-and-dataframe-handling.html#cb149-5" tabindex="-1"></a>    BMI <span class="sc">&lt;</span> <span class="dv">25</span>   <span class="sc">~</span> <span class="st">&quot;Normal&quot;</span>,</span>
+<span id="cb149-6"><a href="strings-factors-and-dataframe-handling.html#cb149-6" tabindex="-1"></a>    BMI <span class="sc">&lt;</span> <span class="dv">30</span>   <span class="sc">~</span> <span class="st">&quot;Overweight&quot;</span>,</span>
+<span id="cb149-7"><a href="strings-factors-and-dataframe-handling.html#cb149-7" tabindex="-1"></a>    BMI <span class="sc">&gt;=</span> <span class="dv">30</span>  <span class="sc">~</span> <span class="st">&quot;Obese&quot;</span></span>
+<span id="cb149-8"><a href="strings-factors-and-dataframe-handling.html#cb149-8" tabindex="-1"></a>  ),</span>
+<span id="cb149-9"><a href="strings-factors-and-dataframe-handling.html#cb149-9" tabindex="-1"></a>  <span class="at">BMI_class =</span> <span class="fu">factor</span>(BMI_class, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Underweight&quot;</span>, <span class="st">&quot;Normal&quot;</span>, <span class="st">&quot;Overweight&quot;</span>, <span class="st">&quot;Obese&quot;</span>), <span class="at">ordered =</span> T)</span>
+<span id="cb149-10"><a href="strings-factors-and-dataframe-handling.html#cb149-10" tabindex="-1"></a>  )</span>
+<span id="cb149-11"><a href="strings-factors-and-dataframe-handling.html#cb149-11" tabindex="-1"></a></span>
+<span id="cb149-12"><a href="strings-factors-and-dataframe-handling.html#cb149-12" tabindex="-1"></a><span class="fu">summary</span>(clinical_data<span class="sc">$</span>BMI_class)</span></code></pre></div>
+<pre class="code-out"><code>Underweight      Normal  Overweight       Obese 
+         94          42          91          13 </code></pre>
+<hr />
+</div>
+<div id="select" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> select<a href="strings-factors-and-dataframe-handling.html#select" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>select</code> chooses which <strong>columns</strong> to keep (or drop). This is useful when working with wide dataframes where you only need a subset of variables.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="strings-factors-and-dataframe-handling.html#cb151-1" tabindex="-1"></a><span class="co"># keep only demographic and clinical variables</span></span>
+<span id="cb151-2"><a href="strings-factors-and-dataframe-handling.html#cb151-2" tabindex="-1"></a>demo_cols <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb151-3"><a href="strings-factors-and-dataframe-handling.html#cb151-3" tabindex="-1"></a>  <span class="fu">select</span>(patient_id, site, age, sex, treatment, stage, BMI, BMI_class)</span>
+<span id="cb151-4"><a href="strings-factors-and-dataframe-handling.html#cb151-4" tabindex="-1"></a></span>
+<span id="cb151-5"><a href="strings-factors-and-dataframe-handling.html#cb151-5" tabindex="-1"></a><span class="fu">head</span>(demo_cols)</span></code></pre></div>
+<pre class="code-out"><code>       patient_id  site age    sex treatment stage  BMI   BMI_class
+PT-001     PT-001 Milan  66   Male   Control     I 23.9 Underweight
+PT-002     PT-002 Milan  62   Male    Drug_B    II 30.3      Normal
+PT-003     PT-003 Turin  54 Female    Drug_B   III 23.4 Underweight
+PT-004     PT-004 Milan  64   Male    Drug_A    IV 24.9 Underweight
+PT-005     PT-005 Milan  51   Male    Drug_B     I 28.9  Overweight
+PT-006     PT-006 Milan  55 Female   Control    II 25.1  Overweight</code></pre>
+<p>To <strong>drop</strong> specific columns, use <code>-</code> before the column name:</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="strings-factors-and-dataframe-handling.html#cb153-1" tabindex="-1"></a><span class="fu">colnames</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code> [1] &quot;patient_id&quot;        &quot;site&quot;              &quot;visit_date&quot;       
+ [4] &quot;visit_year_month&quot;  &quot;visit_year&quot;        &quot;visit_month&quot;      
+ [7] &quot;visit_day&quot;         &quot;age&quot;               &quot;sex&quot;              
+[10] &quot;smoking&quot;           &quot;treatment&quot;         &quot;stage&quot;            
+[13] &quot;weight_kg&quot;         &quot;height_cm&quot;         &quot;systolic_bp_mmhg&quot; 
+[16] &quot;diastolic_bp_mmhg&quot; &quot;glucose_mgdl&quot;      &quot;cholesterol_mgdl&quot; 
+[19] &quot;crp_ngml&quot;          &quot;height_m&quot;          &quot;BMI&quot;              
+[22] &quot;BMI_class&quot;        </code></pre>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="strings-factors-and-dataframe-handling.html#cb155-1" tabindex="-1"></a><span class="co"># drop the helper/intermediate columns we created</span></span>
+<span id="cb155-2"><a href="strings-factors-and-dataframe-handling.html#cb155-2" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb155-3"><a href="strings-factors-and-dataframe-handling.html#cb155-3" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>visit_year_month)</span>
+<span id="cb155-4"><a href="strings-factors-and-dataframe-handling.html#cb155-4" tabindex="-1"></a></span>
+<span id="cb155-5"><a href="strings-factors-and-dataframe-handling.html#cb155-5" tabindex="-1"></a><span class="fu">colnames</span>(clinical_data)</span></code></pre></div>
+<pre class="code-out"><code> [1] &quot;patient_id&quot;        &quot;site&quot;              &quot;visit_date&quot;       
+ [4] &quot;visit_year&quot;        &quot;visit_month&quot;       &quot;visit_day&quot;        
+ [7] &quot;age&quot;               &quot;sex&quot;               &quot;smoking&quot;          
+[10] &quot;treatment&quot;         &quot;stage&quot;             &quot;weight_kg&quot;        
+[13] &quot;height_cm&quot;         &quot;systolic_bp_mmhg&quot;  &quot;diastolic_bp_mmhg&quot;
+[16] &quot;glucose_mgdl&quot;      &quot;cholesterol_mgdl&quot;  &quot;crp_ngml&quot;         
+[19] &quot;height_m&quot;          &quot;BMI&quot;               &quot;BMI_class&quot;        </code></pre>
+<p>THIS SHOULD BE ONLY ON THE SITE, NOT IN STUDENTS MARKDOWN
+<code>select</code> also supports handy helper functions:</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="strings-factors-and-dataframe-handling.html#cb157-1" tabindex="-1"></a><span class="co"># select all columns that start with &quot;diag&quot;</span></span>
+<span id="cb157-2"><a href="strings-factors-and-dataframe-handling.html#cb157-2" tabindex="-1"></a>clinical_data <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&quot;visit&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre class="code-out"><code>       visit_date visit_year visit_month visit_day
+PT-001 2020-03-23       2020          03        23
+PT-002 2023-10-31       2023          10        31
+PT-003 2023-06-27       2023          06        27
+PT-004 2018-10-25       2018          10        25
+PT-005 2018-02-19       2018          02        19
+PT-006 2023-02-06       2023          02        06</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="strings-factors-and-dataframe-handling.html#cb159-1" tabindex="-1"></a><span class="co"># select all columns that contain &quot;bp&quot;</span></span>
+<span id="cb159-2"><a href="strings-factors-and-dataframe-handling.html#cb159-2" tabindex="-1"></a>clinical_data <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">&quot;bp&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<pre class="code-out"><code>       systolic_bp_mmhg diastolic_bp_mmhg
+PT-001              143                90
+PT-002              138                78
+PT-003              144                84
+PT-004              122                93
+PT-005              127                89
+PT-006              142                92</code></pre>
+<hr />
+</div>
+<div id="boolean-operators" class="section level3 hasAnchor" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Boolean Operators<a href="strings-factors-and-dataframe-handling.html#boolean-operators" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A <strong>boolean</strong> (or logical) is a data type that can only take two values: <code>TRUE</code> or <code>FALSE</code>. It is the backbone of filtering and conditional logic in R.</p>
+<p><strong>A boolean is the answer to a yes/no question.</strong></p>
+<p>For example: <em>“Is this patient in stage III or IV?”</em> → <code>TRUE</code> or <code>FALSE</code>.</p>
+<div id="comparison-operators" class="section level4 hasAnchor" number="2.3.3.1">
+<h4><span class="header-section-number">2.3.3.1</span> Comparison operators<a href="strings-factors-and-dataframe-handling.html#comparison-operators" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>These operators compare two values and return a boolean:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Meaning</th>
+<th>Example</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>==</code></td>
+<td>equal to</td>
+<td><code>3 == 3</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>!=</code></td>
+<td>not equal to</td>
+<td><code>3 != 4</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>&gt;</code></td>
+<td>greater than</td>
+<td><code>5 &gt; 3</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>&lt;</code></td>
+<td>less than</td>
+<td><code>2 &lt; 1</code></td>
+<td><code>FALSE</code></td>
+</tr>
+<tr class="odd">
+<td><code>&gt;=</code></td>
+<td>greater or equal</td>
+<td><code>3 &gt;= 3</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>&lt;=</code></td>
+<td>less or equal</td>
+<td><code>2 &lt;= 1</code></td>
+<td><code>FALSE</code></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="strings-factors-and-dataframe-handling.html#cb161-1" tabindex="-1"></a><span class="co"># simple examples</span></span>
+<span id="cb161-2"><a href="strings-factors-and-dataframe-handling.html#cb161-2" tabindex="-1"></a><span class="fu">print</span>(<span class="dv">10</span> <span class="sc">&gt;</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre class="code-out"><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="strings-factors-and-dataframe-handling.html#cb163-1" tabindex="-1"></a><span class="fu">print</span>(<span class="dv">10</span> <span class="sc">==</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre class="code-out"><code>[1] TRUE</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="strings-factors-and-dataframe-handling.html#cb165-1" tabindex="-1"></a><span class="fu">print</span>(<span class="dv">10</span> <span class="sc">!=</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre class="code-out"><code>[1] FALSE</code></pre>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="strings-factors-and-dataframe-handling.html#cb167-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fl">3.14</span> <span class="sc">&gt;=</span> <span class="fl">3.14</span>)</span></code></pre></div>
+<pre class="code-out"><code>[1] TRUE</code></pre>
+<p>When applied to a <strong>vector</strong>, the comparison is done <strong>element-wise</strong> and returns a boolean vector:</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="strings-factors-and-dataframe-handling.html#cb169-1" tabindex="-1"></a>ages <span class="ot">&lt;-</span> clinical_data<span class="sc">$</span>age</span>
+<span id="cb169-2"><a href="strings-factors-and-dataframe-handling.html#cb169-2" tabindex="-1"></a><span class="fu">head</span>(ages)</span></code></pre></div>
+<pre class="code-out"><code>[1] 66 62 54 64 51 55</code></pre>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="strings-factors-and-dataframe-handling.html#cb171-1" tabindex="-1"></a>is_over_60 <span class="ot">&lt;-</span> ages <span class="sc">&gt;</span> <span class="dv">60</span></span>
+<span id="cb171-2"><a href="strings-factors-and-dataframe-handling.html#cb171-2" tabindex="-1"></a><span class="fu">head</span>(is_over_60)</span></code></pre></div>
+<pre class="code-out"><code>[1]  TRUE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
+<p>Under the hood, TRUE is stored as a 1, while FALSE as 0. This is useful when we want to get the number of TRUE values of a vector. How? By summing up all the values:</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="strings-factors-and-dataframe-handling.html#cb173-1" tabindex="-1"></a><span class="fu">sum</span>(is_over_60)</span></code></pre></div>
+<pre class="code-out"><code>[1] 97</code></pre>
+</div>
+<div id="logical-operators" class="section level4 hasAnchor" number="2.3.3.2">
+<h4><span class="header-section-number">2.3.3.2</span> Logical operators<a href="strings-factors-and-dataframe-handling.html#logical-operators" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We often need to combine multiple conditions. This is done with <strong>logical operators</strong>:</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&amp;</code></td>
+<td>AND — both conditions must be true</td>
+<td><code>age &gt; 50 &amp; sex == "Female"</code></td>
+</tr>
+<tr class="even">
+<td><code>\|</code></td>
+<td>OR — at least one condition must be true</td>
+<td><code>stage == "III" \| stage == "IV"</code></td>
+</tr>
+<tr class="odd">
+<td><code>!</code></td>
+<td>NOT — negates a condition</td>
+<td><code>!is.na(crp_ngml)</code></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="strings-factors-and-dataframe-handling.html#cb175-1" tabindex="-1"></a><span class="co"># patients who are Female AND over 60</span></span>
+<span id="cb175-2"><a href="strings-factors-and-dataframe-handling.html#cb175-2" tabindex="-1"></a>female_over60 <span class="ot">&lt;-</span> (clinical_data<span class="sc">$</span>sex <span class="sc">==</span> <span class="st">&quot;Female&quot;</span>) <span class="sc">&amp;</span> (clinical_data<span class="sc">$</span>age <span class="sc">&gt;</span> <span class="dv">60</span>)</span>
+<span id="cb175-3"><a href="strings-factors-and-dataframe-handling.html#cb175-3" tabindex="-1"></a><span class="fu">sum</span>(female_over60)</span></code></pre></div>
+<pre class="code-out"><code>[1] 46</code></pre>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="strings-factors-and-dataframe-handling.html#cb177-1" tabindex="-1"></a><span class="co"># patients in advanced stage (III or IV)</span></span>
+<span id="cb177-2"><a href="strings-factors-and-dataframe-handling.html#cb177-2" tabindex="-1"></a>advanced_stage <span class="ot">&lt;-</span> (clinical_data<span class="sc">$</span>stage <span class="sc">==</span> <span class="st">&quot;III&quot;</span>) <span class="sc">|</span> (clinical_data<span class="sc">$</span>stage <span class="sc">==</span> <span class="st">&quot;IV&quot;</span>)</span>
+<span id="cb177-3"><a href="strings-factors-and-dataframe-handling.html#cb177-3" tabindex="-1"></a><span class="fu">sum</span>(advanced_stage)</span></code></pre></div>
+<pre class="code-out"><code>[1] 86</code></pre>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="strings-factors-and-dataframe-handling.html#cb179-1" tabindex="-1"></a><span class="co"># NOT: patients who are NOT in the Control group</span></span>
+<span id="cb179-2"><a href="strings-factors-and-dataframe-handling.html#cb179-2" tabindex="-1"></a>not_control <span class="ot">&lt;-</span> clinical_data<span class="sc">$</span>treatment <span class="sc">!=</span> <span class="st">&quot;Control&quot;</span></span>
+<span id="cb179-3"><a href="strings-factors-and-dataframe-handling.html#cb179-3" tabindex="-1"></a><span class="fu">sum</span>(not_control)</span></code></pre></div>
+<pre class="code-out"><code>[1] 159</code></pre>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="strings-factors-and-dataframe-handling.html#cb181-1" tabindex="-1"></a><span class="co"># equivalent using !</span></span>
+<span id="cb181-2"><a href="strings-factors-and-dataframe-handling.html#cb181-2" tabindex="-1"></a>not_control_2 <span class="ot">&lt;-</span> <span class="sc">!</span>(clinical_data<span class="sc">$</span>treatment <span class="sc">==</span> <span class="st">&quot;Control&quot;</span>)</span>
+<span id="cb181-3"><a href="strings-factors-and-dataframe-handling.html#cb181-3" tabindex="-1"></a><span class="fu">sum</span>(not_control_2)</span></code></pre></div>
+<pre class="code-out"><code>[1] 159</code></pre>
+<p>A very useful operator when checking membership in a list of values is <code>%in%</code>:</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="strings-factors-and-dataframe-handling.html#cb183-1" tabindex="-1"></a><span class="co"># patients from Milan or Rome (equivalent to == &quot;Milan&quot; | == &quot;Rome&quot;)</span></span>
+<span id="cb183-2"><a href="strings-factors-and-dataframe-handling.html#cb183-2" tabindex="-1"></a>big_sites <span class="ot">&lt;-</span> clinical_data<span class="sc">$</span>site <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Milan&quot;</span>, <span class="st">&quot;Rome&quot;</span>)</span>
+<span id="cb183-3"><a href="strings-factors-and-dataframe-handling.html#cb183-3" tabindex="-1"></a><span class="fu">sum</span>(big_sites)</span></code></pre></div>
+<pre class="code-out"><code>[1] 170</code></pre>
+<p>::: .{exercise #bool-sum}</p>
+<p>How many patients have been diagnosed as stage I, in Turin in 2018?</p>
+<p>:::</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="strings-factors-and-dataframe-handling.html#cb185-1" tabindex="-1"></a>stageI_turin_2018 <span class="ot">&lt;-</span> (clinical_data<span class="sc">$</span>site <span class="sc">==</span> <span class="st">&quot;Turin&quot;</span>) <span class="sc">&amp;</span> (clinical_data<span class="sc">$</span>stage <span class="sc">==</span> <span class="st">&quot;I&quot;</span>) <span class="sc">&amp;</span> (clinical_data<span class="sc">$</span>visit_year <span class="sc">==</span> <span class="dv">2018</span>)</span>
+<span id="cb185-2"><a href="strings-factors-and-dataframe-handling.html#cb185-2" tabindex="-1"></a><span class="fu">sum</span>(stageI_turin_2018)</span></code></pre></div>
+<pre class="code-out"><code>[1] 3</code></pre>
+</details>
+</div>
+</div>
+<div id="filter-and-filter-out" class="section level3 hasAnchor" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> filter and filter out<a href="strings-factors-and-dataframe-handling.html#filter-and-filter-out" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>filter</code> keeps only the <strong>rows</strong> that satisfy one or more conditions:</p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="strings-factors-and-dataframe-handling.html#cb187-1" tabindex="-1"></a><span class="co"># Keep only patients treated with Drug_A</span></span>
+<span id="cb187-2"><a href="strings-factors-and-dataframe-handling.html#cb187-2" tabindex="-1"></a>drug_a_patients <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb187-3"><a href="strings-factors-and-dataframe-handling.html#cb187-3" tabindex="-1"></a>  <span class="fu">filter</span>(treatment <span class="sc">==</span> <span class="st">&quot;Drug_A&quot;</span>)</span>
+<span id="cb187-4"><a href="strings-factors-and-dataframe-handling.html#cb187-4" tabindex="-1"></a></span>
+<span id="cb187-5"><a href="strings-factors-and-dataframe-handling.html#cb187-5" tabindex="-1"></a><span class="fu">nrow</span>(drug_a_patients)</span></code></pre></div>
+<pre class="code-out"><code>[1] 85</code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="strings-factors-and-dataframe-handling.html#cb189-1" tabindex="-1"></a><span class="fu">head</span>(drug_a_patients)</span></code></pre></div>
+<pre class="code-out"><code>       patient_id  site visit_date visit_year visit_month visit_day age    sex
+PT-004     PT-004 Milan 2018-10-25       2018          10        25  64   Male
+PT-009     PT-009 Milan 2020-03-10       2020          03        10  61   Male
+PT-012     PT-012  Rome 2020-10-13       2020          10        13  74   Male
+PT-019     PT-019  Rome 2020-08-26       2020          08        26  66 Female
+PT-026     PT-026 Turin 2023-04-10       2023          04        10  49 Female
+PT-031     PT-031 Turin 2025-10-05       2025          10        05  76   Male
+       smoking treatment stage weight_kg height_cm systolic_bp_mmhg
+PT-004   never    Drug_A    IV      79.2     178.2              122
+PT-009 current    Drug_A   III      88.2     169.9              105
+PT-012   never    Drug_A    II      91.6     165.1              131
+PT-019 current    Drug_A    IV      69.9     160.0              120
+PT-026 current    Drug_A    II      57.7     163.3              139
+PT-031 current    Drug_A     I      90.3     179.1              143
+       diastolic_bp_mmhg glucose_mgdl cholesterol_mgdl crp_ngml height_m  BMI
+PT-004                93          103              129     1.63    1.782 24.9
+PT-009                80          138              173     3.31    1.699 30.6
+PT-012               100          101              208     5.75    1.651 33.6
+PT-019                78          104              203     0.75    1.600 27.3
+PT-026               102          106              195     5.23    1.633 21.6
+PT-031                78           91              245    19.73    1.791 28.2
+         BMI_class
+PT-004 Underweight
+PT-009      Normal
+PT-012      Normal
+PT-019  Overweight
+PT-026 Underweight
+PT-031  Overweight</code></pre>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="strings-factors-and-dataframe-handling.html#cb191-1" tabindex="-1"></a><span class="co"># Patients in advanced stage AND not in control group</span></span>
+<span id="cb191-2"><a href="strings-factors-and-dataframe-handling.html#cb191-2" tabindex="-1"></a>advanced_treated <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb191-3"><a href="strings-factors-and-dataframe-handling.html#cb191-3" tabindex="-1"></a>  <span class="fu">filter</span>((stage <span class="sc">==</span> <span class="st">&quot;III&quot;</span> <span class="sc">|</span> stage <span class="sc">==</span> <span class="st">&quot;IV&quot;</span>) <span class="sc">&amp;</span> treatment <span class="sc">!=</span> <span class="st">&quot;Control&quot;</span>)</span>
+<span id="cb191-4"><a href="strings-factors-and-dataframe-handling.html#cb191-4" tabindex="-1"></a></span>
+<span id="cb191-5"><a href="strings-factors-and-dataframe-handling.html#cb191-5" tabindex="-1"></a><span class="fu">nrow</span>(advanced_treated)</span></code></pre></div>
+<pre class="code-out"><code>[1] 58</code></pre>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="strings-factors-and-dataframe-handling.html#cb193-1" tabindex="-1"></a><span class="co"># Using %in% for multiple values</span></span>
+<span id="cb193-2"><a href="strings-factors-and-dataframe-handling.html#cb193-2" tabindex="-1"></a>milan_or_rome <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb193-3"><a href="strings-factors-and-dataframe-handling.html#cb193-3" tabindex="-1"></a>  <span class="fu">filter</span>(site <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Milan&quot;</span>, <span class="st">&quot;Rome&quot;</span>))</span>
+<span id="cb193-4"><a href="strings-factors-and-dataframe-handling.html#cb193-4" tabindex="-1"></a></span>
+<span id="cb193-5"><a href="strings-factors-and-dataframe-handling.html#cb193-5" tabindex="-1"></a><span class="fu">nrow</span>(milan_or_rome)</span></code></pre></div>
+<pre class="code-out"><code>[1] 170</code></pre>
+<p>To <strong>filter out</strong> (i.e., <em>exclude</em> rows matching a condition), use <code>filter_out</code>:</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="strings-factors-and-dataframe-handling.html#cb195-1" tabindex="-1"></a><span class="co"># Exclude patients from Naples</span></span>
+<span id="cb195-2"><a href="strings-factors-and-dataframe-handling.html#cb195-2" tabindex="-1"></a>no_naples <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb195-3"><a href="strings-factors-and-dataframe-handling.html#cb195-3" tabindex="-1"></a>  <span class="fu">filter_out</span>(site <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Naples&quot;</span>))</span>
+<span id="cb195-4"><a href="strings-factors-and-dataframe-handling.html#cb195-4" tabindex="-1"></a></span>
+<span id="cb195-5"><a href="strings-factors-and-dataframe-handling.html#cb195-5" tabindex="-1"></a><span class="fu">nrow</span>(no_naples)</span></code></pre></div>
+<pre class="code-out"><code>[1] 240</code></pre>
+<p>Pipes shine when you chain multiple operations:</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="strings-factors-and-dataframe-handling.html#cb197-1" tabindex="-1"></a><span class="co"># Female patients, over 55, from Milan, keep only key columns</span></span>
+<span id="cb197-2"><a href="strings-factors-and-dataframe-handling.html#cb197-2" tabindex="-1"></a>subset_females <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb197-3"><a href="strings-factors-and-dataframe-handling.html#cb197-3" tabindex="-1"></a>  <span class="fu">filter</span>(sex <span class="sc">==</span> <span class="st">&quot;Female&quot;</span>, age <span class="sc">&gt;</span> <span class="dv">55</span>, site <span class="sc">==</span> <span class="st">&quot;Milan&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb197-4"><a href="strings-factors-and-dataframe-handling.html#cb197-4" tabindex="-1"></a>  <span class="fu">select</span>(patient_id, age, stage, treatment, BMI, glucose_mgdl)</span>
+<span id="cb197-5"><a href="strings-factors-and-dataframe-handling.html#cb197-5" tabindex="-1"></a></span>
+<span id="cb197-6"><a href="strings-factors-and-dataframe-handling.html#cb197-6" tabindex="-1"></a><span class="fu">head</span>(subset_females)</span></code></pre></div>
+<pre class="code-out"><code>       patient_id age stage treatment  BMI glucose_mgdl
+PT-008     PT-008  63   III   Control 24.3           82
+PT-014     PT-014  59    II   Control 29.8           91
+PT-029     PT-029  61   III   Control 24.3           66
+PT-037     PT-037  59    II   Control 15.2           92
+PT-051     PT-051  75     I    Drug_B 26.2           77
+PT-053     PT-053  62    II    Drug_A 26.7           95</code></pre>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="strings-factors-and-dataframe-handling.html#cb199-1" tabindex="-1"></a><span class="fu">nrow</span>(subset_females)</span></code></pre></div>
+<pre class="code-out"><code>[1] 28</code></pre>
+<p>Note: inside <code>filter</code>, multiple conditions separated by commas are treated as AND.</p>
+<div class="exercise">
+<p><span id="exr:filter-exercise" class="exercise"><strong>Exercise 2.2  </strong></span>From the full dataset, extract patients who:</p>
+<ul>
+<li>are in stage II or III,</li>
+<li>have a glucose level between 90 and 130 mg/dL (inclusive),</li>
+<li>are assigned to Drug_A or Drug_B.</li>
+</ul>
+<p>Keep only <code>patient_id</code>, <code>site</code>, <code>stage</code>, <code>treatment</code>, and <code>glucose_mgdl</code>.</p>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="strings-factors-and-dataframe-handling.html#cb201-1" tabindex="-1"></a>exercise_result <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb201-2"><a href="strings-factors-and-dataframe-handling.html#cb201-2" tabindex="-1"></a>  <span class="fu">filter</span>(stage <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;II&quot;</span>, <span class="st">&quot;III&quot;</span>),</span>
+<span id="cb201-3"><a href="strings-factors-and-dataframe-handling.html#cb201-3" tabindex="-1"></a>         glucose_mgdl <span class="sc">&gt;=</span> <span class="dv">90</span>,</span>
+<span id="cb201-4"><a href="strings-factors-and-dataframe-handling.html#cb201-4" tabindex="-1"></a>         glucose_mgdl <span class="sc">&lt;=</span> <span class="dv">130</span>,</span>
+<span id="cb201-5"><a href="strings-factors-and-dataframe-handling.html#cb201-5" tabindex="-1"></a>         treatment <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Drug_A&quot;</span>, <span class="st">&quot;Drug_B&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb201-6"><a href="strings-factors-and-dataframe-handling.html#cb201-6" tabindex="-1"></a>  <span class="fu">select</span>(patient_id, site, stage, treatment, glucose_mgdl)</span>
+<span id="cb201-7"><a href="strings-factors-and-dataframe-handling.html#cb201-7" tabindex="-1"></a></span>
+<span id="cb201-8"><a href="strings-factors-and-dataframe-handling.html#cb201-8" tabindex="-1"></a><span class="fu">head</span>(exercise_result)</span></code></pre></div>
+<pre class="code-out"><code>       patient_id  site stage treatment glucose_mgdl
+PT-011     PT-011  Rome    II    Drug_B          119
+PT-012     PT-012  Rome    II    Drug_A          101
+PT-020     PT-020 Milan    II    Drug_B          115
+PT-021     PT-021  Rome   III    Drug_B          122
+PT-022     PT-022 Turin   III    Drug_B          127
+PT-026     PT-026 Turin    II    Drug_A          106</code></pre>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="strings-factors-and-dataframe-handling.html#cb203-1" tabindex="-1"></a><span class="fu">nrow</span>(exercise_result)</span></code></pre></div>
+<pre class="code-out"><code>[1] 55</code></pre>
+</details>
+<hr />
+</div>
+<div id="group_by-summarize-and-reframe" class="section level3 hasAnchor" number="2.3.5">
+<h3><span class="header-section-number">2.3.5</span> group_by, summarize and reframe<a href="strings-factors-and-dataframe-handling.html#group_by-summarize-and-reframe" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>One of the most powerful operations in data analysis is <strong>grouping</strong> data and computing summaries per group. In R, this is done with <code>group_by</code> + <code>summarize</code>.</p>
+<p><strong>How it works:</strong></p>
+<ol style="list-style-type: decimal">
+<li><code>group_by(column)</code> tells R: <em>“split the dataframe into groups based on the values of this column”</em></li>
+<li><code>summarize(...)</code> computes one summary value per group</li>
+</ol>
+<p align="center">
+<pre><code>Original data:                 After group_by(treatment):
+
+patient  treatment  glucose       GROUP: Control
+PT-001   Control    105           PT-001  Control  105
+PT-002   Drug_A     118    ---&gt;   PT-007  Control  98
+PT-003   Drug_B     97            ...
+PT-007   Control    98     ---&gt;   GROUP: Drug_A
+...                               PT-002  Drug_A  118
+                                  ...</code></pre>
+</p>
+<p>We can perform several operation with this combo, and answer many questions. For example “<em>Which is the mean and sd values of glucose in each treatment group? How many patients we have per treatment group?</em>”.</p>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="strings-factors-and-dataframe-handling.html#cb206-1" tabindex="-1"></a><span class="co"># Mean glucose per treatment group</span></span>
+<span id="cb206-2"><a href="strings-factors-and-dataframe-handling.html#cb206-2" tabindex="-1"></a>glucose_by_treatment <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb206-3"><a href="strings-factors-and-dataframe-handling.html#cb206-3" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment) <span class="sc">|&gt;</span></span>
+<span id="cb206-4"><a href="strings-factors-and-dataframe-handling.html#cb206-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_glucose =</span> <span class="fu">mean</span>(glucose_mgdl),</span>
+<span id="cb206-5"><a href="strings-factors-and-dataframe-handling.html#cb206-5" tabindex="-1"></a>            <span class="at">sd_glucose   =</span> <span class="fu">sd</span>(glucose_mgdl),</span>
+<span id="cb206-6"><a href="strings-factors-and-dataframe-handling.html#cb206-6" tabindex="-1"></a>            <span class="at">n_patients   =</span> <span class="fu">n</span>())</span>
+<span id="cb206-7"><a href="strings-factors-and-dataframe-handling.html#cb206-7" tabindex="-1"></a></span>
+<span id="cb206-8"><a href="strings-factors-and-dataframe-handling.html#cb206-8" tabindex="-1"></a>glucose_by_treatment</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 3 × 4
+  treatment mean_glucose sd_glucose n_patients
+  &lt;fct&gt;            &lt;dbl&gt;      &lt;dbl&gt;      &lt;int&gt;
+1 Control           104.       21.5         81
+2 Drug_A            107.       23.6         85
+3 Drug_B            101.       24.1         74</code></pre>
+<p>You can also group by multiple columns at once.</p>
+<p>“<em>For each treatment/sex combination, which is the mean BMI and the median of the age?</em>”</p>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="strings-factors-and-dataframe-handling.html#cb208-1" tabindex="-1"></a><span class="co"># Summary by treatment AND sex</span></span>
+<span id="cb208-2"><a href="strings-factors-and-dataframe-handling.html#cb208-2" tabindex="-1"></a>summary_by_group <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb208-3"><a href="strings-factors-and-dataframe-handling.html#cb208-3" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment, sex) <span class="sc">|&gt;</span></span>
+<span id="cb208-4"><a href="strings-factors-and-dataframe-handling.html#cb208-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_BMI    =</span> <span class="fu">round</span>(<span class="fu">mean</span>(BMI), <span class="dv">2</span>),</span>
+<span id="cb208-5"><a href="strings-factors-and-dataframe-handling.html#cb208-5" tabindex="-1"></a>            <span class="at">median_age  =</span> <span class="fu">median</span>(age),</span>
+<span id="cb208-6"><a href="strings-factors-and-dataframe-handling.html#cb208-6" tabindex="-1"></a>            <span class="at">n           =</span> <span class="fu">n</span>(),</span>
+<span id="cb208-7"><a href="strings-factors-and-dataframe-handling.html#cb208-7" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>)   <span class="co"># good practice: drop grouping after summarize</span></span>
+<span id="cb208-8"><a href="strings-factors-and-dataframe-handling.html#cb208-8" tabindex="-1"></a></span>
+<span id="cb208-9"><a href="strings-factors-and-dataframe-handling.html#cb208-9" tabindex="-1"></a>summary_by_group</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 6 × 5
+  treatment sex    mean_BMI median_age     n
+  &lt;fct&gt;     &lt;fct&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;
+1 Control   Female     25.9       55.5    40
+2 Control   Male       25.2       55      41
+3 Drug_A    Female     25.5       58      41
+4 Drug_A    Male       26.1       60      44
+5 Drug_B    Female     25.2       61      37
+6 Drug_B    Male       26.6       57      37</code></pre>
+<p>METTERE SOLO NEL SITO</p>
+<p><code>summarize</code> returns <strong>one row per group</strong>. If you need to return <strong>multiple rows per group</strong> (e.g., all quantiles), use <code>reframe</code> instead:</p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="strings-factors-and-dataframe-handling.html#cb210-1" tabindex="-1"></a><span class="co"># Get quartiles of CRP per treatment group</span></span>
+<span id="cb210-2"><a href="strings-factors-and-dataframe-handling.html#cb210-2" tabindex="-1"></a>crp_quantiles <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb210-3"><a href="strings-factors-and-dataframe-handling.html#cb210-3" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment) <span class="sc">|&gt;</span></span>
+<span id="cb210-4"><a href="strings-factors-and-dataframe-handling.html#cb210-4" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">quantile_value =</span> <span class="fu">quantile</span>(crp_ngml, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>)),</span>
+<span id="cb210-5"><a href="strings-factors-and-dataframe-handling.html#cb210-5" tabindex="-1"></a>          <span class="at">quantile_name  =</span> <span class="fu">c</span>(<span class="st">&quot;Q1&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;Q3&quot;</span>))</span>
+<span id="cb210-6"><a href="strings-factors-and-dataframe-handling.html#cb210-6" tabindex="-1"></a></span>
+<span id="cb210-7"><a href="strings-factors-and-dataframe-handling.html#cb210-7" tabindex="-1"></a>crp_quantiles</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 9 × 3
+  treatment quantile_value quantile_name
+  &lt;fct&gt;              &lt;dbl&gt; &lt;chr&gt;        
+1 Control             2.24 Q1           
+2 Control             3.44 median       
+3 Control             5.77 Q3           
+4 Drug_A              2.19 Q1           
+5 Drug_A              3.03 median       
+6 Drug_A              5.29 Q3           
+7 Drug_B              1.99 Q1           
+8 Drug_B              4.01 median       
+9 Drug_B              5.79 Q3           </code></pre>
+<p>Another useful function: <code>count</code>, which is a shortcut for <code>group_by + summarize(n = n())</code>:</p>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="strings-factors-and-dataframe-handling.html#cb212-1" tabindex="-1"></a><span class="co"># Count patients per site and stage</span></span>
+<span id="cb212-2"><a href="strings-factors-and-dataframe-handling.html#cb212-2" tabindex="-1"></a>clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb212-3"><a href="strings-factors-and-dataframe-handling.html#cb212-3" tabindex="-1"></a>  <span class="fu">count</span>(site, stage, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre class="code-out"><code>    site stage  n
+1  Milan    II 40
+2  Milan     I 34
+3   Rome    II 24
+4  Milan   III 23
+5  Turin     I 22
+6  Turin   III 22
+7  Turin    II 19
+8   Rome     I 15
+9   Rome   III 13
+10 Milan    IV 12
+11  Rome    IV  9
+12 Turin    IV  7</code></pre>
+<p>FINO A QUI</p>
+<div class="exercise">
+<p><span id="exr:summarize-exercise" class="exercise"><strong>Exercise 2.3  </strong></span>For each combination of <code>site</code> and <code>sex</code>, compute:
+- the number of patients,
+- the mean systolic blood pressure,
+- the proportion of hypertensive patients (hint: hypertension is when systolic blood pression is &gt; 140).</p>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="strings-factors-and-dataframe-handling.html#cb214-1" tabindex="-1"></a>bp_summary <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb214-2"><a href="strings-factors-and-dataframe-handling.html#cb214-2" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">hypertension =</span> systolic_bp_mmhg <span class="sc">&gt;</span> <span class="dv">140</span>) <span class="sc">|&gt;</span></span>
+<span id="cb214-3"><a href="strings-factors-and-dataframe-handling.html#cb214-3" tabindex="-1"></a>    <span class="fu">group_by</span>(site, sex) <span class="sc">|&gt;</span></span>
+<span id="cb214-4"><a href="strings-factors-and-dataframe-handling.html#cb214-4" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
+<span id="cb214-5"><a href="strings-factors-and-dataframe-handling.html#cb214-5" tabindex="-1"></a>        <span class="at">n_patients          =</span> <span class="fu">n</span>(),</span>
+<span id="cb214-6"><a href="strings-factors-and-dataframe-handling.html#cb214-6" tabindex="-1"></a>        <span class="at">mean_systolic_bp_mmhg    =</span> <span class="fu">round</span>(<span class="fu">mean</span>(systolic_bp_mmhg), <span class="dv">1</span>),</span>
+<span id="cb214-7"><a href="strings-factors-and-dataframe-handling.html#cb214-7" tabindex="-1"></a>        <span class="at">prop_hypertensive   =</span> <span class="fu">round</span>(<span class="fu">mean</span>(hypertension), <span class="dv">3</span>),</span>
+<span id="cb214-8"><a href="strings-factors-and-dataframe-handling.html#cb214-8" tabindex="-1"></a>        <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb214-9"><a href="strings-factors-and-dataframe-handling.html#cb214-9" tabindex="-1"></a>    )</span>
+<span id="cb214-10"><a href="strings-factors-and-dataframe-handling.html#cb214-10" tabindex="-1"></a></span>
+<span id="cb214-11"><a href="strings-factors-and-dataframe-handling.html#cb214-11" tabindex="-1"></a>bp_summary</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 6 × 5
+  site  sex    n_patients mean_systolic_bp_mmhg prop_hypertensive
+  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt;                 &lt;dbl&gt;             &lt;dbl&gt;
+1 Milan Female         51                  130              0.333
+2 Milan Male           58                  134.             0.362
+3 Rome  Female         26                  131.             0.346
+4 Rome  Male           35                  132.             0.257
+5 Turin Female         41                  132.             0.317
+6 Turin Male           29                  127.             0.207</code></pre>
+</details>
+<hr />
+</div>
+<div id="join-merge" class="section level3 hasAnchor" number="2.3.6">
+<h3><span class="header-section-number">2.3.6</span> Join / Merge<a href="strings-factors-and-dataframe-handling.html#join-merge" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In real-world analyses, data about the same subjects often lives in <strong>separate files</strong>: demographic data here, lab results there, outcomes somewhere else. To combine them, we <strong>join</strong> them on a shared key column (usually a patient ID).</p>
+<p>Let’s load the separate lab results file:</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="strings-factors-and-dataframe-handling.html#cb216-1" tabindex="-1"></a>lab_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/lab_results.csv&quot;</span>)</span>
+<span id="cb216-2"><a href="strings-factors-and-dataframe-handling.html#cb216-2" tabindex="-1"></a><span class="fu">str</span>(lab_data)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   160 obs. of  6 variables:
+ $ patient_id     : chr  &quot;PT-001&quot; &quot;PT-002&quot; &quot;PT-003&quot; &quot;PT-004&quot; ...
+ $ hemoglobin_gdl : num  14.7 12.3 11.8 14.1 12.1 10.4 11.7 14.5 13.9 8.1 ...
+ $ wbc_10e9l      : num  5.02 9.64 8.9 10.8 7.69 ...
+ $ platelets_10e9l: int  318 138 83 256 283 153 237 233 166 220 ...
+ $ alt_ul         : int  28 27 39 15 34 32 37 30 30 25 ...
+ $ creatinine_mgdl: num  0.67 0.68 1.1 1.02 0.38 1.26 1.1 0.76 1.26 1 ...</code></pre>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="strings-factors-and-dataframe-handling.html#cb218-1" tabindex="-1"></a><span class="fu">head</span>(lab_data)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id hemoglobin_gdl wbc_10e9l platelets_10e9l alt_ul creatinine_mgdl
+1     PT-001           14.7      5.02             318     28            0.67
+2     PT-002           12.3      9.64             138     27            0.68
+3     PT-003           11.8      8.90              83     39            1.10
+4     PT-004           14.1     10.80             256     15            1.02
+5     PT-005           12.1      7.69             283     34            0.38
+6     PT-006           10.4     11.34             153     32            1.26</code></pre>
+<p>The key column is <code>patient_id</code>. Not all patients have lab results. Depending on how we want to handle this, we choose different types of join:</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Join type</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>left_join(x, y)</code></td>
+<td>Keep <strong>all rows from x</strong>, add y columns where available (NA if no match)</td>
+</tr>
+<tr class="even">
+<td><code>right_join(x, y)</code></td>
+<td>Keep all rows from y</td>
+</tr>
+<tr class="odd">
+<td><code>inner_join(x, y)</code></td>
+<td>Keep only rows that exist in <strong>both</strong> x and y</td>
+</tr>
+<tr class="even">
+<td><code>full_join(x, y)</code></td>
+<td>Keep all rows from both, NA where no match</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s see all approaches:</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="strings-factors-and-dataframe-handling.html#cb220-1" tabindex="-1"></a><span class="co"># left_join: keep all patients, add lab data where available</span></span>
+<span id="cb220-2"><a href="strings-factors-and-dataframe-handling.html#cb220-2" tabindex="-1"></a>full_with_labs <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb220-3"><a href="strings-factors-and-dataframe-handling.html#cb220-3" tabindex="-1"></a>  <span class="fu">left_join</span>(lab_data, <span class="at">by =</span> <span class="st">&quot;patient_id&quot;</span>)</span>
+<span id="cb220-4"><a href="strings-factors-and-dataframe-handling.html#cb220-4" tabindex="-1"></a></span>
+<span id="cb220-5"><a href="strings-factors-and-dataframe-handling.html#cb220-5" tabindex="-1"></a><span class="fu">nrow</span>(full_with_labs) </span></code></pre></div>
+<pre class="code-out"><code>[1] 240</code></pre>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="strings-factors-and-dataframe-handling.html#cb222-1" tabindex="-1"></a><span class="co"># patients without lab data will have NA in lab columns</span></span>
+<span id="cb222-2"><a href="strings-factors-and-dataframe-handling.html#cb222-2" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(full_with_labs<span class="sc">$</span>hemoglobin_gdl))</span></code></pre></div>
+<pre class="code-out"><code>[1] 80</code></pre>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="strings-factors-and-dataframe-handling.html#cb224-1" tabindex="-1"></a><span class="fu">summary</span>(full_with_labs)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id           site      visit_date         visit_year       
+ Length:240         Milan:109   Length:240         Length:240        
+ Class :character   Rome : 61   Class :character   Class :character  
+ Mode  :character   Turin: 70   Mode  :character   Mode  :character  
+                                                                     
+                                                                     
+                                                                     
+                                                                     
+ visit_month         visit_day              age            sex     
+ Length:240         Length:240         Min.   :28.00   Female:118  
+ Class :character   Class :character   1st Qu.:50.75   Male  :122  
+ Mode  :character   Mode  :character   Median :58.00               
+                                       Mean   :57.83               
+                                       3rd Qu.:66.25               
+                                       Max.   :97.00               
+                                                                   
+    smoking      treatment  stage      weight_kg        height_cm    
+ never  :129   Control:81   I  :71   Min.   : 38.40   Min.   :147.4  
+ former : 57   Drug_A :85   II :83   1st Qu.: 66.33   1st Qu.:162.8  
+ current: 54   Drug_B :74   III:58   Median : 73.25   Median :168.5  
+                            IV :28   Mean   : 73.60   Mean   :169.3  
+                                     3rd Qu.: 82.60   3rd Qu.:176.2  
+                                     Max.   :104.40   Max.   :193.4  
+                                                                     
+ systolic_bp_mmhg diastolic_bp_mmhg  glucose_mgdl    cholesterol_mgdl
+ Min.   : 89.0    Min.   : 52.00    Min.   : 43.00   Min.   : 88.0   
+ 1st Qu.:117.0    1st Qu.: 75.00    1st Qu.: 89.75   1st Qu.:177.0   
+ Median :130.5    Median : 82.00    Median :104.00   Median :197.0   
+ Mean   :131.4    Mean   : 82.02    Mean   :104.43   Mean   :197.1   
+ 3rd Qu.:143.2    3rd Qu.: 89.25    3rd Qu.:119.00   3rd Qu.:219.5   
+ Max.   :195.0    Max.   :108.00    Max.   :181.00   Max.   :295.0   
+                                                                     
+    crp_ngml         height_m          BMI              BMI_class 
+ Min.   : 0.260   Min.   :1.474   Min.   :15.20   Underweight:94  
+ 1st Qu.: 2.140   1st Qu.:1.628   1st Qu.:22.80   Normal     :42  
+ Median : 3.600   Median :1.685   Median :25.60   Overweight :91  
+ Mean   : 4.673   Mean   :1.693   Mean   :25.74   Obese      :13  
+ 3rd Qu.: 5.742   3rd Qu.:1.762   3rd Qu.:28.70                   
+ Max.   :28.150   Max.   :1.934   Max.   :39.80                   
+                                                                  
+ hemoglobin_gdl    wbc_10e9l      platelets_10e9l     alt_ul      
+ Min.   : 8.10   Min.   : 1.900   Min.   : 43.0   Min.   :  9.00  
+ 1st Qu.:12.57   1st Qu.: 5.985   1st Qu.:179.5   1st Qu.: 20.00  
+ Median :13.90   Median : 6.925   Median :224.5   Median : 29.50  
+ Mean   :13.54   Mean   : 7.106   Mean   :220.2   Mean   : 34.97  
+ 3rd Qu.:14.70   3rd Qu.: 8.430   3rd Qu.:259.2   3rd Qu.: 44.00  
+ Max.   :19.00   Max.   :12.230   Max.   :349.0   Max.   :156.00  
+ NA&#39;s   :80      NA&#39;s   :80       NA&#39;s   :80      NA&#39;s   :80      
+ creatinine_mgdl 
+ Min.   :0.3800  
+ 1st Qu.:0.7600  
+ Median :0.9350  
+ Mean   :0.9321  
+ 3rd Qu.:1.0800  
+ Max.   :1.6500  
+ NA&#39;s   :80      </code></pre>
+<!-- Point at NA's -->
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="strings-factors-and-dataframe-handling.html#cb226-1" tabindex="-1"></a><span class="co"># inner_join: keep only the 90 patients who have both clinical and lab data</span></span>
+<span id="cb226-2"><a href="strings-factors-and-dataframe-handling.html#cb226-2" tabindex="-1"></a>matched_only <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb226-3"><a href="strings-factors-and-dataframe-handling.html#cb226-3" tabindex="-1"></a>  <span class="fu">inner_join</span>(lab_data, <span class="at">by =</span> <span class="st">&quot;patient_id&quot;</span>)</span>
+<span id="cb226-4"><a href="strings-factors-and-dataframe-handling.html#cb226-4" tabindex="-1"></a></span>
+<span id="cb226-5"><a href="strings-factors-and-dataframe-handling.html#cb226-5" tabindex="-1"></a><span class="fu">nrow</span>(matched_only)</span></code></pre></div>
+<pre class="code-out"><code>[1] 160</code></pre>
+<p>In most clinical research scenarios, <code>left_join</code> is the most common choice: you start with your full patient list and enrich it with additional data, accepting that some patients may lack certain measurements (NAs).</p>
+<div class="exercise">
+<p><span id="exr:join-exercise" class="exercise"><strong>Exercise 2.4  </strong></span></p>
+<ol style="list-style-type: decimal">
+<li>Perform a <code>left_join</code> of <code>clinical_data</code> with <code>lab_data</code>.</li>
+<li>Among patients who have lab data available, compute the mean hemoglobin and mean creatinine per treatment group.</li>
+<li>Which group has the highest mean creatinine?</li>
+</ol>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="strings-factors-and-dataframe-handling.html#cb228-1" tabindex="-1"></a><span class="co"># 1. Left join</span></span>
+<span id="cb228-2"><a href="strings-factors-and-dataframe-handling.html#cb228-2" tabindex="-1"></a>joined_df <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb228-3"><a href="strings-factors-and-dataframe-handling.html#cb228-3" tabindex="-1"></a>  <span class="fu">left_join</span>(lab_data, <span class="at">by =</span> <span class="st">&quot;patient_id&quot;</span>)</span>
+<span id="cb228-4"><a href="strings-factors-and-dataframe-handling.html#cb228-4" tabindex="-1"></a></span>
+<span id="cb228-5"><a href="strings-factors-and-dataframe-handling.html#cb228-5" tabindex="-1"></a><span class="co"># 2. Summarize (filter out NA first, or use na.rm = TRUE)</span></span>
+<span id="cb228-6"><a href="strings-factors-and-dataframe-handling.html#cb228-6" tabindex="-1"></a>lab_summary <span class="ot">&lt;-</span> joined_df <span class="sc">|&gt;</span></span>
+<span id="cb228-7"><a href="strings-factors-and-dataframe-handling.html#cb228-7" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(hemoglobin_gdl)) <span class="sc">|&gt;</span></span>
+<span id="cb228-8"><a href="strings-factors-and-dataframe-handling.html#cb228-8" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment) <span class="sc">|&gt;</span></span>
+<span id="cb228-9"><a href="strings-factors-and-dataframe-handling.html#cb228-9" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_hemoglobin   =</span> <span class="fu">round</span>(<span class="fu">mean</span>(hemoglobin_gdl), <span class="dv">2</span>),</span>
+<span id="cb228-10"><a href="strings-factors-and-dataframe-handling.html#cb228-10" tabindex="-1"></a>            <span class="at">mean_creatinine   =</span> <span class="fu">round</span>(<span class="fu">mean</span>(creatinine_mgdl), <span class="dv">3</span>),</span>
+<span id="cb228-11"><a href="strings-factors-and-dataframe-handling.html#cb228-11" tabindex="-1"></a>            <span class="at">n                 =</span> <span class="fu">n</span>(),</span>
+<span id="cb228-12"><a href="strings-factors-and-dataframe-handling.html#cb228-12" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>)</span>
+<span id="cb228-13"><a href="strings-factors-and-dataframe-handling.html#cb228-13" tabindex="-1"></a></span>
+<span id="cb228-14"><a href="strings-factors-and-dataframe-handling.html#cb228-14" tabindex="-1"></a>lab_summary</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 3 × 4
+  treatment mean_hemoglobin mean_creatinine     n
+  &lt;fct&gt;               &lt;dbl&gt;           &lt;dbl&gt; &lt;int&gt;
+1 Control              13.4           0.956    59
+2 Drug_A               13.6           0.911    55
+3 Drug_B               13.6           0.927    46</code></pre>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="strings-factors-and-dataframe-handling.html#cb230-1" tabindex="-1"></a><span class="co"># 3. Highest mean creatinine</span></span>
+<span id="cb230-2"><a href="strings-factors-and-dataframe-handling.html#cb230-2" tabindex="-1"></a>lab_summary <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_creatinine))</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 3 × 4
+  treatment mean_hemoglobin mean_creatinine     n
+  &lt;fct&gt;               &lt;dbl&gt;           &lt;dbl&gt; &lt;int&gt;
+1 Control              13.4           0.956    59
+2 Drug_B               13.6           0.927    46
+3 Drug_A               13.6           0.911    55</code></pre>
+</details>
+<hr />
+</div>
+</div>
+<div id="save-your-results" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Save your results<a href="strings-factors-and-dataframe-handling.html#save-your-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After all this work, let’s save the enriched and cleaned dataset:</p>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="strings-factors-and-dataframe-handling.html#cb232-1" tabindex="-1"></a><span class="co"># Save the left-joined dataset with all derived variables</span></span>
+<span id="cb232-2"><a href="strings-factors-and-dataframe-handling.html#cb232-2" tabindex="-1"></a>final_data <span class="ot">&lt;-</span> clinical_data <span class="sc">|&gt;</span></span>
+<span id="cb232-3"><a href="strings-factors-and-dataframe-handling.html#cb232-3" tabindex="-1"></a>  <span class="fu">left_join</span>(lab_data, <span class="at">by =</span> <span class="st">&quot;patient_id&quot;</span>)</span>
+<span id="cb232-4"><a href="strings-factors-and-dataframe-handling.html#cb232-4" tabindex="-1"></a></span>
+<span id="cb232-5"><a href="strings-factors-and-dataframe-handling.html#cb232-5" tabindex="-1"></a><span class="fu">write.csv</span>(final_data,</span>
+<span id="cb232-6"><a href="strings-factors-and-dataframe-handling.html#cb232-6" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">&quot;output/clinical_data_enriched.csv&quot;</span>,</span>
+<span id="cb232-7"><a href="strings-factors-and-dataframe-handling.html#cb232-7" tabindex="-1"></a>          <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<hr />
+</div>
+<div id="home-exercise-1" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Home exercise<a href="strings-factors-and-dataframe-handling.html#home-exercise-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Try to do the following on your own:</p>
+<ol style="list-style-type: decimal">
+<li>Load <code>clinical_data_enriched.csv</code> from the output folder.</li>
+<li>Clean up: keep only the columns <code>patient_id</code>, <code>site</code>, <code>sex</code>, <code>age</code>, <code>treatment</code>, <code>stage</code>, <code>BMI</code>, <code>BMI_class</code>, <code>glucose_mgdl</code>, <code>cholesterol_mgdl</code>, <code>crp_ngml</code>, <code>hemoglobin_gdl</code>, <code>creatinine_mgdl</code>.</li>
+<li>Restrict to patients who have complete data (no NAs) — hint: use function <code>drop_na()</code>, see <a href="https://www.r-bloggers.com/2024/12/how-to-use-drop_na-to-drop-rows-with-missing-values-in-r-a-complete-guide/">this</a>.</li>
+<li>For each stage, compute: number of patients, mean age, mean BMI, and proportion of obese patients.</li>
+<li>Save the summary table to <code>output/summary_by_stage.csv</code>.</li>
+</ol>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="strings-factors-and-dataframe-handling.html#cb233-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb233-2"><a href="strings-factors-and-dataframe-handling.html#cb233-2" tabindex="-1"></a></span>
+<span id="cb233-3"><a href="strings-factors-and-dataframe-handling.html#cb233-3" tabindex="-1"></a><span class="co"># 1. Load the enriched dataset</span></span>
+<span id="cb233-4"><a href="strings-factors-and-dataframe-handling.html#cb233-4" tabindex="-1"></a>clinical_data_enriched <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;output/clinical_data_enriched.csv&quot;</span>)</span>
+<span id="cb233-5"><a href="strings-factors-and-dataframe-handling.html#cb233-5" tabindex="-1"></a></span>
+<span id="cb233-6"><a href="strings-factors-and-dataframe-handling.html#cb233-6" tabindex="-1"></a><span class="co"># 2. Keep only the columns of interest</span></span>
+<span id="cb233-7"><a href="strings-factors-and-dataframe-handling.html#cb233-7" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> clinical_data_enriched <span class="sc">|&gt;</span></span>
+<span id="cb233-8"><a href="strings-factors-and-dataframe-handling.html#cb233-8" tabindex="-1"></a>  <span class="fu">select</span>(patient_id, site, sex, age, treatment, stage,</span>
+<span id="cb233-9"><a href="strings-factors-and-dataframe-handling.html#cb233-9" tabindex="-1"></a>         BMI, BMI_class, glucose_mgdl, cholesterol_mgdl,</span>
+<span id="cb233-10"><a href="strings-factors-and-dataframe-handling.html#cb233-10" tabindex="-1"></a>         crp_ngml, hemoglobin_gdl, creatinine_mgdl)</span>
+<span id="cb233-11"><a href="strings-factors-and-dataframe-handling.html#cb233-11" tabindex="-1"></a></span>
+<span id="cb233-12"><a href="strings-factors-and-dataframe-handling.html#cb233-12" tabindex="-1"></a><span class="co"># 3. Restrict to patients with complete data (no NAs)</span></span>
+<span id="cb233-13"><a href="strings-factors-and-dataframe-handling.html#cb233-13" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> clean_data <span class="sc">|&gt;</span></span>
+<span id="cb233-14"><a href="strings-factors-and-dataframe-handling.html#cb233-14" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb233-15"><a href="strings-factors-and-dataframe-handling.html#cb233-15" tabindex="-1"></a></span>
+<span id="cb233-16"><a href="strings-factors-and-dataframe-handling.html#cb233-16" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Patients with complete data:&quot;</span>, <span class="fu">nrow</span>(clean_data), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre class="code-out"><code>Patients with complete data: 160 </code></pre>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="strings-factors-and-dataframe-handling.html#cb235-1" tabindex="-1"></a><span class="co"># 4. Summary by stage</span></span>
+<span id="cb235-2"><a href="strings-factors-and-dataframe-handling.html#cb235-2" tabindex="-1"></a>summary_by_stage <span class="ot">&lt;-</span> clean_data <span class="sc">|&gt;</span></span>
+<span id="cb235-3"><a href="strings-factors-and-dataframe-handling.html#cb235-3" tabindex="-1"></a>  <span class="fu">group_by</span>(stage) <span class="sc">|&gt;</span></span>
+<span id="cb235-4"><a href="strings-factors-and-dataframe-handling.html#cb235-4" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb235-5"><a href="strings-factors-and-dataframe-handling.html#cb235-5" tabindex="-1"></a>    <span class="at">n_patients       =</span> <span class="fu">n</span>(),</span>
+<span id="cb235-6"><a href="strings-factors-and-dataframe-handling.html#cb235-6" tabindex="-1"></a>    <span class="at">mean_age         =</span> <span class="fu">round</span>(<span class="fu">mean</span>(age), <span class="dv">1</span>),</span>
+<span id="cb235-7"><a href="strings-factors-and-dataframe-handling.html#cb235-7" tabindex="-1"></a>    <span class="at">mean_BMI         =</span> <span class="fu">round</span>(<span class="fu">mean</span>(BMI), <span class="dv">2</span>),</span>
+<span id="cb235-8"><a href="strings-factors-and-dataframe-handling.html#cb235-8" tabindex="-1"></a>    <span class="at">prop_obese       =</span> <span class="fu">round</span>(<span class="fu">mean</span>(BMI_class <span class="sc">==</span> <span class="st">&quot;Obese&quot;</span>), <span class="dv">3</span>),</span>
+<span id="cb235-9"><a href="strings-factors-and-dataframe-handling.html#cb235-9" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb235-10"><a href="strings-factors-and-dataframe-handling.html#cb235-10" tabindex="-1"></a>  )</span>
+<span id="cb235-11"><a href="strings-factors-and-dataframe-handling.html#cb235-11" tabindex="-1"></a></span>
+<span id="cb235-12"><a href="strings-factors-and-dataframe-handling.html#cb235-12" tabindex="-1"></a><span class="fu">print</span>(summary_by_stage)</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 4 × 5
+  stage n_patients mean_age mean_BMI prop_obese
+  &lt;chr&gt;      &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+1 I             42     59.3     26.4      0.048
+2 II            61     58.1     25.9      0.066
+3 III           39     55.7     25.3      0.026
+4 IV            18     57.2     27.7      0    </code></pre>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="strings-factors-and-dataframe-handling.html#cb237-1" tabindex="-1"></a><span class="co"># 5. Save</span></span>
+<span id="cb237-2"><a href="strings-factors-and-dataframe-handling.html#cb237-2" tabindex="-1"></a><span class="fu">write.csv</span>(summary_by_stage,</span>
+<span id="cb237-3"><a href="strings-factors-and-dataframe-handling.html#cb237-3" tabindex="-1"></a>          <span class="at">file =</span> <span class="st">&quot;output/summary_by_stage.csv&quot;</span>,</span>
+<span id="cb237-4"><a href="strings-factors-and-dataframe-handling.html#cb237-4" tabindex="-1"></a>          <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<hr />
+</div>
+<div id="bonus-how-the-clinical-data-were-created" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Bonus: how the clinical data were created<a href="strings-factors-and-dataframe-handling.html#bonus-how-the-clinical-data-were-created" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you want to understand how we generated the dataset for this lesson, <a href="scripts/generate_mock_data.R">download the R script</a> Notice the use of <code>set.seed</code> to make results reproducible.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="dataframes-vectors-and-numbers.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-visualization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/miotsdata/R-course_2026/edit/main/02-Strings_factors_dataframe_handling_complete.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["R-course-2026.pdf", "https://github.com/miotsdata/R-course_2026/raw/main/02-Strings_factors_dataframe_handling_complete.Rmd"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
