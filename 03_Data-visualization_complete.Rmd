@@ -1,0 +1,423 @@
+---
+title: "Data visualization"
+author: "matteo.miotto"
+date: "`r Sys.Date()`"
+output: 
+  html_notebook:
+    toc: true
+    #toc_float: true
+    #theme: united
+    #code_folding: show
+
+---
+
+Data visualization is a crucial step of data analysis, as it can help us in:
+
+* Understanding the distribution of our data
+* Evaluate outliers
+* Visualize immediately the differences between groups
+* Communicate our results to peers
+
+I suggest you to visualize data as soon as you have finished to prepare them, prior to any statistical test (even prior to test for parametric assumptions), that's why today we are doing it.
+
+## Data visualization in R with ggplot2
+`ggplot2` is a package built for data visualization in R. It is simple to use and it works mainly on dataframes. 
+
+To create a plot, we need to use different functions, that act as single building blocks to change single aspects of the plot. Here an example of mock code to create a plot with all the functions:
+
+```
+ggplot() +
+  geom_<type>() +
+  labs() +
+  scale_<type>() +
+  facet_<type>() +
+  coord_<type>() +
+  theme_<type>
+
+```
+
+But, do we need all of them? No, the basic plots can be created with just `ggplot() + geom_<type>()`.
+
+## Geom
+The `geom` function specifies the "geometry" we want to give to the data: basically, which type of graph we want (barplot, scatter, histogram, etc). It is the necessary and sufficient function to create a plot.
+
+[Here](https://ggplot2.tidyverse.org/reference/index.html#geoms) the list of all possible geom to use with the basic package.
+
+First of all, let's load the data from previous session, and keep only the rows with all the information:
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+df <- read.csv("output/clinical_data_enriched.csv", header = T, stringsAsFactors = T)
+df <- na.omit(df)
+str(df)
+summary(df)
+```
+
+
+
+### Barplot
+We create a basic barplot to show the number of patient for each stage using the `geom_bar` function:
+```{r}
+suppressPackageStartupMessages(library(ggplot2))
+```
+
+```{r}
+ggplot(df) +
+  geom_bar(mapping = aes(x = stage))
+```
+
+Let's add some colors. We can set colors for all bars:
+```{r}
+ggplot(df) +
+  geom_bar(mapping = aes(x = stage), fill = "blue3")
+```
+
+Or based on stage:
+```{r}
+ggplot(df) +
+  geom_bar(mapping = aes(x = stage, fill = stage))
+```
+
+One of the main features of ggplot is that we can easily split data on x axis based on another column. Let's say we want a bar for each treatment within each stage; we can achieve it setting the column in another aes option:
+
+```{r}
+ggplot(df) +
+  geom_bar(mapping = aes(x = stage, fill = treatment), position = "dodge")
+```
+
+We can set different options in geom bar (both in aes or not), like color (the color of the outline of the bar), linewidth (the size of the outline), linetype (type of the outline of the bars, like dotted or continuous). [Here](https://ggplot2.tidyverse.org/reference/geom_bar.html#aesthetics) you can find all the options. Here an example:
+
+```{r}
+all_n_barplot <- ggplot(df) +
+  geom_bar(mapping = aes(x = stage, fill = treatment, linetype = site), position = "dodge", color = "black", linewidth = 0.5)
+all_n_barplot
+```
+
+
+#### Stat identity
+In this case, geom_bar counts the occurrence of each label of stage and plot them. But what if we have a dataframe with the actual data we want to plot? Let's say that we want to plot the mean values of "diastolic_bp_mmhg" of Stage I females for each treatment; first, we have to create the dataframe for it by filtering the data and calculating the mean:
+```{r}
+stageI_femalse_diastolic_means <- df %>%
+  filter(stage == "I" & sex == "Female") %>%
+  group_by(treatment) %>%
+  summarise("mean_diastolic" = mean(diastolic_bp_mmhg))
+stageI_femalse_diastolic_means
+```
+
+Then we can use the function specifying both x and y as aes:
+```{r}
+stageI_female_diastolic_means_barplot <- ggplot(stageI_femalse_diastolic_means) +
+  geom_bar(mapping = aes(x = treatment, y = mean_diastolic, fill = treatment), stat = "identity")
+stageI_female_diastolic_means_barplot
+```
+
+
+### Scatter plot
+If we want to create a scatter plot, we can use `geom_point` function. 
+
+We can create the plot between weight and height:
+```{r}
+ggplot(df) +
+  geom_point(aes(x = height_cm, y = weight_kg))
+```
+
+Just from this plot we can see that there is a positive correlation.
+We can also change color, shape size of the dots. As before, all that is inserted in aes will apply to each dot based on the value of the corresponding column, while outside aes is applied to all dots:
+```{r}
+corr_plot <- ggplot(df) +
+  geom_point(aes(x = height_cm, y = weight_kg, color = age), size = 3, shape = 18)
+corr_plot
+```
+[Here](https://ggplot2.tidyverse.org/reference/geom_point.html#aesthetics) the complete list of options for geom_point.
+
+### Boxplot
+Next, we will see how to create a boxplot, that is one of the most used plot when showing data distribution. Here we look at the diastolic bp in different smoking levels.
+
+```{r}
+diastolic_bp_boxplot <- ggplot(df) +
+  geom_boxplot(aes(x = smoking, y = diastolic_bp_mmhg, fill = smoking), color = "black", outlier.color = "black")
+diastolic_bp_boxplot
+```
+
+[Here](https://ggplot2.tidyverse.org/reference/geom_boxplot.html#aesthetics) the complete list of options for geom_boxplot.
+
+### Density plot
+Another way to visualize the distribution of the data is the density plot. Let's see the distribution of BMI among stage groups.
+```{r}
+BMI_stages_density <- ggplot(df) +
+  geom_density(aes(x = BMI, fill = stage), alpha = 0.3)
+BMI_stages_density
+```
+
+### Combine geom
+We can also combine geometries. For example, let's add to the *stageI_female_diastolic_means_barplot* the actual values with `geom_text`:
+```{r}
+stageI_female_diastolic_means_barplot <- stageI_female_diastolic_means_barplot +
+  geom_text(aes(x = treatment, y = mean_diastolic, label = round(mean_diastolic)), nudge_y = 5)
+stageI_female_diastolic_means_barplot
+```
+
+We can combine as many as we want, another example is combine geom_boxplot with geom_point to add individual data points on the plot.
+
+```{r, warning=FALSE}
+ggplot(df) +
+  geom_boxplot(aes(x = stage, y = diastolic_bp_mmhg, fill = sex), 
+               color = "black", outlier.color = "black", position = position_dodge(width = 0.75)) +
+  geom_jitter(aes(x = stage, y = diastolic_bp_mmhg, fill = sex),
+             position = position_dodge(width = 0.75), color = "black", alpha = 0.6, shape = 1)
+
+```
+
+
+## Labs
+All these plots are a good starting point, but we can now start to personalize them. The first thing we can change are labs.
+
+Labs comprehends axis title, plot title and subtitle, legend titles, caption and tag ([here](https://ggplot2.tidyverse.org/reference/labs) the reference page with examples).
+
+```
+ggplot() +
+  geom_<type>() +
+  labs()
+```
+
+Let's change the labels of the correlation plot:
+```{r}
+corr_plot <- corr_plot +
+  labs(title = "Correlation between height and weight",
+       x = "Height (cm)",
+       y = "Weight (kg)",
+       caption = paste("Correlation between height and weight on", dim(df)[1], "patients. Age: ", 
+                       min(df$age), "-", max(df$age), "years"))
+corr_plot
+```
+
+## Scales
+The definition of scales from the official [documentation](https://ggplot2.tidyverse.org/reference/#scales) is "Scales control the details of how data values are translated to visual properties". Practically speaking, with scales we can control the data on the axis, the colors and the other parameters of the aesthetics (linetype, size, fill) by calling the correspondent function (that's what "<type>" meant in the mock code).
+
+```
+ggplot() +
+  geom_<type>() +
+  labs() +
+  scale_<type>() 
+```
+
+We will see the main application of it.
+
+### Axis
+With `scales_x/y_<type>` (if continuous, binned, manual or discrete) we can control the details of the axis, such as breaks, labels, limits, mathematical transformation and so on.
+
+For example, we can change the breaks on both x and y axis of diastolic_bp_boxplot:
+
+* on y axis, the distance between breaks is now 10, we change it to 5
+* on x axis, we change the labels of the axis with the first letter uppercase
+
+```{r}
+diastolic_bp_boxplot <- diastolic_bp_boxplot +
+  labs(x = "Smoking", y = "Diastolic blood pressure (mmHg)") +
+  scale_y_continuous(breaks = seq(0, max(df$diastolic_bp_mmhg), 5)) +
+  scale_x_discrete(labels = c("Current", "Former", "Never"))
+diastolic_bp_boxplot
+```
+
+
+QUESTO SOLO NEL SITO
+
+We can also apply mathematical transformation to continuous axis (like log scales):
+```{r}
+BMI_stages_density +
+  scale_x_continuous(trans = "log10")
+```
+
+```{r}
+BMI_stages_density +
+  scale_x_log10()
+```
+
+### Colors
+When we set `fill` or `color` aesthetics, we actually do not choose the colors that ggplot apply, we just say to it to make them different. With scales, we can set the colors we want. This [site](https://coolors.co/) is very useful to choose colors.
+
+For example, in stageI_female_diastolic_means_barplot, we want the Control to be gray, Drug_A to be blueish and Drug_B to be red. We can set it up like this:
+```{r}
+stageI_female_diastolic_means_barplot <- stageI_female_diastolic_means_barplot +
+  scale_fill_manual(values = c("Control" = "#568A81",
+                               "Drug_A" = "#9FC2CC",
+                               "Drug_B" = "#F95738"))
+stageI_female_diastolic_means_barplot
+```
+
+See this [insite](https://www.pluralsight.com/blog/tutorials/understanding-hexadecimal-colors-simple#:~:text=Hex%20color%20codes%20start%20with,0%20to%20255%20in%20RGB).) on hex color codes.
+
+We can also change the color bar of corr_plot:
+```{r}
+corr_plot <- corr_plot +
+  scale_color_gradient(low = "#B8B7BA", high = "#3E2F5B")
+corr_plot
+```
+
+See this stackoverflow [post](https://stackoverflow.com/questions/70942728/understanding-color-scales-in-ggplot2) for some useful tips and explanation on color scales in ggplot.
+
+::: {.exercise #boxplot}
+Create a boxplot of platelets_10e9l in males, divided by stage (x axis) and treatment (fill). Then:
+
+* y axis label should be "Platelets 10^9/L", with breaks every 75 starting from the minum value of platelets_10e9l up to the maximum value of platelets_10e9l
+* Treatment colors should be the same as the ones in stageI_female_diastolic_means_barplot
+* The title of the plot shoul be meaningful
+
+::: 
+
+<details>
+  <summary>Solution</summary>
+```{r}
+males_df <- df |>
+    filter(sex == "Male")
+
+ggplot(males_df) +
+    geom_boxplot(aes(x = stage, y = platelets_10e9l, fill = treatment), position = position_dodge(width = 0.75)) +
+    labs(y = "Platelets 10^9/L",
+         title = "Distribution of Platelets concentration in males") +
+    scale_fill_manual(values = c("Control" = "#568A81",
+                               "Drug_A" = "#9FC2CC",
+                               "Drug_B" = "#F95738")) +
+    scale_y_continuous(breaks = seq(min(males_df$platelets_10e9l), max(males_df$platelets_10e9l), 75))
+```
+</details>
+
+
+## Facet
+[Faceting](https://ggplot2.tidyverse.org/reference/#facetting) allow us to create a grid of panels, splitting data based on categorical variables.
+
+```
+ggplot() +
+  geom_<type>() +
+  labs() +
+  scale_<type>() +
+  facet_<type>() +
+
+```
+
+Let's see how we can rearrange the same data as in all_n_barplot but using multiple panels:
+```{r}
+ggplot(df) +
+  geom_bar(mapping = aes(x = stage, fill = treatment), position = "dodge") +
+    facet_wrap(~ site)
+```
+
+We can also customize the labels, similar to using scales:
+```{r}
+corr_plot +
+  facet_wrap(~ age > 55, labeller = labeller(`age > 55` = c("TRUE" = "> 55 yo", "FALSE" = "< 55 yo")))
+```
+
+## Theme
+Ok, let's now see the last part (and maybe the most useful) of code. [Theme](https://ggplot2.tidyverse.org/reference/#themes) allow us to control practically every single elements of the plot (except for the data): lines, font, labels, breaks, etc.
+
+```
+ggplot() +
+  geom_<type>() +
+  labs() +
+  scale_<type>() +
+  facet_<type>() +
+  theme_<type>
+
+```
+
+There are few pre-installed theme, and we can further customize things with `theme`. Let's firt apply classic theme to diastolic_bp_boxplot:
+```{r}
+diastolic_bp_boxplot <- diastolic_bp_boxplot +
+  theme_classic()
+diastolic_bp_boxplot
+```
+
+And now let's customize corr_plot:
+
+* Title in bold and 16 pt size
+* Add major grid lines in gray and 0.3 pt size
+* Rotate x axis labels to 45°
+* Change the adjustment of plot caption to left
+* Add bottom margin to x title
+
+```{r}
+corr_plot <- corr_plot +
+  theme_classic() +
+  theme(plot.title = element_text(face = "bold", size = 16), 
+        panel.grid.major = element_line(colour = "gray", linewidth = 0.3), 
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.caption = element_text(hjust = 0),
+        axis.title.x = element_text(margin = margin(b = 12)))
+corr_plot
+```
+
+## Save the plots
+To save a plot to a file, we can use the function `ggsave` like this:
+```{r}
+ggsave(plot = corr_plot, filename = "output/height_weight_corr-plot.pdf", units = "mm", width = 200, height = 140)
+```
+
+We can set units, width and height. See this [article](https://www.christophenicault.com/post/understand_size_dimension_ggplot2/) for further details about dimensions, dpi, dots etc.
+
+## Advanced examples
+
+Here are some more advanced examples:
+```{r}
+BMI_stages_density +
+  labs(title = "BMI distribution at different stages", fill = "Stage") + # change labels
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + # remove space at the bottom of y axis
+  scale_x_continuous(expand = expansion(mult = c(0, 0)), breaks = seq(0, max(df$BMI), 2.5)) + # reduce outer space of x axis
+  scale_fill_manual(values = c("I" = "#E0A890", "II" = "#2B59C3", "III" = "#9E2B25", "IV" = "#23CE6B")) + # change fill colors
+  theme_classic() +
+  theme(axis.line.y = element_blank(), # remove y-axes line
+        axis.text.y = element_blank(), # remove y-axes labels
+        axis.ticks.y = element_blank(), # remove y-axes ticks
+        axis.title.y = element_blank(), # remove y-axes title
+        legend.position = "top", # change legend position
+        plot.title = element_text(size = 18, family = "sans", face = "bold", margin = margin(b = 8)), # change title style
+        axis.title.x = element_text(size = 12, margin = margin(t = 10)),
+        legend.key.size = unit(x = 5, units = "mm") # change legens key size
+        )
+  
+```
+
+
+```{r, warning=FALSE}
+ggplot(df) +
+  stat_summary(aes(x = stage, y = height_cm, color = weight_kg > 90), fun.data = "mean_se", geom = "pointrange", size = .4) +
+  labs(y = "Height (cm)", color = "Weight") + 
+  scale_color_manual(labels = c("TRUE" = "> 90kg", "FALSE" = "< 90kg"), values = c("TRUE" = "red", "FALSE" = "blue")) +
+  theme_classic()
+```
+
+
+::: {.exercise #final-plot}
+Create a plot that shows if the levels of creatinine_mgdl changes depending on the year in each site. Set a proper scale for y axis, split the plot in panels, change the colors of the years, add a title.
+**Tip**: visit_year now is numeric, while we want it to be........
+
+**bonus** add the information about the numerosity in each group (year/site) at the bottom of x axis.
+::: 
+
+<details>
+  <summary>Solution</summary>
+```{r, fig.width=12}
+df$visit_year <- factor(df$visit_year)
+
+df_n <- df |>
+    group_by(site, visit_year) |>
+    summarize(n = n(), .groups = "drop")
+
+ggplot(df) +
+    geom_boxplot(aes(x = visit_year, y = creatinine_mgdl, fill = visit_year), 
+                 position = position_dodge(width = 0.75)) +
+    geom_text(data = df_n, 
+              aes(x = visit_year, y = min(df$creatinine_mgdl) - 0.1, label = paste0("n=", n)),
+              size = 3) +
+    labs(y = "Creatinine (mg/dL)",
+         title = "Creatinine levels increase over time in 2 sites out of 3",
+         x = "Year",
+         fill = "Year") +
+    scale_fill_manual(values = c("2018" = "#D6F49D",
+                                 "2020" = "#C1EF6C",
+                                 "2023" = "#A2E723",
+                                 "2025" = "#59810E")) +
+    scale_y_continuous(breaks = seq(0, max(df$creatinine_mgdl), 0.2)) +
+    facet_wrap(~ site) +
+    theme_classic()
+```
+</details>
