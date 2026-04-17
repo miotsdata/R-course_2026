@@ -193,21 +193,17 @@ We can also change the color bar of corr_plot:
 
 See this stackoverflow [post](https://stackoverflow.com/questions/70942728/understanding-color-scales-in-ggplot2) for some useful tips and explanation on color scales in ggplot.
 
-::: {.exercise #boxplot}
+**Exercise**
 Create a boxplot of platelets_10e9l in males, divided by stage (x axis) and treatment (fill). Then:
 
 * y axis label should be "Platelets 10^9/L", with breaks every 75 starting from the minum value of platelets_10e9l up to the maximum value of platelets_10e9l
 * Treatment colors should be the same as the ones in stageI_female_diastolic_means_barplot
 * The title of the plot shoul be meaningful
 
-::: 
-
-<details>
-  <summary>Solution</summary>
 ```{r}
 
 ```
-</details>
+
 
 
 ## Facet
@@ -284,16 +280,12 @@ Here are some more advanced examples:
 ```
 
 
-::: {.exercise #final-plot}
+**Exercise**
 Create a plot that shows if the levels of creatinine_mgdl changes depending on the year in each site. Set a proper scale for y axis, split the plot in panels, change the colors of the years, add a title.
 **Tip**: visit_year now is numeric, while we want it to be........
 
 **bonus** add the information about the numerosity in each group (year/site) at the bottom of x axis.
-::: 
 
-<details>
-  <summary>Solution</summary>
 ```{r, fig.width=12}
 
 ```
-</details>

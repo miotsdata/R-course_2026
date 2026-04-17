@@ -1,14 +1,4 @@
----
-title: "Dataframes, vectors and numbers"
-output: html_notebook
-    
----
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 <!-- Set working directory -->
-
 # Dataframes, vectors and numbers
 
 ## Dataframes

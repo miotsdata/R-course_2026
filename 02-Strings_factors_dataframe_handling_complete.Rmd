@@ -1,14 +1,4 @@
----
-title: "Strings, Factors and Dataframe Handling"
-output: html_notebook
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 <!-- Set working directory -->
-
 # Strings, Factors and Dataframe Handling
 
 ## What we will see today

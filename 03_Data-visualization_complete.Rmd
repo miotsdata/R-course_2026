@@ -1,15 +1,4 @@
----
-title: "Data visualization"
-author: "matteo.miotto"
-date: "`r Sys.Date()`"
-output: 
-  html_notebook:
-    toc: true
-    #toc_float: true
-    #theme: united
-    #code_folding: show
-
----
+# Data visualization
 
 Data visualization is a crucial step of data analysis, as it can help us in:
 
