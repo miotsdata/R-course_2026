@@ -1,0 +1,326 @@
+# Statistics
+
+```{r}
+library(tidyverse)
+```
+
+
+First of all the choice of the right test is fundamental: here, you can see a scheme describing how to choose the right test depending on you design:
+
+<p align="center">
+![](./assets/img/statistical-tests.png){width=600}
+</p>
+
+## Categorical data 
+
+Measure the association between the different categories of categorical variables, so if the two variables are independent or not (e.g. smoking and lung cancer).
+
+The two test we will see are the **Chi-squared test** and the **Fisher exact test** (only 2x2 contingency table and with low numerosity).
+
+## Contingency table
+Contingency table is used to count the occurrence of the combination of the different levels of categorical variables. In R, to get a contingency table we use the function `table`.
+
+We will load our patient data and see the correlation between stage and site, to see whether there is any difference in distribution.
+```{r}
+
+```
+
+
+
+And now we can use `table` to get the contingency table:
+```{r}
+
+```
+
+To make it clearer, we can add header to it:
+```{r}
+
+```
+
+## Chi-squared test
+To perform the chi-squared test, we use the `chisq.test` on the contingency table. 
+
+It is very useful to store the results of any statistical test into a variable:
+```{r}
+
+```
+
+Here, we can see that the association between the two variables is significant (this does not mean it is a causative association).
+
+We can inspect the result object, if we want to then use the results (for example, print the p-value alone or insert it in a graph):
+```{r}
+
+```
+
+Let's create a figure for this result.
+
+```{r}
+
+```
+
+
+
+### Fisher's Exact test
+We can apply, just for example, the Fisher's exact test on sex and 2 sites: Turin and Rome (remember, Fisher's exact test wants a 2x2 table). The function to use is `fisher.test`:
+```{r}
+
+```
+
+We can see that there is no significant correlation between those 2 sites and sex of the patients.
+
+
+## Comparing continuous variables
+
+First thing to do is to check for parametric assumptions, which are:
+
+* **Normality**: data in each group must be normally distributed
+
+* **Homoschedasticity**: there must be equal variances between groups you are going to compare
+
+* **Independency**: data belonging to a group should be independent
+
+* **No outlier**s: there should not be any outlier in any group.
+
+
+For sake of time, today we will see only the shapiro-test for normality. You can see a full reference of the tests to perform [here](https://miotsdata.github.io/R-for-biologist/intro-stat-chapter.html#evaluate-parametric-assumptions).
+
+
+### Shapiro-Wilk test
+To test for normality of the data, we use the Shapiro-Wilk test on a single vector (so we need to repeat it for each group).
+
+The function to use is `shapiro.test`, and here we apply just on diastolic_bp_mmhg in smokers.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+Ok, this group of data has a normal distribution (p-value > 0.05). But how can we apply to all of type of smokers?
+
+```{r}
+
+```
+
+And we can check which of them are not normal by filtering this dataframe:
+```{r}
+
+```
+
+They are all normal, so we can use parametric tests to compare them.
+
+
+### Outlier detection
+
+Outlier detection is a crucial point in the analyses, it helps to understand whether we have some wrong input data (very out of scale) and whether we can apply parametric or non parametric tests.
+
+**Exercise**
+
+Let's say that an outlier is a value which is < 1st quartile (25th quantile) - 1.5 IQR or > 3rd quartile (75th quantile) + 1.5 IQR.
+
+To help:
+
+* `quantile(x, 0.25)` finds the 25th quantile (1st quartile) of a vectors of values x
+* `IQR(x)` finds the interquartile range of a vectors of values x
+* there are NAs...
+
+
+Find, if there are, outliers in creatinine levels in both stage I and stage IV patients.
+
+```{r}
+
+```
+
+
+### T test
+If we now want to compare diastolic_bp_mmhg between current smokers and patients who never smoke, we can apply standard t-test as both of them have normal distributions.
+
+We can isolate the data from the dataframe:
+```{r}
+
+```
+
+We can now apply t-test, using `t.test` function:
+```{r}
+
+```
+
+Also for this object, we can have access to each individual result:
+```{r}
+
+```
+
+### Mann-Whitney
+
+Let's pretend that the distribution of diastolic_bp_mmhg in former smokers is not normal; if we want to perform a comparison between former and current, we cannot use standard t.test, but the Mann-Whitney test. The function to use is `wilcox.test`.
+```{r}
+
+```
+
+We can see that there is no significant difference.
+
+
+**Exercise**
+
+Is there a significant difference in weight between current smokers and former smokers? Choose the right test and plot the results.
+
+
+```{r}
+
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+### ANOVA
+
+When the groups are more than 2, we should first do the ANOVA and then, **only if it is significant** perform pairwise comparisons.
+
+Let's check whether systolic_bp_mmhg is different between males and females and based on BMI class.
+```{r}
+
+```
+
+So, both sex and BMI class influence systolic_bp_mmhg; but to which comparisons are significant we have to perform a pairwise t-test:
+
+```{r}
+
+```
+
+So, overall, the difference is only between Normal Male and both Obese and overweight females.
+
+### Pearson correlation test
+
+To perform a correlation test between continuous variables, we use `cor.test` with method "pearson" (if variables are normally distributed, otherwise "spearman" or "kendall").
+
+**REMEMBER**: correlation is not causation.
+
+Let's pretend all variable are normally distributed and see the correlation between *wbc_10e9l* and *crp_ngml*:
+```{r}
+
+```
+
+There is not a significant correlation.
+
+**Exercise**
+
+Is there a significant correlation between *glucose_mgdl* and *cholesterol_mgdl* in patients?
+
+Plot the result.
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+
+## PCA 
+
+PCA (Principal Component Analysis) is useful to evaluate whether data can be clustered in groups based on any factor that we have (age, sex, stage, ...).
+
+To perform PCA, we should ouse only numeric scaled data. Se we first have to select only numeric variables and scale them.
+
+```{r}
+
+```
+We have to get rid of visit year, month and day, as they should not be considered numeric in this case, rather factors.
+
+```{r}
+
+```
+
+Now we have to scale data:
+```{r}
+
+```
+
+To confirm that they have been scaled:
+```{r}
+
+```
+
+
+
+To perform PCA, we use `prcomp` function:
+```{r}
+
+```
+
+We can now create another df in which we have all the info about our patients + the coordinate of the PCs, so that we can plot the data.
+
+```{r}
+
+```
+
+```{r, fig.width=12}
+
+```
+
+```{r, fig.width=12}
+
+```
+
+
+## Linear models
+
+Lastly, let's see linear models, that determine which features are important in predicting or influencing an outcome feature (e.g. BMI/age and diabetes).
+
+
+### Linear model with continuous outcome
+
+If the outcome is continuous, we can use `lm` function.
+
+Let's see if we can create a model that predicts glucose levels starting from all the others variables:
+
+```{r}
+
+```
+
+From this we can see that age is significantly associated with the outcome (every year results in a predicted increase of 0.466927), as well as being of stage IV (compared to stage I, -9.152404).
+
+We can also use the same function to create a simple linear model that returns us intercept and slope of the line that correlates *glucose_mgdl* and *cholesterol_mgdl* in stage III patients (remember [#correlation]?):
+
+```{r}
+
+```
+
+We got the same results, but we also have *Intercept* and *Estimate*, that we can use to plot a line in corr_plot:
+
+```{r}
+
+```
+
+#### Predict
+We can then use this model to make predictions. For example, which is the expected value of Glucose given a Cholesterol level of 170?
+```{r}
+
+```
+
+
+### Generalized linear model with dicotomic outcome
+We can also do the other way round (which is more meaningful for us): check which predictors are associated with diabetes, using a generalized linear model:
+```{r}
+
+```
+
+Important predictors are the ones with t value > 2 or < -2.
+
+Higher levels of CRP are strongly associated with increased odds of being in a more advanced stage; conversely, higher BMI, hemoglobin, and glucose levels are associated with lower odds of advanced stage.
+
+

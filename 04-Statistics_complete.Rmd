@@ -1,0 +1,456 @@
+# Statistics
+
+```{r}
+library(tidyverse)
+```
+
+
+First of all the choice of the right test is fundamental: here, you can see a scheme describing how to choose the right test depending on you design:
+
+<p align="center">
+![](./assets/img/statistical-tests.png){width=600}
+</p>
+
+## Categorical data 
+
+Measure the association between the different categories of categorical variables, so if the two variables are independent or not (e.g. smoking and lung cancer).
+
+The two test we will see are the **Chi-squared test** and the **Fisher exact test** (only 2x2 contingency table and with low numerosity).
+
+## Contingency table
+Contingency table is used to count the occurrence of the combination of the different levels of categorical variables. In R, to get a contingency table we use the function `table`.
+
+We will load our patient data and see the correlation between stage and site, to see whether there is any difference in distribution.
+```{r}
+df <- read.csv(file = "output/clinical_data_enriched.csv", header = T, stringsAsFactors = T)
+summary(df)
+str(df)
+```
+
+
+
+And now we can use `table` to get the contingency table:
+```{r}
+cont_table <- table(df$site, df$stage)
+cont_table
+```
+
+To make it clearer, we can add header to it:
+```{r}
+cont_table <- table("site" = df$site, "stage" = df$stage)
+cont_table
+```
+
+## Chi-squared test
+To perform the chi-squared test, we use the `chisq.test` on the contingency table. 
+
+It is very useful to store the results of any statistical test into a variable:
+```{r}
+chisq_res <- chisq.test(cont_table)
+chisq_res
+```
+
+Here, we can see that the association between the two variables is significant (this does not mean it is a causative association).
+
+We can inspect the result object, if we want to then use the results (for example, print the p-value alone or insert it in a graph):
+```{r}
+print(paste("P-value of the Chi-squared test is:", chisq_res$p.value))
+```
+
+Let's create a figure for this result.
+
+```{r}
+ggplot(df) +
+    geom_bar(aes(x = site, fill = stage), position = "fill") +
+    scale_y_continuous(expand = expansion(0, 0)) +
+    labs(title = "Proportion of stages in each site",
+         subtitle = paste0("Chi-squared test p-value: ", chisq_res$p.value),
+         y = "Proportion") +
+    theme_classic()
+```
+
+
+
+### Fisher's Exact test
+We can apply, just for example, the Fisher's exact test on sex and 2 sites: Turin and Rome (remember, Fisher's exact test wants a 2x2 table). The function to use is `fisher.test`:
+```{r}
+filtered_df <- df |>
+    filter_out(site == "Milan")
+
+cont_table_fisher <- table(filtered_df$sex, filtered_df$site)
+
+fisher_res <- fisher.test(cont_table_fisher)
+fisher_res
+```
+
+We can see that there is no significant correlation between those 2 sites and sex of the patients.
+
+
+## Comparing continuous variables
+
+First thing to do is to check for parametric assumptions, which are:
+
+* **Normality**: data in each group must be normally distributed
+
+* **Homoschedasticity**: there must be equal variances between groups you are going to compare
+
+* **Independency**: data belonging to a group should be independent
+
+* **No outlier**s: there should not be any outlier in any group.
+
+
+For sake of time, today we will see only the shapiro-test for normality. You can see a full reference of the tests to perform [here](https://miotsdata.github.io/R-for-biologist/intro-stat-chapter.html#evaluate-parametric-assumptions).
+
+
+### Shapiro-Wilk test
+To test for normality of the data, we use the Shapiro-Wilk test on a single vector (so we need to repeat it for each group).
+
+The function to use is `shapiro.test`, and here we apply just on diastolic_bp_mmhg in smokers.
+
+```{r}
+smoker_patients_diastolic_bp_mmhg <- df %>%
+  filter(smoking == "current") %>%
+  pull(diastolic_bp_mmhg)
+
+head(smoker_patients_diastolic_bp_mmhg)
+```
+
+```{r}
+# Shapiro test
+shap_res <- shapiro.test(smoker_patients_diastolic_bp_mmhg)
+shap_res
+```
+
+Ok, this group of data has a normal distribution (p-value > 0.05). But how can we apply to all of type of smokers?
+
+```{r}
+shap_df <- df %>%
+  group_by(smoking) %>%
+  summarise("shapiro_p-value" = shapiro.test(diastolic_bp_mmhg)$p.value, 
+            "shapiro-W" = shapiro.test(diastolic_bp_mmhg)$statistic)
+
+shap_df
+```
+
+And we can check which of them are not normal by filtering this dataframe:
+```{r}
+shap_df %>%
+  filter(`shapiro_p-value` < 0.05)
+```
+
+They are all normal, so we can use parametric tests to compare them.
+
+
+### Outlier detection
+
+Outlier detection is a crucial point in the analyses, it helps to understand whether we have some wrong input data (very out of scale) and whether we can apply parametric or non parametric tests.
+
+::: {.exercise #outliers}
+
+Let's say that an outlier is a value which is < 1st quartile (25th quantile) - 1.5 IQR or > 3rd quartile (75th quantile) + 1.5 IQR.
+
+To help:
+
+* `quantile(x, 0.25)` finds the 25th quantile (1st quartile) of a vectors of values x
+* `IQR(x)` finds the interquartile range of a vectors of values x
+* there are NAs...
+
+
+Find, if there are, outliers in creatinine levels in both stage I and stage IV patients.
+
+:::
+
+<details>
+  <summary>Solution</summary>
+```{r}
+# Extract data
+stageI_creatinine <- df %>%
+  filter(stage == "I") %>%
+  na.omit() %>%
+  pull(creatinine_mgdl)
+
+stageIV_creatinine <- df %>%
+  filter(stage == "IV") %>%
+    na.omit() %>%
+  pull(creatinine_mgdl)
+
+# Calculate outliers
+stageI_outliers <- (stageI_creatinine < quantile(stageI_creatinine, 0.25) - IQR(stageI_creatinine)) | (stageI_creatinine > quantile(stageI_creatinine, 0.75) + IQR(stageI_creatinine))
+
+stageIV_outliers <- (stageIV_creatinine < quantile(stageIV_creatinine, 0.25) - IQR(stageIV_creatinine)) | (stageIV_creatinine > quantile(stageIV_creatinine, 0.75) + IQR(stageIV_creatinine))
+
+# Get outliers
+print(mean(stageI_creatinine))
+print(stageI_creatinine[stageI_outliers])
+
+print(mean(stageIV_creatinine))
+print(stageIV_creatinine[stageIV_outliers])
+```
+
+<details>
+
+### T test
+If we now want to compare diastolic_bp_mmhg between current smokers and patients who never smoke, we can apply standard t-test as both of them have normal distributions.
+
+We can isolate the data from the dataframe:
+```{r}
+t_test_df <- df %>%
+  filter_out(smoking == "former")
+str(t_test_df)
+```
+
+We can now apply t-test, using `t.test` function:
+```{r}
+t_test_res <- t.test(t_test_df$diastolic_bp_mmhg ~ t_test_df$smoking)
+t_test_res
+```
+
+Also for this object, we can have access to each individual result:
+```{r}
+print(t_test_res$p.value)
+print(t_test_res$estimate)
+```
+
+### Mann-Whitney
+
+Let's pretend that the distribution of diastolic_bp_mmhg in former smokers is not normal; if we want to perform a comparison between former and current, we cannot use standard t.test, but the Mann-Whitney test. The function to use is `wilcox.test`.
+```{r}
+mann_df <- df %>%
+  filter_out(smoking == "never")
+
+wilcox_res <- wilcox.test(mann_df$diastolic_bp_mmhg ~ mann_df$smoking)
+wilcox_res
+```
+
+We can see that there is no significant difference.
+
+
+::: {.exercise #two-samples}
+
+Is there a significant difference in weight between current smokers and former smokers? Choose the right test and plot the results.
+
+:::
+
+<details>
+  <summary>Solution</summary>
+```{r}
+smoking_df <- df |>
+    filter_out(smoking == "never")
+
+smoking_df |> 
+    group_by(smoking) |>
+    summarise("shapiro_p-value" = shapiro.test(weight_kg)$p.value, 
+              "shapiro-W" = shapiro.test(weight_kg)$statistic)
+
+```
+
+```{r}
+wilcox_res <- wilcox.test(smoking_df$weight_kg ~ smoking_df$smoking)
+wilcox_res
+```
+
+```{r}
+ggplot(smoking_df) +
+    geom_boxplot(aes(x = smoking, y = weight_kg, fill = smoking)) +
+    labs(y = "Weight (kg)",
+         title = "No difference in weight between current and former smokers",
+         subtitle = paste0("Mann-Whitney test p-value: ", round(wilcox_res$p.value, 2))) +
+    theme_classic()
+```
+
+<details>
+
+### ANOVA
+
+When the groups are more than 2, we should first do the ANOVA and then, **only if it is significant** perform pairwise comparisons.
+
+Let's check whether systolic_bp_mmhg is different between males and females and based on BMI class.
+```{r}
+aov_res <- aov(df$systolic_bp_mmhg ~ df$BMI_class * df$sex)
+summary(aov_res)
+```
+
+So, both sex and BMI class influence systolic_bp_mmhg; but to which comparisons are significant we have to perform a pairwise t-test:
+
+```{r}
+groups <- interaction(df$BMI_class, df$sex)
+pairwise.t.test(x = df$systolic_bp_mmhg, g = groups, p.adjust.method = "bonferroni")
+```
+
+So, overall, the difference is only between Normal Male and both Obese and overweight females.
+
+### Pearson correlation test
+
+To perform a correlation test between continuous variables, we use `cor.test` with method "pearson" (if variables are normally distributed, otherwise "spearman" or "kendall").
+
+**REMEMBER**: correlation is not causation.
+
+Let's pretend all variable are normally distributed and see the correlation between *wbc_10e9l* and *crp_ngml*:
+```{r}
+corr_res <- cor.test(df$wbc_10e9l, df$crp_ngml, method = "pearson")
+corr_res
+```
+
+There is not a significant correlation.
+
+::: {.exercise #correlation}
+
+Is there a significant correlation between *glucose_mgdl* and *cholesterol_mgdl* in patients?
+
+Plot the result.
+
+:::
+
+<details>
+  <summary>Solution</summary>
+```{r}
+corr_df <- na.omit(df)
+corr_res <- cor.test(corr_df$glucose_mgdl, corr_df$cholesterol_mgdl, method = "pearson")
+corr_res
+```
+
+```{r}
+corr_plot <- ggplot(corr_df) +
+    geom_point(aes(y = glucose_mgdl, x = cholesterol_mgdl)) +
+    labs(y = "Glucose (mg/dL)",
+         x = "Cholesterol (mg/dL)",
+         title = "Positive correlation between glucose and cholesterol levels",
+         subtitle = paste0("Pearson correlation: ", round(corr_res$estimate, 2))) +
+    theme_classic()
+
+corr_plot
+```
+
+<details>
+
+
+## PCA 
+
+PCA (Principal Component Analysis) is useful to evaluate whether data can be clustered in groups based on any factor that we have (age, sex, stage, ...).
+
+To perform PCA, we should ouse only numeric scaled data. Se we first have to select only numeric variables and scale them.
+
+```{r}
+data_n <- df |>
+    na.omit() |>
+    select(where(is.numeric))
+
+str(data_n)
+```
+We have to get rid of visit year, month and day, as they should not be considered numeric in this case, rather factors.
+
+```{r}
+data_n <- data_n |>
+    select(-starts_with("visit_"))
+
+str(data_n)
+```
+
+Now we have to scale data:
+```{r}
+data_n_scaled <- scale(data_n)
+```
+
+To confirm that they have been scaled:
+```{r}
+# little exercise: confirm that for each variable mean ~ 0 and sd = 1
+
+apply(data_n_scaled, 2, mean)
+apply(data_n_scaled, 2, sd)
+```
+
+
+
+To perform PCA, we use `prcomp` function:
+```{r}
+pca_res <- prcomp(data_n_scaled, center = F, scale. = F)
+pca_res
+```
+
+We can now create another df in which we have all the info about our patients + the coordinate of the PCs, so that we can plot the data.
+
+```{r}
+pc_data_df <- df |>
+    na.omit() |>
+    cbind( data.frame(pca_res$x))
+    
+head(pc_data_df)
+```
+
+```{r, fig.width=12}
+ggplot(pc_data_df) +
+    geom_point(aes(x = PC1, y = PC2, color = sex), size = 3) +
+    facet_wrap(~ site) +
+    theme_classic()
+```
+
+```{r, fig.width=12}
+ggplot(pc_data_df) +
+    geom_point(aes(x = PC1, y = PC2, color = diastolic_bp_mmhg > 90), size = 3) +
+    theme_classic()
+```
+
+
+## Linear models
+
+Lastly, let's see linear models, that determine which features are important in predicting or influencing an outcome feature (e.g. BMI/age and diabetes).
+
+
+### Linear model with continuous outcome
+
+If the outcome is continuous, we can use `lm` function.
+
+Let's see if we can create a model that predicts glucose levels starting from all the others variables:
+
+```{r}
+lm_data <- df |>
+    na.omit() |>
+    select(-starts_with("visit_"), - "patient_id")
+
+lm_res <- lm(glucose_mgdl ~ ., data = lm_data)
+summary(lm_res)
+```
+
+From this we can see that age is significantly associated with the outcome (every year results in a predicted increase of 0.466927), as well as being of stage IV (compared to stage I, -9.152404).
+
+We can also use the same function to create a simple linear model that returns us intercept and slope of the line that correlates *glucose_mgdl* and *cholesterol_mgdl* in stage III patients (remember [#correlation]?):
+
+```{r}
+gl_chol_lm <- lm(glucose_mgdl ~ cholesterol_mgdl, data = corr_df)
+summary(gl_chol_lm)
+```
+
+We got the same results, but we also have *Intercept* and *Estimate*, that we can use to plot a line in corr_plot:
+
+```{r}
+corr_plot +
+      geom_abline(aes(slope = gl_chol_lm$coefficients["cholesterol_mgdl"],
+                      intercept = gl_chol_lm$coefficients["(Intercept)"]), 
+                  color = "red")
+```
+
+#### Predict
+We can then use this model to make predictions. For example, which is the expected value of Glucose given a Cholesterol level of 170?
+```{r}
+predict(gl_chol_lm, newdata = data.frame("cholesterol_mgdl" = 160), type = "response")
+```
+
+
+### Generalized linear model with dicotomic outcome
+We can also do the other way round (which is more meaningful for us): check which predictors are associated with diabetes, using a generalized linear model:
+```{r}
+library(MASS)
+
+df_poli <- lm_data |>
+    dplyr::select(-height_m, -BMI_class, -weight_kg, -height_cm, -site, -treatment)
+
+
+polr_res <- polr(stage ~ ., data = df_poli, method = "logistic")
+summary(polr_res)
+```
+
+Important predictors are the ones with t value > 2 or < -2.
+
+Higher levels of CRP are strongly associated with increased odds of being in a more advanced stage; conversely, higher BMI, hemoglobin, and glucose levels are associated with lower odds of advanced stage.
+
+
