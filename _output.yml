@@ -15,6 +15,7 @@ bookdown::gitbook:
   resources:
     - assets/
     - scripts/
+    - styles.css
 
 bookdown::pdf_book:
   latex_engine: xelatex
