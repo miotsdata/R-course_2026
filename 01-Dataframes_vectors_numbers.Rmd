@@ -302,10 +302,3 @@ For next time, if you want, you can try to do this exercise:
 3. You know that you have to give drug A to each patient so that the final concentration is 10 mg/kg (mg of drug every kg of patient). Calculate how much drug you should give to each patient.
 4. Given that a single stock of drug A is 5 g, how many stocks you have to order?
 
-
-
-## Bonus: how patient data were created
-
-```{r}
-
-```

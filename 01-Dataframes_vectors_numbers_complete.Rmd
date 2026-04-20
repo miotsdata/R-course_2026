@@ -484,19 +484,3 @@ number_of_stocks <- ceiling(number_of_stocks)
 print(number_of_stocks)
 ```
 
-
-## Bonus: how patient data were created
-
-```{r}
-set.seed(3564) # set randomness seed
-l <- 100 # define number of patients
-patient_data <- data.frame("patient_id" = 1:l, # create a vector from 1 to l
-                           "weight" = rnorm(n = l, mean = 75, sd = 10), # create a vector of l random elements, uniform distribution with mean 75 and sd 10
-                           "height" = rnorm(n = l, mean = 175, sd = 25))
-
-write.csv(patient_data,
-          file = "data/patient_data.csv",
-          row.names = F)
-
-head(patient_data)
-```
