@@ -11,7 +11,7 @@ book_filename: "R-course-2026"
 rmd_files:
   - index.Rmd
   - 01-Dataframes_vectors_numbers_complete.Rmd
-  # - 02-Strings_factors_dataframe_handling_complete.Rmd
+  - 02-Strings_factors_dataframe_handling_complete.Rmd
   # - 03-Data-visualization_complete.Rmd
   # - 04-Statistics_complete.Rmd
 output_dir: docs

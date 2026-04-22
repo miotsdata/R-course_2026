@@ -109,46 +109,23 @@ clinical_data$smoking <- str_to_lower(clinical_data$smoking)
 print(unique(clinical_data$smoking))
 ```
 
-We have converted both FORMER to former and Never to never. We lastly have to change "never smoker" to "never".
+We have converted both FORMER to former and Never to never. We lastly have to change "never smoker" to "smoker".
 
-::: {.exercise #factor}
 
+**Exercise**
 Change "never smoker" to "smoker" and make smoker as factor.
 
-:::
-
-<details>
-  <summary>Solution</summary>
-
 ```{r}
-clinical_data$smoking <- str_replace(clinical_data$smoking, "never smoker", "never")
-clinical_data$smoking <- factor(clinical_data$smoking, levels = c("never", "former", "current"))
 
-summary(clinical_data)
 ```
 
-</details>
 
-For sake of completeness, we could have done all of this with a single function `replace_values` (for new versions of R):
+For sake of completeness, we could have done all of this with a single function `replace_values`:
 
 ```{r, eval=FALSE}
-clinical_data$smoking <- replace_values(as.character(clinical_data$smoking), c("never smoker", "Never") ~ "never",
+clinical_data$smoking <- replace_values(clinical_data$smoking, c("never smoker", "Never") ~ "never",
                                         c("Curent") ~ "current",
                                         c("FORMER") ~ "former")
-
-clinical_data$smoking = factor(clinical_data$smoking)
-```
-
-If it doesn't work, you could use:
-```{r}
-clinical_data = mutate(smoking = case_when(
-    smoking %in% c("never smoker", "Never") ~ "never",
-    smoking %in% c("FORMER", "Former", "Fomer") ~ "former",
-    smoking == "Curent" ~ "current"),
-    .data = clinical_data
-    )
-
-clinical_data$smoking = factor(clinical_data$smoking)
 ```
 
 
@@ -429,21 +406,14 @@ big_sites <- clinical_data$site %in% c("Milan", "Rome")
 sum(big_sites)
 ```
 
-::: .{exercise #bool-sum}
+**Exercise**
 
 How many patients have been diagnosed as stage I, in Turin in 2018?
 
-:::
-
-<details>
-  <summary>Solution</summary>
-
 ```{r}
-stageI_turin_2018 <- (clinical_data$site == "Turin") & (clinical_data$stage == "I") & (clinical_data$visit_year == 2018)
-sum(stageI_turin_2018)
+
 ```
   
-</details>
 
 ### filter and filter out
 
@@ -474,25 +444,15 @@ milan_or_rome <- clinical_data |>
 nrow(milan_or_rome)
 ```
 
-To **filter out** (i.e., *exclude* rows matching a condition), use `filter_out` (for new versions of R and tidyverse):
+To **filter out** (i.e., *exclude* rows matching a condition), use `filter_out`:
 
 ```{r}
 # Exclude patients from Naples
-no_milan <- clinical_data |>
-  filter_out(site %in% c("Milan"))
+no_naples <- clinical_data |>
+  filter_out(site %in% c("Naples"))
 
-nrow(no_milan)
+nrow(no_naples)
 ```
-
-If it doesn't work, you could use:
-
-```{r}
-no_milan = clinical_data %>% 
-    filter(!(site == "Milan"))
-
-nrow(no_milan)
-```
-
 
 Pipes shine when you chain multiple operations:
 
@@ -508,7 +468,7 @@ nrow(subset_females)
 
 Note: inside `filter`, multiple conditions separated by commas are treated as AND.
 
-::: {.exercise #filter-exercise}
+**Exercise**
 
 From the full dataset, extract patients who:
 
@@ -518,24 +478,11 @@ From the full dataset, extract patients who:
 
 Keep only `patient_id`, `site`, `stage`, `treatment`, and `glucose_mgdl`.
 
-:::
-
-<details>
-  <summary>Solution</summary>
 
 ```{r}
-exercise_result <- clinical_data |>
-  filter(stage %in% c("II", "III"),
-         glucose_mgdl >= 90,
-         glucose_mgdl <= 130,
-         treatment %in% c("Drug_A", "Drug_B")) |>
-  select(patient_id, site, stage, treatment, glucose_mgdl)
 
-head(exercise_result)
-nrow(exercise_result)
 ```
 
-</details>
 
 
 ---
@@ -593,54 +540,18 @@ summary_by_group
 ```
 
 
-`summarize` returns **one row per group**. If you need to return **multiple rows per group** (e.g., all quantiles), use `reframe` instead:
-
-```{r}
-# Get quartiles of CRP per treatment group
-crp_quantiles <- clinical_data |>
-  group_by(treatment) |>
-  reframe(quantile_value = quantile(crp_ngml, probs = c(0.25, 0.5, 0.75)),
-          quantile_name  = c("Q1", "median", "Q3"))
-
-crp_quantiles
-```
-
-Another useful function: `count`, which is a shortcut for `group_by + summarize(n = n())`:
-
-```{r}
-# Count patients per site and stage
-clinical_data |>
-  count(site, stage, sort = TRUE)
-```
-
-
-::: {.exercise #summarize-exercise}
+**Exercise**
 
 For each combination of `site` and `sex`, compute:
 - the number of patients,
 - the mean systolic blood pressure,
 - the proportion of hypertensive patients (hint: hypertension is when systolic blood pression is > 140).
 
-:::
-
-<details>
-  <summary>Solution</summary>
 
 ```{r}
-bp_summary <- clinical_data |>
-    mutate(hypertension = systolic_bp_mmhg > 140) |>
-    group_by(site, sex) |>
-    summarize(
-        n_patients          = n(),
-        mean_systolic_bp_mmhg    = round(mean(systolic_bp_mmhg), 1),
-        prop_hypertensive   = round(mean(hypertension), 3),
-        .groups = "drop"
-    )
 
-bp_summary
 ```
 
-</details>
 
 ---
 
@@ -670,30 +581,18 @@ Let's see all approaches:
 
 ```{r}
 # left_join: keep all patients, add lab data where available
-left_df <- clinical_data |>
+full_with_labs <- clinical_data |>
   left_join(lab_data, by = "patient_id")
 
-nrow(left_df) 
+nrow(full_with_labs) 
 
 # patients without lab data will have NA in lab columns
-sum(is.na(left_df$hemoglobin_gdl))
+sum(is.na(full_with_labs$hemoglobin_gdl))
 ```
-
-
-Function `is.na()` returns TRUE when a value is NA, and FALSE if a value is an acutal value. Here an example:
 
 ```{r}
-v1 = c(1, NA, 4) # create a vector with one NA
-
-is.na(v1) # returns a vector with TRUE in position 2, and FALSE elsewhere
+summary(full_with_labs)
 ```
-
-
-```{r}
-summary(left_df)
-```
-
-<!-- Point at NA's -->
 
 
 ```{r}
@@ -707,38 +606,18 @@ nrow(matched_only)
 
 In most clinical research scenarios, `left_join` is the most common choice: you start with your full patient list and enrich it with additional data, accepting that some patients may lack certain measurements (NAs).
 
-::: {.exercise #join-exercise}
+**Exercise**
 
 1. Perform a `left_join` of `clinical_data` with `lab_data`.
 2. Among patients who have lab data available, compute the mean hemoglobin and mean creatinine per treatment group.
 3. Which group has the highest mean creatinine?
 
-:::
 
-<details>
-  <summary>Solution</summary>
 
 ```{r}
-# 1. Left join
-joined_df <- clinical_data |>
-  left_join(lab_data, by = "patient_id")
 
-# 2. Summarize (filter out NA first)
-lab_summary <- joined_df |>
-  filter(!is.na(hemoglobin_gdl)) |> # filter for what is NOT NA in hemoglobin
-  group_by(treatment) |>
-  summarize(mean_hemoglobin   = round(mean(hemoglobin_gdl), 2),
-            mean_creatinine   = round(mean(creatinine_mgdl), 3),
-            n                 = n(),
-            .groups = "drop")
-
-lab_summary
-
-# 3. Highest mean creatinine
-lab_summary |> arrange(desc(mean_creatinine))
 ```
 
-</details>
 
 ---
 
@@ -769,40 +648,7 @@ Try to do the following on your own:
 5. Save the summary table to `output/summary_by_stage.csv`.
 
 ```{r}
-library(tidyverse)
 
-# 1. Load the enriched dataset
-clinical_data_enriched <- read.csv("output/clinical_data_enriched.csv")
-
-# 2. Keep only the columns of interest
-clean_data <- clinical_data_enriched |>
-  select(patient_id, site, sex, age, treatment, stage,
-         BMI, BMI_class, glucose_mgdl, cholesterol_mgdl,
-         crp_ngml, hemoglobin_gdl, creatinine_mgdl)
-
-# 3. Restrict to patients with complete data (no NAs)
-clean_data <- clean_data |>
-  drop_na()
-
-cat("Patients with complete data:", nrow(clean_data), "\n")
-
-# 4. Summary by stage
-summary_by_stage <- clean_data |>
-  group_by(stage) |>
-  summarize(
-    n_patients       = n(),
-    mean_age         = round(mean(age), 1),
-    mean_BMI         = round(mean(BMI), 2),
-    prop_obese       = round(mean(BMI_class == "Obese"), 3),
-    .groups = "drop"
-  )
-
-print(summary_by_stage)
-
-# 5. Save
-write.csv(summary_by_stage,
-          file = "output/summary_by_stage.csv",
-          row.names = FALSE)
 ```
 
 ---
