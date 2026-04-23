@@ -26,3 +26,19 @@ knitr::opts_chunk$set(
 # Welcome {-}
 
 Welcome to this course, here you can find the notebooks used in the PhD course of 2026.
+
+
+Subscribe to receive notification when a new content is uploaded! NO SPAM, just updates.
+<form
+  action="https://buttondown.com/api/emails/embed-subscribe/miotsdata"
+  method="post"
+  class="embeddable-buttondown-form">
+  <label for="bd-email">Enter your email</label>
+  <input type="email" name="email" id="bd-email" />
+  <input type="submit" value="Subscribe" />
+  <p>
+    <a href="https://buttondown.com/refer/miotsdata" target="_blank">
+      Powered by Buttondown.
+    </a>
+  </p>
+</form>
