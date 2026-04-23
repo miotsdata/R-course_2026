@@ -8,7 +8,6 @@ renv/sandbox/
 .RData
 .Rproj.user/
 
-
 # bookdown output (will be generated on build)
 _book/
 
