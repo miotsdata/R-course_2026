@@ -1,3 +1,10 @@
+exr:vector-slicing
+exr:vector-slicing-last-3-values
+exr:scale-bmi
+exr:factor
+exr:filter-exercise
+exr:summarize-exercise
+exr:join-exercise
 dataframes-vectors-and-numbers
 dataframes
 import-file

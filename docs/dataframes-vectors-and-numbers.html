@@ -23,7 +23,7 @@
 <meta name="author" content="Matteo Miotto" />
 
 
-<meta name="date" content="2026-04-22" />
+<meta name="date" content="2026-04-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,20 +266,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>When importing a dataframe, there is a fundamental step to do: <em>inspection</em>. Inspection helps us to understand how the dataframe is structured, which type of data we have, which columns etc.</p>
 <p>To do it, we use 3 functions that you need to remember (tatoo yourself): <code>summary</code>, <code>str</code> and <code>head</code>. Let’s see them:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="dataframes-vectors-and-numbers.html#cb2-1" tabindex="-1"></a><span class="fu">summary</span>(my_data)</span></code></pre></div>
-<pre class="code-out"><code>     sample        timepoint           genotype          treatment        
- Min.   :  1.00   Length:192         Length:192         Length:192        
- 1st Qu.: 48.75   Class :character   Class :character   Class :character  
- Median : 96.50   Mode  :character   Mode  :character   Mode  :character  
- Mean   : 96.50                                                           
- 3rd Qu.:144.25                                                           
- Max.   :192.00                                                           
-      area        intensity       
- Min.   :3000   Min.   : 9130286  
- 1st Qu.:3259   1st Qu.:16283904  
- Median :3517   Median :18894104  
- Mean   :3508   Mean   :19419175  
- 3rd Qu.:3769   3rd Qu.:22090201  
- Max.   :3988   Max.   :29812114  </code></pre>
+<pre class="code-out"><code>     sample        timepoint           genotype          treatment              area        intensity       
+ Min.   :  1.00   Length:192         Length:192         Length:192         Min.   :3000   Min.   : 9130286  
+ 1st Qu.: 48.75   Class :character   Class :character   Class :character   1st Qu.:3259   1st Qu.:16283904  
+ Median : 96.50   Mode  :character   Mode  :character   Mode  :character   Median :3517   Median :18894104  
+ Mean   : 96.50                                                            Mean   :3508   Mean   :19419175  
+ 3rd Qu.:144.25                                                            3rd Qu.:3769   3rd Qu.:22090201  
+ Max.   :192.00                                                            Max.   :3988   Max.   :29812114  </code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="dataframes-vectors-and-numbers.html#cb4-1" tabindex="-1"></a><span class="fu">str</span>(my_data)</span></code></pre></div>
 <pre class="code-out"><code>&#39;data.frame&#39;:   192 obs. of  6 variables:
  $ sample   : int  1 2 3 4 5 6 7 8 9 10 ...
@@ -587,20 +580,13 @@ Solution
 <span id="cb81-2"><a href="dataframes-vectors-and-numbers.html#cb81-2" tabindex="-1"></a>patient_df<span class="sc">$</span>scaled_BMI_function <span class="ot">&lt;-</span> <span class="fu">scale</span>(patient_df<span class="sc">$</span>BMI)</span>
 <span id="cb81-3"><a href="dataframes-vectors-and-numbers.html#cb81-3" tabindex="-1"></a></span>
 <span id="cb81-4"><a href="dataframes-vectors-and-numbers.html#cb81-4" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(patient_df))</span></code></pre></div>
-<pre class="code-out"><code>  patient_id   weight   height height_in_m      BMI  scaled_BMI
-1          1 75.82265 185.6147    1.856147 22.00768 -0.44542706
-2          2 61.77137 212.2587    2.122587 13.71059 -1.29224320
-3          3 91.65377 188.3604    1.883604 25.83279 -0.05502959
-4          4 66.38117 176.2986    1.762986 21.35733 -0.51180319
-5          5 80.42689 174.0509    1.740509 26.54902  0.01807031
-6          6 79.32015 173.7906    1.737906 26.26220 -0.01120341
-  scaled_BMI_function
-1         -0.44542706
-2         -1.29224320
-3         -0.05502959
-4         -0.51180319
-5          0.01807031
-6         -0.01120341</code></pre>
+<pre class="code-out"><code>  patient_id   weight   height height_in_m      BMI  scaled_BMI scaled_BMI_function
+1          1 75.82265 185.6147    1.856147 22.00768 -0.44542706         -0.44542706
+2          2 61.77137 212.2587    2.122587 13.71059 -1.29224320         -1.29224320
+3          3 91.65377 188.3604    1.883604 25.83279 -0.05502959         -0.05502959
+4          4 66.38117 176.2986    1.762986 21.35733 -0.51180319         -0.51180319
+5          5 80.42689 174.0509    1.740509 26.54902  0.01807031          0.01807031
+6          6 79.32015 173.7906    1.737906 26.26220 -0.01120341         -0.01120341</code></pre>
 </details>
 </div>
 </div>
