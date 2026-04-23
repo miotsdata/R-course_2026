@@ -15,5 +15,5 @@ jobs:
           -d '{
             "subject": "R Course 2026 — new update published",
             "body": "A new version of the course has been published.\n\nYou can find it here: https://miotsdata.github.io/R-course_2026/\n\nMatteo",
-            "status": "sent"
+            "status": "about_to_send"
           }'
