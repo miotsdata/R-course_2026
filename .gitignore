@@ -14,6 +14,5 @@ _book/
 # BUT keep docs/ — GitHub Pages serves from there
 # so do NOT ignore docs/
 
-
 # macOS
 .DS_Store
