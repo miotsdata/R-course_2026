@@ -144,7 +144,8 @@ If it doesn't work, you could use:
 clinical_data = mutate(smoking = case_when(
     smoking %in% c("never smoker", "Never") ~ "never",
     smoking %in% c("FORMER", "Former", "Fomer") ~ "former",
-    smoking == "Curent" ~ "current"),
+    smoking == "Curent" ~ "current",
+    .default = smoking),
     .data = clinical_data
     )
 

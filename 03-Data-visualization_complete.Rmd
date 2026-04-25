@@ -256,12 +256,14 @@ Create a boxplot of platelets_10e9l in males, divided by stage (x axis) and trea
 
 <details>
   <summary>Solution</summary>
+  
+  
 ```{r}
 males_df <- df |>
     filter(sex == "Male")
 
 ggplot(males_df) +
-    geom_boxplot(aes(x = stage, y = platelets_10e9l, fill = treatment), position = position_dodge(width = 0.75)) +
+    geom_boxplot(aes(x = stage, y = platelets_10e9l, fill = treatment)) +
     labs(y = "Platelets 10^9/L",
          title = "Distribution of Platelets concentration in males") +
     scale_fill_manual(values = c("Control" = "#568A81",

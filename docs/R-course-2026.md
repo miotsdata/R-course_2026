@@ -3,6 +3,56 @@
 Welcome to this course, here you can find the notebooks used in the PhD
 course of 2026.
 
+Subscribe to receive notification when a new content is uploaded! NO
+SPAM, just updates.
+
+<p style="
+font-size: 1.1em;
+font-weight: bold;
+margin-bottom: 0.3em;
+color: #333;">
+📬 Stay updated
+</p>
+<p style="
+font-size: 0.9em;
+color: #666;
+margin-bottom: 1.2em;">
+Get notified when new material is published.
+</p>
+<form action="https://buttondown.com/api/emails/embed-subscribe/miotsdata" method="post" class="embeddable-buttondown-form" style="display: flex; flex-direction: column; gap: 0.7em;">
+
+<input
+type="email"
+name="email"
+id="bd-email"
+placeholder="your@email.com"
+style="
+  padding: 0.6em 1em;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 0.95em;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;" />
+
+<input
+type="submit"
+value="Subscribe"
+style="
+  padding: 0.6em 1em;
+  background-color: #3873b8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.95em;
+  cursor: pointer;" />
+</form>
+<p style="font-size: 0.75em; color: #aaa; margin-top: 1em; margin-bottom: 0;">
+<a href="https://buttondown.com/refer/miotsdata"
+ target="_blank"
+ style="color: #aaa; text-decoration: none;"> Powered by Buttondown </a>
+</p>
+
 <!--chapter:end:index.Rmd-->
 <!-- Set working directory -->
 
@@ -79,7 +129,7 @@ To do it, we use 3 functions that you need to remember (tatoo yourself):
           area        intensity       
      Min.   :3000   Min.   : 9130286  
      1st Qu.:3259   1st Qu.:16283904  
-     Median :3517   Median :18894104  
+     Median :3517   Median :18894103  
      Mean   :3508   Mean   :19419175  
      3rd Qu.:3769   3rd Qu.:22090201  
      Max.   :3988   Max.   :29812114  
@@ -685,7 +735,7 @@ patients enrolled in a multi-site trial. Let’s import it and, as always,
     ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
     ✔ dplyr     1.2.1     ✔ readr     2.2.0
     ✔ forcats   1.0.1     ✔ stringr   1.6.0
-    ✔ ggplot2   4.0.2     ✔ tibble    3.3.1
+    ✔ ggplot2   4.0.3     ✔ tibble    3.3.1
     ✔ lubridate 1.9.5     ✔ tidyr     1.3.2
     ✔ purrr     1.2.2     
     ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -788,21 +838,21 @@ handled as categorical predictors) and for plotting purposes.
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Use <strong>string</strong> when…</th>
 <th>Use <strong>factor</strong> when…</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>Text is free-form or unpredictable</td>
 <td>The variable takes a limited set of known values</td>
 </tr>
-<tr>
+<tr class="even">
 <td>You need to manipulate the text</td>
 <td>Order matters (e.g., stage I &lt; II &lt; III &lt; IV)</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Unique identifiers (patient IDs)</td>
 <td>Input to statistical models</td>
 </tr>
@@ -1010,7 +1060,8 @@ If it doesn’t work, you could use:
     clinical_data = mutate(smoking = case_when(
         smoking %in% c("never smoker", "Never") ~ "never",
         smoking %in% c("FORMER", "Former", "Fomer") ~ "former",
-        smoking == "Curent" ~ "current"),
+        smoking == "Curent" ~ "current",
+        .default = smoking),
         .data = clinical_data
         )
 
@@ -1045,13 +1096,13 @@ of them using `str_trim` function:
                                                       Mean   :57.3               
                                                       3rd Qu.:65.0               
                                                       Max.   :85.0               
-     smoking      treatment  stage      weight_kg        height_cm    
-     NA's:240   Control:74   I  :76   Min.   : 39.40   Min.   :148.9  
-                Drug_A :88   II :73   1st Qu.: 65.35   1st Qu.:162.2  
-                Drug_B :78   III:53   Median : 75.65   Median :168.5  
-                             IV :38   Mean   : 76.87   Mean   :169.2  
-                                      3rd Qu.: 87.83   3rd Qu.:174.8  
-                                      Max.   :132.90   Max.   :200.1  
+        smoking     treatment  stage      weight_kg        height_cm    
+     current:63   Control:74   I  :76   Min.   : 39.40   Min.   :148.9  
+     former :90   Drug_A :88   II :73   1st Qu.: 65.35   1st Qu.:162.2  
+     never  :87   Drug_B :78   III:53   Median : 75.65   Median :168.5  
+                               IV :38   Mean   : 76.87   Mean   :169.2  
+                                        3rd Qu.: 87.83   3rd Qu.:174.8  
+                                        Max.   :132.90   Max.   :200.1  
         sbp_mmhg        dbp_mmhg       glucose_mgdl   cholesterol_mgdl
      Min.   :115.0   Min.   : 73.00   Min.   : 60.0   Min.   :113.0   
      1st Qu.:139.0   1st Qu.: 90.75   1st Qu.: 98.0   1st Qu.:189.8   
@@ -1077,29 +1128,29 @@ A few more `stringr` functions you will find very useful:
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Function</th>
 <th>What it does</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><code>str_detect(x, pattern)</code></td>
 <td>Returns TRUE/FALSE: does the string contain the pattern?</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>str_starts(x, pattern)</code></td>
 <td>Does the string <em>start</em> with the pattern?</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>str_ends(x, pattern)</code></td>
 <td>Does the string <em>end</em> with the pattern?</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>str_pad(x, width, side, pad)</code></td>
 <td>Pads a string to a given width</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>str_sub(x, start, end)</code></td>
 <td>Extracts a substring by position</td>
 </tr>
@@ -1140,12 +1191,12 @@ function:
     5     PT-005 Turin 2023-03-30       2023          03        30  58   Male
     6     PT-006 Milan 2023-04-15       2023          04        15  53 Female
       smoking treatment stage weight_kg height_cm sbp_mmhg dbp_mmhg glucose_mgdl
-    1    <NA>    Drug_A    II      85.9     172.7      164      101          113
-    2    <NA>    Drug_B     I     100.9     185.3      143      102          105
-    3    <NA>    Drug_A     I      65.0     165.6      152       98          110
-    4    <NA>    Drug_A     I      95.9     181.5      142       88          120
-    5    <NA>    Drug_B   III      75.7     168.1      160       96          131
-    6    <NA>   Control    IV      69.6     174.3      150      107           78
+    1   never    Drug_A    II      85.9     172.7      164      101          113
+    2 current    Drug_B     I     100.9     185.3      143      102          105
+    3  former    Drug_A     I      65.0     165.6      152       98          110
+    4 current    Drug_A     I      95.9     181.5      142       88          120
+    5  former    Drug_B   III      75.7     168.1      160       96          131
+    6 current   Control    IV      69.6     174.3      150      107           78
       cholesterol_mgdl crp_ngml
     1              172     5.89
     2              239     6.13
@@ -1174,12 +1225,12 @@ with `unite`:
     5     PT-005 Turin 2023-03-30          2023-03       2023          03        30
     6     PT-006 Milan 2023-04-15          2023-04       2023          04        15
       age    sex smoking treatment stage weight_kg height_cm sbp_mmhg dbp_mmhg
-    1  40   Male    <NA>    Drug_A    II      85.9     172.7      164      101
-    2  40   Male    <NA>    Drug_B     I     100.9     185.3      143      102
-    3  59 Female    <NA>    Drug_A     I      65.0     165.6      152       98
-    4  46   Male    <NA>    Drug_A     I      95.9     181.5      142       88
-    5  58   Male    <NA>    Drug_B   III      75.7     168.1      160       96
-    6  53 Female    <NA>   Control    IV      69.6     174.3      150      107
+    1  40   Male   never    Drug_A    II      85.9     172.7      164      101
+    2  40   Male current    Drug_B     I     100.9     185.3      143      102
+    3  59 Female  former    Drug_A     I      65.0     165.6      152       98
+    4  46   Male current    Drug_A     I      95.9     181.5      142       88
+    5  58   Male  former    Drug_B   III      75.7     168.1      160       96
+    6  53 Female current   Control    IV      69.6     174.3      150      107
       glucose_mgdl cholesterol_mgdl crp_ngml
     1          113              172     5.89
     2          105              239     6.13
@@ -1278,12 +1329,12 @@ You can read `|>` as *“and then”*.
     PT-005     PT-005 Turin 2023-03-30          2023-03       2023          03
     PT-006     PT-006 Milan 2023-04-15          2023-04       2023          04
            visit_day age    sex smoking treatment stage weight_kg height_cm
-    PT-001        20  40   Male    <NA>    Drug_A    II      85.9     172.7
-    PT-002        15  40   Male    <NA>    Drug_B     I     100.9     185.3
-    PT-003        15  59 Female    <NA>    Drug_A     I      65.0     165.6
-    PT-004        06  46   Male    <NA>    Drug_A     I      95.9     181.5
-    PT-005        30  58   Male    <NA>    Drug_B   III      75.7     168.1
-    PT-006        15  53 Female    <NA>   Control    IV      69.6     174.3
+    PT-001        20  40   Male   never    Drug_A    II      85.9     172.7
+    PT-002        15  40   Male current    Drug_B     I     100.9     185.3
+    PT-003        15  59 Female  former    Drug_A     I      65.0     165.6
+    PT-004        06  46   Male current    Drug_A     I      95.9     181.5
+    PT-005        30  58   Male  former    Drug_B   III      75.7     168.1
+    PT-006        15  53 Female current   Control    IV      69.6     174.3
            systolic_bp_mmhg diastolic_bp_mmhg glucose_mgdl cholesterol_mgdl
     PT-001              164               101          113              172
     PT-002              143               102          105              239
@@ -1410,7 +1461,7 @@ These operators compare two values and return a boolean:
 
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Operator</th>
 <th>Meaning</th>
 <th>Example</th>
@@ -1418,37 +1469,37 @@ These operators compare two values and return a boolean:
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><code>==</code></td>
 <td>equal to</td>
 <td><code>3 == 3</code></td>
 <td><code>TRUE</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>!=</code></td>
 <td>not equal to</td>
 <td><code>3 != 4</code></td>
 <td><code>TRUE</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>&gt;</code></td>
 <td>greater than</td>
 <td><code>5 &gt; 3</code></td>
 <td><code>TRUE</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>&lt;</code></td>
 <td>less than</td>
 <td><code>2 &lt; 1</code></td>
 <td><code>FALSE</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>&gt;=</code></td>
 <td>greater or equal</td>
 <td><code>3 &gt;= 3</code></td>
 <td><code>TRUE</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>&lt;=</code></td>
 <td>less or equal</td>
 <td><code>2 &lt;= 1</code></td>
@@ -1507,24 +1558,24 @@ We often need to combine multiple conditions. This is done with
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Operator</th>
 <th>Meaning</th>
 <th>Example</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><code>&amp;</code></td>
 <td>AND — both conditions must be true</td>
 <td><code>age &gt; 50 &amp; sex == "Female"</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>\|</code></td>
 <td>OR — at least one condition must be true</td>
 <td><code>stage == "III" \| stage == "IV"</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>!</code></td>
 <td>NOT — negates a condition</td>
 <td><code>!is.na(crp_ngml)</code></td>
@@ -1605,12 +1656,12 @@ Solution
     PT-010     PT-010  Rome 2023-09-27       2023          09        27  60   Male
     PT-012     PT-012  Rome 2025-03-20       2025          03        20  52   Male
            smoking treatment stage weight_kg height_cm systolic_bp_mmhg
-    PT-001    <NA>    Drug_A    II      85.9     172.7              164
-    PT-003    <NA>    Drug_A     I      65.0     165.6              152
-    PT-004    <NA>    Drug_A     I      95.9     181.5              142
-    PT-007    <NA>    Drug_A     I      69.7     169.7              137
-    PT-010    <NA>    Drug_A    II      93.4     186.3              159
-    PT-012    <NA>    Drug_A   III      84.3     168.8              147
+    PT-001   never    Drug_A    II      85.9     172.7              164
+    PT-003  former    Drug_A     I      65.0     165.6              152
+    PT-004 current    Drug_A     I      95.9     181.5              142
+    PT-007  former    Drug_A     I      69.7     169.7              137
+    PT-010  former    Drug_A    II      93.4     186.3              159
+    PT-012   never    Drug_A   III      84.3     168.8              147
            diastolic_bp_mmhg glucose_mgdl cholesterol_mgdl crp_ngml height_m  BMI
     PT-001               101          113              172     5.89    1.727 28.8
     PT-003                98          110              146     7.81    1.656 23.7
@@ -1918,26 +1969,26 @@ join:
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Join type</th>
 <th>What it does</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><code>left_join(x, y)</code></td>
 <td>Keep <strong>all rows from x</strong>, add y columns where available
 (NA if no match)</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>right_join(x, y)</code></td>
 <td>Keep all rows from y</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>inner_join(x, y)</code></td>
 <td>Keep only rows that exist in <strong>both</strong> x and y</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>full_join(x, y)</code></td>
 <td>Keep all rows from both, NA where no match</td>
 </tr>
@@ -1978,14 +2029,14 @@ is an acutal value. Here an example:
                                                                         
                                                                         
                                                                         
-     visit_month         visit_day              age           sex      smoking   
-     Length:240         Length:240         Min.   :26.0   Female:118   NA's:240  
-     Class :character   Class :character   1st Qu.:49.0   Male  :122             
-     Mode  :character   Mode  :character   Median :57.5                          
-                                           Mean   :57.3                          
-                                           3rd Qu.:65.0                          
-                                           Max.   :85.0                          
-                                                                                 
+     visit_month         visit_day              age           sex         smoking  
+     Length:240         Length:240         Min.   :26.0   Female:118   current:63  
+     Class :character   Class :character   1st Qu.:49.0   Male  :122   former :90  
+     Mode  :character   Mode  :character   Median :57.5                never  :87  
+                                           Mean   :57.3                            
+                                           3rd Qu.:65.0                            
+                                           Max.   :85.0                            
+                                                                                   
        treatment  stage      weight_kg        height_cm     systolic_bp_mmhg
      Control:74   I  :76   Min.   : 39.40   Min.   :148.9   Min.   :115.0   
      Drug_A :88   II :73   1st Qu.: 65.35   1st Qu.:162.2   1st Qu.:139.0   
@@ -2165,3 +2216,587 @@ If you want to understand how we generated the dataset for this lesson,
 `set.seed` to make results reproducible.
 
 <!--chapter:end:02-Strings_factors_dataframe_handling_complete.Rmd-->
+
+# 3 Data visualization
+
+Data visualization is a crucial step of data analysis, as it can help us
+in:
+
+-   Understanding the distribution of our data
+-   Evaluate outliers
+-   Visualize immediately the differences between groups
+-   Communicate our results to peers
+
+I suggest you to visualize data as soon as you have finished to prepare
+them, prior to any statistical test (even prior to test for parametric
+assumptions), that’s why today we are doing it.
+
+## 3.1 Data visualization in R with ggplot2
+
+`ggplot2` is a package built for data visualization in R. It is simple
+to use and it works mainly on dataframes.
+
+To create a plot, we need to use different functions, that act as single
+building blocks to change single aspects of the plot. Here an example of
+mock code to create a plot with all the functions:
+
+    ggplot() +
+      geom_<type>() +
+      labs() +
+      scale_<type>() +
+      facet_<type>() +
+      coord_<type>() +
+      theme_<type>
+
+But, do we need all of them? No, the basic plots can be created with
+just `ggplot() + geom_<type>()`.
+
+## 3.2 Geom
+
+The `geom` function specifies the “geometry” we want to give to the
+data: basically, which type of graph we want (barplot, scatter,
+histogram, etc). It is the necessary and sufficient function to create a
+plot.
+
+[Here](https://ggplot2.tidyverse.org/reference/index.html#geoms) the
+list of all possible geom to use with the basic package.
+
+First of all, let’s load the data from previous session, and keep only
+the rows with all the information:
+
+    suppressPackageStartupMessages(library(tidyverse))
+    df <- read.csv("output/clinical_data_enriched.csv", header = T, stringsAsFactors = T)
+    df <- na.omit(df)
+    str(df)
+
+    'data.frame':   160 obs. of  26 variables:
+     $ patient_id       : Factor w/ 240 levels "PT-001","PT-002",..: 2 3 4 5 7 8 9 10 11 12 ...
+     $ site             : Factor w/ 3 levels "Milan","Rome",..: 2 2 3 3 2 2 1 2 1 2 ...
+     $ visit_date       : Factor w/ 218 levels "2018-01-14","2018-01-24",..: 75 150 52 104 80 214 57 146 125 170 ...
+     $ visit_year       : int  2020 2023 2020 2023 2020 2025 2020 2023 2023 2025 ...
+     $ visit_month      : int  8 10 3 3 9 10 4 9 6 3 ...
+     $ visit_day        : int  15 15 6 30 9 7 19 27 29 20 ...
+     $ age              : int  40 59 46 58 51 34 43 60 65 52 ...
+     $ sex              : Factor w/ 2 levels "Female","Male": 2 1 2 2 2 1 2 2 1 2 ...
+     $ smoking          : Factor w/ 3 levels "current","former",..: 1 2 1 2 2 3 3 2 1 3 ...
+     $ treatment        : Factor w/ 3 levels "Control","Drug_A",..: 3 2 2 3 2 1 3 2 1 2 ...
+     $ stage            : Factor w/ 4 levels "I","II","III",..: 1 1 1 3 1 1 3 2 2 3 ...
+     $ weight_kg        : num  100.9 65 95.9 75.7 69.7 ...
+     $ height_cm        : num  185 166 182 168 170 ...
+     $ systolic_bp_mmhg : int  143 152 142 160 137 146 151 159 125 147 ...
+     $ diastolic_bp_mmhg: int  102 98 88 96 96 106 94 104 76 96 ...
+     $ glucose_mgdl     : int  105 110 120 131 108 93 106 110 94 86 ...
+     $ cholesterol_mgdl : int  239 146 232 192 163 199 200 185 209 222 ...
+     $ crp_ngml         : num  6.13 7.81 3.35 21.72 5.41 ...
+     $ height_m         : num  1.85 1.66 1.81 1.68 1.7 ...
+     $ BMI              : num  29.4 23.7 29.1 26.8 24.2 29.8 24.8 26.9 30.5 29.6 ...
+     $ BMI_class        : Factor w/ 4 levels "Normal","Obese",..: 3 4 3 3 4 3 4 3 1 3 ...
+     $ hemoglobin_gdl   : num  15 11.8 16 15.4 14 16.2 10.5 15.6 12.4 14.5 ...
+     $ wbc_10e9l        : num  7.49 7.46 7.09 6.63 6.99 9.26 4.79 5.65 8.39 7.87 ...
+     $ platelets_10e9l  : int  270 252 233 192 195 188 163 269 165 263 ...
+     $ alt_ul           : int  56 27 20 16 61 51 50 18 47 51 ...
+     $ creatinine_mgdl  : num  1.58 1.09 1.17 1.06 1.15 1.06 1.21 1.08 1.12 1.03 ...
+     - attr(*, "na.action")= 'omit' Named int [1:80] 1 6 14 21 25 33 46 49 52 54 ...
+      ..- attr(*, "names")= chr [1:80] "1" "6" "14" "21" ...
+
+    summary(df)
+
+       patient_id     site         visit_date    visit_year    visit_month    
+     PT-002 :  1   Milan:65   2020-07-21:  3   Min.   :2018   Min.   : 1.000  
+     PT-003 :  1   Rome :50   2018-03-03:  2   1st Qu.:2020   1st Qu.: 3.750  
+     PT-004 :  1   Turin:45   2018-07-18:  2   Median :2023   Median : 6.000  
+     PT-005 :  1              2020-05-23:  2   Mean   :2022   Mean   : 5.969  
+     PT-007 :  1              2020-10-16:  2   3rd Qu.:2025   3rd Qu.: 8.000  
+     PT-008 :  1              2023-03-06:  2   Max.   :2025   Max.   :11.000  
+     (Other):154              (Other)   :147                                  
+       visit_day          age            sex        smoking     treatment  stage   
+     Min.   : 1.00   Min.   :33.00   Female:83   current:44   Control:51   I  :47  
+     1st Qu.:10.00   1st Qu.:48.00   Male  :77   former :55   Drug_A :62   II :53  
+     Median :18.00   Median :56.50               never  :61   Drug_B :47   III:35  
+     Mean   :17.16   Mean   :56.41                                         IV :25  
+     3rd Qu.:24.00   3rd Qu.:64.00                                                 
+     Max.   :31.00   Max.   :85.00                                                 
+                                                                                   
+       weight_kg        height_cm     systolic_bp_mmhg diastolic_bp_mmhg
+     Min.   : 39.40   Min.   :148.9   Min.   :120.0    Min.   : 73.00   
+     1st Qu.: 66.17   1st Qu.:162.4   1st Qu.:138.0    1st Qu.: 89.00   
+     Median : 75.75   Median :168.2   Median :146.0    Median : 96.00   
+     Mean   : 77.59   Mean   :169.2   Mean   :145.9    Mean   : 95.46   
+     3rd Qu.: 88.33   3rd Qu.:174.6   3rd Qu.:153.0    3rd Qu.:101.00   
+     Max.   :132.90   Max.   :191.3   Max.   :178.0    Max.   :120.00   
+                                                                        
+      glucose_mgdl cholesterol_mgdl    crp_ngml         height_m    
+     Min.   : 75   Min.   :113.0    Min.   : 1.930   Min.   :1.489  
+     1st Qu.: 98   1st Qu.:187.8    1st Qu.: 5.300   1st Qu.:1.624  
+     Median :109   Median :205.5    Median : 8.465   Median :1.682  
+     Mean   :110   Mean   :206.1    Mean   :10.525   Mean   :1.692  
+     3rd Qu.:119   3rd Qu.:223.2    3rd Qu.:13.165   3rd Qu.:1.746  
+     Max.   :147   Max.   :307.0    Max.   :42.090   Max.   :1.913  
+                                                                    
+          BMI              BMI_class  hemoglobin_gdl    wbc_10e9l     
+     Min.   :16.00   Normal     :46   Min.   : 9.20   Min.   : 2.310  
+     1st Qu.:24.18   Obese      : 9   1st Qu.:12.40   1st Qu.: 5.518  
+     Median :26.90   Overweight :65   Median :13.25   Median : 7.000  
+     Mean   :26.98   Underweight:40   Mean   :13.50   Mean   : 6.758  
+     3rd Qu.:30.50                    3rd Qu.:14.70   3rd Qu.: 7.902  
+     Max.   :40.70                    Max.   :17.00   Max.   :11.380  
+                                                                      
+     platelets_10e9l     alt_ul       creatinine_mgdl
+     Min.   : 60.0   Min.   : 10.00   Min.   :0.630  
+     1st Qu.:191.8   1st Qu.: 32.75   1st Qu.:1.018  
+     Median :232.0   Median : 46.50   Median :1.140  
+     Mean   :231.7   Mean   : 52.20   Mean   :1.138  
+     3rd Qu.:271.0   3rd Qu.: 61.00   3rd Qu.:1.252  
+     Max.   :391.0   Max.   :161.00   Max.   :1.580  
+                                                     
+
+### 3.2.1 Barplot
+
+We create a basic barplot to show the number of patient for each stage
+using the `geom_bar` function:
+
+    suppressPackageStartupMessages(library(ggplot2))
+
+    ggplot(df) +
+      geom_bar(mapping = aes(x = stage))
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-89-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+Let’s add some colors. We can set colors for all bars:
+
+    ggplot(df) +
+      geom_bar(mapping = aes(x = stage), fill = "blue3")
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-90-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+Or based on stage:
+
+    ggplot(df) +
+      geom_bar(mapping = aes(x = stage, fill = stage))
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-91-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+One of the main features of ggplot is that we can easily split data on x
+axis based on another column. Let’s say we want a bar for each treatment
+within each stage; we can achieve it setting the column in another aes
+option:
+
+    ggplot(df) +
+      geom_bar(mapping = aes(x = stage, fill = treatment), position = "dodge")
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-92-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+We can set different options in geom bar (both in aes or not), like
+color (the color of the outline of the bar), linewidth (the size of the
+outline), linetype (type of the outline of the bars, like dotted or
+continuous).
+[Here](https://ggplot2.tidyverse.org/reference/geom_bar.html#aesthetics)
+you can find all the options. Here an example:
+
+    all_n_barplot <- ggplot(df) +
+      geom_bar(mapping = aes(x = stage, fill = treatment, linetype = site), position = "dodge", color = "black", linewidth = 0.5)
+    all_n_barplot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-93-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+#### 3.2.1.1 Stat identity
+
+In this case, geom\_bar counts the occurrence of each label of stage and
+plot them. But what if we have a dataframe with the actual data we want
+to plot? Let’s say that we want to plot the mean values of
+“diastolic\_bp\_mmhg” of Stage I females for each treatment; first, we
+have to create the dataframe for it by filtering the data and
+calculating the mean:
+
+    stageI_femalse_diastolic_means <- df %>%
+      filter(stage == "I" & sex == "Female") %>%
+      group_by(treatment) %>%
+      summarise("mean_diastolic" = mean(diastolic_bp_mmhg))
+    stageI_femalse_diastolic_means
+
+    # A tibble: 3 × 2
+      treatment mean_diastolic
+      <fct>              <dbl>
+    1 Control             96.7
+    2 Drug_A              92  
+    3 Drug_B              92  
+
+Then we can use the function specifying both x and y as aes:
+
+    stageI_female_diastolic_means_barplot <- ggplot(stageI_femalse_diastolic_means) +
+      geom_bar(mapping = aes(x = treatment, y = mean_diastolic, fill = treatment), stat = "identity")
+    stageI_female_diastolic_means_barplot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-95-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+### 3.2.2 Scatter plot
+
+If we want to create a scatter plot, we can use `geom_point` function.
+
+We can create the plot between weight and height:
+
+    ggplot(df) +
+      geom_point(aes(x = height_cm, y = weight_kg))
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-96-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+Just from this plot we can see that there is a positive correlation. We
+can also change color, shape size of the dots. As before, all that is
+inserted in aes will apply to each dot based on the value of the
+corresponding column, while outside aes is applied to all dots:
+
+    corr_plot <- ggplot(df) +
+      geom_point(aes(x = height_cm, y = weight_kg, color = age), size = 3, shape = 18)
+    corr_plot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-97-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+[Here](https://ggplot2.tidyverse.org/reference/geom_point.html#aesthetics)
+the complete list of options for geom\_point.
+
+### 3.2.3 Boxplot
+
+Next, we will see how to create a boxplot, that is one of the most used
+plot when showing data distribution. Here we look at the diastolic bp in
+different smoking levels.
+
+    diastolic_bp_boxplot <- ggplot(df) +
+      geom_boxplot(aes(x = smoking, y = diastolic_bp_mmhg, fill = smoking), color = "black", outlier.color = "black")
+    diastolic_bp_boxplot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-98-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+[Here](https://ggplot2.tidyverse.org/reference/geom_boxplot.html#aesthetics)
+the complete list of options for geom\_boxplot.
+
+### 3.2.4 Density plot
+
+Another way to visualize the distribution of the data is the density
+plot. Let’s see the distribution of BMI among stage groups.
+
+    BMI_stages_density <- ggplot(df) +
+      geom_density(aes(x = BMI, fill = stage), alpha = 0.3)
+    BMI_stages_density
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-99-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+### 3.2.5 Combine geom
+
+We can also combine geometries. For example, let’s add to the
+*stageI\_female\_diastolic\_means\_barplot* the actual values with
+`geom_text`:
+
+    stageI_female_diastolic_means_barplot <- stageI_female_diastolic_means_barplot +
+      geom_text(aes(x = treatment, y = mean_diastolic, label = round(mean_diastolic)), nudge_y = 5)
+    stageI_female_diastolic_means_barplot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-100-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+We can combine as many as we want, another example is combine
+geom\_boxplot with geom\_point to add individual data points on the
+plot.
+
+    ggplot(df) +
+      geom_boxplot(aes(x = stage, y = diastolic_bp_mmhg, fill = sex), 
+                   color = "black", outlier.color = "black", position = position_dodge(width = 0.75)) +
+      geom_jitter(aes(x = stage, y = diastolic_bp_mmhg, fill = sex),
+                 position = position_dodge(width = 0.75), color = "black", alpha = 0.6, shape = 1)
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-101-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+## 3.3 Labs
+
+All these plots are a good starting point, but we can now start to
+personalize them. The first thing we can change are labs.
+
+Labs comprehends axis title, plot title and subtitle, legend titles,
+caption and tag ([here](https://ggplot2.tidyverse.org/reference/labs)
+the reference page with examples).
+
+    ggplot() +
+      geom_<type>() +
+      labs()
+
+Let’s change the labels of the correlation plot:
+
+    corr_plot <- corr_plot +
+      labs(title = "Correlation between height and weight",
+           x = "Height (cm)",
+           y = "Weight (kg)",
+           caption = paste("Correlation between height and weight on", dim(df)[1], "patients. Age: ", 
+                           min(df$age), "-", max(df$age), "years"))
+    corr_plot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-102-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+## 3.4 Scales
+
+The definition of scales from the official
+[documentation](https://ggplot2.tidyverse.org/reference/#scales) is
+“Scales control the details of how data values are translated to visual
+properties”. Practically speaking, with scales we can control the data
+on the axis, the colors and the other parameters of the aesthetics
+(linetype, size, fill) by calling the correspondent function (that’s
+what “<type>” meant in the mock code).
+
+    ggplot() +
+      geom_<type>() +
+      labs() +
+      scale_<type>() 
+
+We will see the main application of it.
+
+### 3.4.1 Axis
+
+With `scales_x/y_<type>` (if continuous, binned, manual or discrete) we
+can control the details of the axis, such as breaks, labels, limits,
+mathematical transformation and so on.
+
+For example, we can change the breaks on both x and y axis of
+diastolic\_bp\_boxplot:
+
+-   on y axis, the distance between breaks is now 10, we change it to 5
+-   on x axis, we change the labels of the axis with the first letter
+    uppercase
+
+<!-- -->
+
+    diastolic_bp_boxplot <- diastolic_bp_boxplot +
+      labs(x = "Smoking", y = "Diastolic blood pressure (mmHg)") +
+      scale_y_continuous(breaks = seq(0, max(df$diastolic_bp_mmhg), 5)) +
+      scale_x_discrete(labels = c("Current", "Former", "Never"))
+    diastolic_bp_boxplot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-103-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+QUESTO SOLO NEL SITO
+
+We can also apply mathematical transformation to continuous axis (like
+log scales):
+
+    BMI_stages_density +
+      scale_x_continuous(trans = "log10")
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-104-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+    BMI_stages_density +
+      scale_x_log10()
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-105-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+### 3.4.2 Colors
+
+When we set `fill` or `color` aesthetics, we actually do not choose the
+colors that ggplot apply, we just say to it to make them different. With
+scales, we can set the colors we want. This [site](https://coolors.co/)
+is very useful to choose colors.
+
+For example, in stageI\_female\_diastolic\_means\_barplot, we want the
+Control to be gray, Drug\_A to be blueish and Drug\_B to be red. We can
+set it up like this:
+
+    stageI_female_diastolic_means_barplot <- stageI_female_diastolic_means_barplot +
+      scale_fill_manual(values = c("Control" = "#568A81",
+                                   "Drug_A" = "#9FC2CC",
+                                   "Drug_B" = "#F95738"))
+    stageI_female_diastolic_means_barplot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-106-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+See this
+[insite](https://www.pluralsight.com/blog/tutorials/understanding-hexadecimal-colors-simple#:~:text=Hex%20color%20codes%20start%20with,0%20to%20255%20in%20RGB).)
+on hex color codes.
+
+We can also change the color bar of corr\_plot:
+
+    corr_plot <- corr_plot +
+      scale_color_gradient(low = "#B8B7BA", high = "#3E2F5B")
+    corr_plot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-107-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+See this stackoverflow
+[post](https://stackoverflow.com/questions/70942728/understanding-color-scales-in-ggplot2)
+for some useful tips and explanation on color scales in ggplot.
+
+Create a boxplot of platelets\_10e9l in males, divided by stage (x axis)
+and treatment (fill). Then:
+
+-   y axis label should be “Platelets 10^9/L”, with breaks every 75
+    starting from the minum value of platelets\_10e9l up to the maximum
+    value of platelets\_10e9l
+-   Treatment colors should be the same as the ones in
+    stageI\_female\_diastolic\_means\_barplot
+-   The title of the plot shoul be meaningful
+
+<details>
+<summary>
+Solution
+</summary>
+
+    males_df <- df |>
+        filter(sex == "Male")
+
+    ggplot(males_df) +
+        geom_boxplot(aes(x = stage, y = platelets_10e9l, fill = treatment)) +
+        labs(y = "Platelets 10^9/L",
+             title = "Distribution of Platelets concentration in males") +
+        scale_fill_manual(values = c("Control" = "#568A81",
+                                   "Drug_A" = "#9FC2CC",
+                                   "Drug_B" = "#F95738")) +
+        scale_y_continuous(breaks = seq(min(males_df$platelets_10e9l), max(males_df$platelets_10e9l), 75))
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-108-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+</details>
+
+## 3.5 Facet
+
+[Faceting](https://ggplot2.tidyverse.org/reference/#facetting) allow us
+to create a grid of panels, splitting data based on categorical
+variables.
+
+    ggplot() +
+      geom_<type>() +
+      labs() +
+      scale_<type>() +
+      facet_<type>() +
+
+Let’s see how we can rearrange the same data as in all\_n\_barplot but
+using multiple panels:
+
+    ggplot(df) +
+      geom_bar(mapping = aes(x = stage, fill = treatment), position = "dodge") +
+        facet_wrap(~ site)
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-109-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+We can also customize the labels, similar to using scales:
+
+    corr_plot +
+      facet_wrap(~ age > 55, labeller = labeller(`age > 55` = c("TRUE" = "> 55 yo", "FALSE" = "< 55 yo")))
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-110-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+## 3.6 Theme
+
+Ok, let’s now see the last part (and maybe the most useful) of code.
+[Theme](https://ggplot2.tidyverse.org/reference/#themes) allow us to
+control practically every single elements of the plot (except for the
+data): lines, font, labels, breaks, etc.
+
+    ggplot() +
+      geom_<type>() +
+      labs() +
+      scale_<type>() +
+      facet_<type>() +
+      theme_<type>
+
+There are few pre-installed theme, and we can further customize things
+with `theme`. Let’s firt apply classic theme to diastolic\_bp\_boxplot:
+
+    diastolic_bp_boxplot <- diastolic_bp_boxplot +
+      theme_classic()
+    diastolic_bp_boxplot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-111-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+And now let’s customize corr\_plot:
+
+-   Title in bold and 16 pt size
+-   Add major grid lines in gray and 0.3 pt size
+-   Rotate x axis labels to 45°
+-   Change the adjustment of plot caption to left
+-   Add bottom margin to x title
+
+<!-- -->
+
+    corr_plot <- corr_plot +
+      theme_classic() +
+      theme(plot.title = element_text(face = "bold", size = 16), 
+            panel.grid.major = element_line(colour = "gray", linewidth = 0.3), 
+            axis.text.x = element_text(angle = 45, hjust = 1),
+            plot.caption = element_text(hjust = 0),
+            axis.title.x = element_text(margin = margin(b = 12)))
+    corr_plot
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-112-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+## 3.7 Save the plots
+
+To save a plot to a file, we can use the function `ggsave` like this:
+
+    ggsave(plot = corr_plot, filename = "output/height_weight_corr-plot.pdf", units = "mm", width = 200, height = 140)
+
+We can set units, width and height. See this
+[article](https://www.christophenicault.com/post/understand_size_dimension_ggplot2/)
+for further details about dimensions, dpi, dots etc.
+
+## 3.8 Advanced examples
+
+Here are some more advanced examples:
+
+    BMI_stages_density +
+      labs(title = "BMI distribution at different stages", fill = "Stage") + # change labels
+      scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + # remove space at the bottom of y axis
+      scale_x_continuous(expand = expansion(mult = c(0, 0)), breaks = seq(0, max(df$BMI), 2.5)) + # reduce outer space of x axis
+      scale_fill_manual(values = c("I" = "#E0A890", "II" = "#2B59C3", "III" = "#9E2B25", "IV" = "#23CE6B")) + # change fill colors
+      theme_classic() +
+      theme(axis.line.y = element_blank(), # remove y-axes line
+            axis.text.y = element_blank(), # remove y-axes labels
+            axis.ticks.y = element_blank(), # remove y-axes ticks
+            axis.title.y = element_blank(), # remove y-axes title
+            legend.position = "top", # change legend position
+            plot.title = element_text(size = 18, family = "sans", face = "bold", margin = margin(b = 8)), # change title style
+            axis.title.x = element_text(size = 12, margin = margin(t = 10)),
+            legend.key.size = unit(x = 5, units = "mm") # change legens key size
+            )
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-114-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+    ggplot(df) +
+      stat_summary(aes(x = stage, y = height_cm, color = weight_kg > 90), fun.data = "mean_se", geom = "pointrange", size = .4) +
+      labs(y = "Height (cm)", color = "Weight") + 
+      scale_color_manual(labels = c("TRUE" = "> 90kg", "FALSE" = "< 90kg"), values = c("TRUE" = "red", "FALSE" = "blue")) +
+      theme_classic()
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-115-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+Create a plot that shows if the levels of creatinine\_mgdl changes
+depending on the year in each site. Set a proper scale for y axis, split
+the plot in panels, change the colors of the years, add a title.
+**Tip**: visit\_year now is numeric, while we want it to be……..
+
+**bonus** add the information about the numerosity in each group
+(year/site) at the bottom of x axis.
+
+<details>
+<summary>
+Solution
+</summary>
+
+    df$visit_year <- factor(df$visit_year)
+
+    df_n <- df |>
+        group_by(site, visit_year) |>
+        summarize(n = n(), .groups = "drop")
+
+    ggplot(df) +
+        geom_boxplot(aes(x = visit_year, y = creatinine_mgdl, fill = visit_year), 
+                     position = position_dodge(width = 0.75)) +
+        geom_text(data = df_n, 
+                  aes(x = visit_year, y = min(df$creatinine_mgdl) - 0.1, label = paste0("n=", n)),
+                  size = 3) +
+        labs(y = "Creatinine (mg/dL)",
+             title = "Creatinine levels increase over time in 2 sites out of 3",
+             x = "Year",
+             fill = "Year") +
+        scale_fill_manual(values = c("2018" = "#D6F49D",
+                                     "2020" = "#C1EF6C",
+                                     "2023" = "#A2E723",
+                                     "2025" = "#59810E")) +
+        scale_y_continuous(breaks = seq(0, max(df$creatinine_mgdl), 0.2)) +
+        facet_wrap(~ site) +
+        theme_classic()
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-116-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+</details>
+<!--chapter:end:03-Data-visualization_complete.Rmd-->

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Data visualization | R and clinical/lab data</title>
+  <meta name="description" content="A practical R course on how to handle clinical/lab data" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Data visualization | R and clinical/lab data" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="A practical R course on how to handle clinical/lab data" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Data visualization | R and clinical/lab data" />
+  
+  <meta name="twitter:description" content="A practical R course on how to handle clinical/lab data" />
+  
+
+<meta name="author" content="Matteo Miotto" />
+
+
+<meta name="date" content="2026-04-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="strings-factors-and-dataframe-handling.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google Site Verification -->
+<meta name="google-site-verification" content="P0RfkDLRkI9YOyaM0HXNdE0a0FI5lWKV1L-A9jTEPiI" />
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W3T8LKLD');</script>
+<!-- End Google Tag Manager -->
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R course 2026</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html"><i class="fa fa-check"></i><b>1</b> Dataframes, vectors and numbers</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#dataframes"><i class="fa fa-check"></i><b>1.1</b> Dataframes</a></li>
+<li class="chapter" data-level="1.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#import-file"><i class="fa fa-check"></i><b>1.2</b> Import file</a>
+<ul>
+<li class="chapter" data-level="1.2.0.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#notes-about-variables"><i class="fa fa-check"></i><b>1.2.0.1</b> Notes about variables</a></li>
+<li class="chapter" data-level="1.2.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#first-steps-on-a-dataframe"><i class="fa fa-check"></i><b>1.2.1</b> First steps on a dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#vectors"><i class="fa fa-check"></i><b>1.3</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#accessing-dataframe-columns"><i class="fa fa-check"></i><b>1.3.1</b> Accessing dataframe columns</a></li>
+<li class="chapter" data-level="1.3.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#accessing-values-of-a-vector-slicing"><i class="fa fa-check"></i><b>1.3.2</b> Accessing values of a vector: slicing</a>
+<ul>
+<li class="chapter" data-level="1.3.2.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#replace-a-value-by-index"><i class="fa fa-check"></i><b>1.3.2.1</b> Replace a value by index</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3.3" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#numbers-in-r"><i class="fa fa-check"></i><b>1.3.3</b> Numbers in R</a>
+<ul>
+<li class="chapter" data-level="1.3.3.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#declare-a-new-numeric-variable"><i class="fa fa-check"></i><b>1.3.3.1</b> Declare a new numeric variable</a></li>
+<li class="chapter" data-level="1.3.3.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#arithmetical-operations"><i class="fa fa-check"></i><b>1.3.3.2</b> Arithmetical operations</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3.4" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#vector-number-operations"><i class="fa fa-check"></i><b>1.3.4</b> Vector-number operations</a></li>
+<li class="chapter" data-level="1.3.5" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#operations-between-vectors"><i class="fa fa-check"></i><b>1.3.5</b> Operations between vectors</a></li>
+<li class="chapter" data-level="1.3.6" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#sumamry-statistics-of-numeric-vectors"><i class="fa fa-check"></i><b>1.3.6</b> Sumamry statistics of numeric vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#save-a-dataframe"><i class="fa fa-check"></i><b>1.4</b> Save a dataframe</a></li>
+<li class="chapter" data-level="1.5" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#home-exercise"><i class="fa fa-check"></i><b>1.5</b> Home exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html"><i class="fa fa-check"></i><b>2</b> Strings, Factors and Dataframe Handling</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#what-we-will-see-today"><i class="fa fa-check"></i><b>2.1</b> What we will see today</a></li>
+<li class="chapter" data-level="2.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#strings-and-factors"><i class="fa fa-check"></i><b>2.2</b> Strings and Factors</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#operations-on-strings"><i class="fa fa-check"></i><b>2.2.1</b> Operations on strings</a>
+<ul>
+<li class="chapter" data-level="2.2.1.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#character-substitution"><i class="fa fa-check"></i><b>2.2.1.1</b> Character substitution</a></li>
+<li class="chapter" data-level="2.2.1.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#other-useful-functions-to-handle-strings"><i class="fa fa-check"></i><b>2.2.1.2</b> Other useful functions to handle strings</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#operations-on-multiple-columns"><i class="fa fa-check"></i><b>2.2.2</b> Operations on multiple columns</a>
+<ul>
+<li class="chapter" data-level="2.2.2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#split-a-column-and-merge-multiple-columns"><i class="fa fa-check"></i><b>2.2.2.1</b> Split a column and merge multiple columns</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#column-and-row-names"><i class="fa fa-check"></i><b>2.2.3</b> Column and row names</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#dataframe-handling"><i class="fa fa-check"></i><b>2.3</b> Dataframe Handling</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#create-new-columns-with-mutate"><i class="fa fa-check"></i><b>2.3.1</b> Create new columns with mutate</a></li>
+<li class="chapter" data-level="2.3.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#select"><i class="fa fa-check"></i><b>2.3.2</b> select</a></li>
+<li class="chapter" data-level="2.3.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#boolean-operators"><i class="fa fa-check"></i><b>2.3.3</b> Boolean Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.3.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#comparison-operators"><i class="fa fa-check"></i><b>2.3.3.1</b> Comparison operators</a></li>
+<li class="chapter" data-level="2.3.3.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#logical-operators"><i class="fa fa-check"></i><b>2.3.3.2</b> Logical operators</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3.4" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#filter-and-filter-out"><i class="fa fa-check"></i><b>2.3.4</b> filter and filter out</a></li>
+<li class="chapter" data-level="2.3.5" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#group_by-summarize-and-reframe"><i class="fa fa-check"></i><b>2.3.5</b> group_by, summarize and reframe</a></li>
+<li class="chapter" data-level="2.3.6" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#join-merge"><i class="fa fa-check"></i><b>2.3.6</b> Join / Merge</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#save-your-results"><i class="fa fa-check"></i><b>2.4</b> Save your results</a></li>
+<li class="chapter" data-level="2.5" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#home-exercise-1"><i class="fa fa-check"></i><b>2.5</b> Home exercise</a></li>
+<li class="chapter" data-level="2.6" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#bonus-how-the-clinical-data-were-created"><i class="fa fa-check"></i><b>2.6</b> Bonus: how the clinical data were created</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i><b>3</b> Data visualization</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-visualization.html"><a href="data-visualization.html#data-visualization-in-r-with-ggplot2"><i class="fa fa-check"></i><b>3.1</b> Data visualization in R with ggplot2</a></li>
+<li class="chapter" data-level="3.2" data-path="data-visualization.html"><a href="data-visualization.html#geom"><i class="fa fa-check"></i><b>3.2</b> Geom</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data-visualization.html"><a href="data-visualization.html#barplot"><i class="fa fa-check"></i><b>3.2.1</b> Barplot</a>
+<ul>
+<li class="chapter" data-level="3.2.1.1" data-path="data-visualization.html"><a href="data-visualization.html#stat-identity"><i class="fa fa-check"></i><b>3.2.1.1</b> Stat identity</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2.2" data-path="data-visualization.html"><a href="data-visualization.html#scatter-plot"><i class="fa fa-check"></i><b>3.2.2</b> Scatter plot</a></li>
+<li class="chapter" data-level="3.2.3" data-path="data-visualization.html"><a href="data-visualization.html#boxplot"><i class="fa fa-check"></i><b>3.2.3</b> Boxplot</a></li>
+<li class="chapter" data-level="3.2.4" data-path="data-visualization.html"><a href="data-visualization.html#density-plot"><i class="fa fa-check"></i><b>3.2.4</b> Density plot</a></li>
+<li class="chapter" data-level="3.2.5" data-path="data-visualization.html"><a href="data-visualization.html#combine-geom"><i class="fa fa-check"></i><b>3.2.5</b> Combine geom</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-visualization.html"><a href="data-visualization.html#labs"><i class="fa fa-check"></i><b>3.3</b> Labs</a></li>
+<li class="chapter" data-level="3.4" data-path="data-visualization.html"><a href="data-visualization.html#scales"><i class="fa fa-check"></i><b>3.4</b> Scales</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="data-visualization.html"><a href="data-visualization.html#axis"><i class="fa fa-check"></i><b>3.4.1</b> Axis</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-visualization.html"><a href="data-visualization.html#colors"><i class="fa fa-check"></i><b>3.4.2</b> Colors</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-visualization.html"><a href="data-visualization.html#facet"><i class="fa fa-check"></i><b>3.5</b> Facet</a></li>
+<li class="chapter" data-level="3.6" data-path="data-visualization.html"><a href="data-visualization.html#theme"><i class="fa fa-check"></i><b>3.6</b> Theme</a></li>
+<li class="chapter" data-level="3.7" data-path="data-visualization.html"><a href="data-visualization.html#save-the-plots"><i class="fa fa-check"></i><b>3.7</b> Save the plots</a></li>
+<li class="chapter" data-level="3.8" data-path="data-visualization.html"><a href="data-visualization.html#advanced-examples"><i class="fa fa-check"></i><b>3.8</b> Advanced examples</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/miotsdata/R-course_2026">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R and clinical/lab data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-visualization" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Data visualization<a href="data-visualization.html#data-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Data visualization is a crucial step of data analysis, as it can help us in:</p>
+<ul>
+<li>Understanding the distribution of our data</li>
+<li>Evaluate outliers</li>
+<li>Visualize immediately the differences between groups</li>
+<li>Communicate our results to peers</li>
+</ul>
+<p>I suggest you to visualize data as soon as you have finished to prepare them, prior to any statistical test (even prior to test for parametric assumptions), that’s why today we are doing it.</p>
+<div id="data-visualization-in-r-with-ggplot2" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Data visualization in R with ggplot2<a href="data-visualization.html#data-visualization-in-r-with-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>ggplot2</code> is a package built for data visualization in R. It is simple to use and it works mainly on dataframes.</p>
+<p>To create a plot, we need to use different functions, that act as single building blocks to change single aspects of the plot. Here an example of mock code to create a plot with all the functions:</p>
+<pre><code>ggplot() +
+  geom_&lt;type&gt;() +
+  labs() +
+  scale_&lt;type&gt;() +
+  facet_&lt;type&gt;() +
+  coord_&lt;type&gt;() +
+  theme_&lt;type&gt;
+</code></pre>
+<p>But, do we need all of them? No, the basic plots can be created with just <code>ggplot() + geom_&lt;type&gt;()</code>.</p>
+</div>
+<div id="geom" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Geom<a href="data-visualization.html#geom" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>geom</code> function specifies the “geometry” we want to give to the data: basically, which type of graph we want (barplot, scatter, histogram, etc). It is the necessary and sufficient function to create a plot.</p>
+<p><a href="https://ggplot2.tidyverse.org/reference/index.html#geoms">Here</a> the list of all possible geom to use with the basic package.</p>
+<p>First of all, let’s load the data from previous session, and keep only the rows with all the information:</p>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="data-visualization.html#cb242-1" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
+<span id="cb242-2"><a href="data-visualization.html#cb242-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;output/clinical_data_enriched.csv&quot;</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb242-3"><a href="data-visualization.html#cb242-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(df)</span>
+<span id="cb242-4"><a href="data-visualization.html#cb242-4" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   160 obs. of  26 variables:
+ $ patient_id       : Factor w/ 240 levels &quot;PT-001&quot;,&quot;PT-002&quot;,..: 2 3 4 5 7 8 9 10 11 12 ...
+ $ site             : Factor w/ 3 levels &quot;Milan&quot;,&quot;Rome&quot;,..: 2 2 3 3 2 2 1 2 1 2 ...
+ $ visit_date       : Factor w/ 218 levels &quot;2018-01-14&quot;,&quot;2018-01-24&quot;,..: 75 150 52 104 80 214 57 146 125 170 ...
+ $ visit_year       : int  2020 2023 2020 2023 2020 2025 2020 2023 2023 2025 ...
+ $ visit_month      : int  8 10 3 3 9 10 4 9 6 3 ...
+ $ visit_day        : int  15 15 6 30 9 7 19 27 29 20 ...
+ $ age              : int  40 59 46 58 51 34 43 60 65 52 ...
+ $ sex              : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 1 2 2 2 1 2 2 1 2 ...
+ $ smoking          : Factor w/ 3 levels &quot;current&quot;,&quot;former&quot;,..: 1 2 1 2 2 3 3 2 1 3 ...
+ $ treatment        : Factor w/ 3 levels &quot;Control&quot;,&quot;Drug_A&quot;,..: 3 2 2 3 2 1 3 2 1 2 ...
+ $ stage            : Factor w/ 4 levels &quot;I&quot;,&quot;II&quot;,&quot;III&quot;,..: 1 1 1 3 1 1 3 2 2 3 ...
+ $ weight_kg        : num  100.9 65 95.9 75.7 69.7 ...
+ $ height_cm        : num  185 166 182 168 170 ...
+ $ systolic_bp_mmhg : int  143 152 142 160 137 146 151 159 125 147 ...
+ $ diastolic_bp_mmhg: int  102 98 88 96 96 106 94 104 76 96 ...
+ $ glucose_mgdl     : int  105 110 120 131 108 93 106 110 94 86 ...
+ $ cholesterol_mgdl : int  239 146 232 192 163 199 200 185 209 222 ...
+ $ crp_ngml         : num  6.13 7.81 3.35 21.72 5.41 ...
+ $ height_m         : num  1.85 1.66 1.81 1.68 1.7 ...
+ $ BMI              : num  29.4 23.7 29.1 26.8 24.2 29.8 24.8 26.9 30.5 29.6 ...
+ $ BMI_class        : Factor w/ 4 levels &quot;Normal&quot;,&quot;Obese&quot;,..: 3 4 3 3 4 3 4 3 1 3 ...
+ $ hemoglobin_gdl   : num  15 11.8 16 15.4 14 16.2 10.5 15.6 12.4 14.5 ...
+ $ wbc_10e9l        : num  7.49 7.46 7.09 6.63 6.99 9.26 4.79 5.65 8.39 7.87 ...
+ $ platelets_10e9l  : int  270 252 233 192 195 188 163 269 165 263 ...
+ $ alt_ul           : int  56 27 20 16 61 51 50 18 47 51 ...
+ $ creatinine_mgdl  : num  1.58 1.09 1.17 1.06 1.15 1.06 1.21 1.08 1.12 1.03 ...
+ - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int [1:80] 1 6 14 21 25 33 46 49 52 54 ...
+  ..- attr(*, &quot;names&quot;)= chr [1:80] &quot;1&quot; &quot;6&quot; &quot;14&quot; &quot;21&quot; ...</code></pre>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="data-visualization.html#cb244-1" tabindex="-1"></a><span class="fu">summary</span>(df)</span></code></pre></div>
+<pre class="code-out"><code>   patient_id     site         visit_date    visit_year    visit_month    
+ PT-002 :  1   Milan:65   2020-07-21:  3   Min.   :2018   Min.   : 1.000  
+ PT-003 :  1   Rome :50   2018-03-03:  2   1st Qu.:2020   1st Qu.: 3.750  
+ PT-004 :  1   Turin:45   2018-07-18:  2   Median :2023   Median : 6.000  
+ PT-005 :  1              2020-05-23:  2   Mean   :2022   Mean   : 5.969  
+ PT-007 :  1              2020-10-16:  2   3rd Qu.:2025   3rd Qu.: 8.000  
+ PT-008 :  1              2023-03-06:  2   Max.   :2025   Max.   :11.000  
+ (Other):154              (Other)   :147                                  
+   visit_day          age            sex        smoking     treatment  stage   
+ Min.   : 1.00   Min.   :33.00   Female:83   current:44   Control:51   I  :47  
+ 1st Qu.:10.00   1st Qu.:48.00   Male  :77   former :55   Drug_A :62   II :53  
+ Median :18.00   Median :56.50               never  :61   Drug_B :47   III:35  
+ Mean   :17.16   Mean   :56.41                                         IV :25  
+ 3rd Qu.:24.00   3rd Qu.:64.00                                                 
+ Max.   :31.00   Max.   :85.00                                                 
+                                                                               
+   weight_kg        height_cm     systolic_bp_mmhg diastolic_bp_mmhg
+ Min.   : 39.40   Min.   :148.9   Min.   :120.0    Min.   : 73.00   
+ 1st Qu.: 66.17   1st Qu.:162.4   1st Qu.:138.0    1st Qu.: 89.00   
+ Median : 75.75   Median :168.2   Median :146.0    Median : 96.00   
+ Mean   : 77.59   Mean   :169.2   Mean   :145.9    Mean   : 95.46   
+ 3rd Qu.: 88.33   3rd Qu.:174.6   3rd Qu.:153.0    3rd Qu.:101.00   
+ Max.   :132.90   Max.   :191.3   Max.   :178.0    Max.   :120.00   
+                                                                    
+  glucose_mgdl cholesterol_mgdl    crp_ngml         height_m    
+ Min.   : 75   Min.   :113.0    Min.   : 1.930   Min.   :1.489  
+ 1st Qu.: 98   1st Qu.:187.8    1st Qu.: 5.300   1st Qu.:1.624  
+ Median :109   Median :205.5    Median : 8.465   Median :1.682  
+ Mean   :110   Mean   :206.1    Mean   :10.525   Mean   :1.692  
+ 3rd Qu.:119   3rd Qu.:223.2    3rd Qu.:13.165   3rd Qu.:1.746  
+ Max.   :147   Max.   :307.0    Max.   :42.090   Max.   :1.913  
+                                                                
+      BMI              BMI_class  hemoglobin_gdl    wbc_10e9l     
+ Min.   :16.00   Normal     :46   Min.   : 9.20   Min.   : 2.310  
+ 1st Qu.:24.18   Obese      : 9   1st Qu.:12.40   1st Qu.: 5.518  
+ Median :26.90   Overweight :65   Median :13.25   Median : 7.000  
+ Mean   :26.98   Underweight:40   Mean   :13.50   Mean   : 6.758  
+ 3rd Qu.:30.50                    3rd Qu.:14.70   3rd Qu.: 7.902  
+ Max.   :40.70                    Max.   :17.00   Max.   :11.380  
+                                                                  
+ platelets_10e9l     alt_ul       creatinine_mgdl
+ Min.   : 60.0   Min.   : 10.00   Min.   :0.630  
+ 1st Qu.:191.8   1st Qu.: 32.75   1st Qu.:1.018  
+ Median :232.0   Median : 46.50   Median :1.140  
+ Mean   :231.7   Mean   : 52.20   Mean   :1.138  
+ 3rd Qu.:271.0   3rd Qu.: 61.00   3rd Qu.:1.252  
+ Max.   :391.0   Max.   :161.00   Max.   :1.580  
+                                                 </code></pre>
+<div id="barplot" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Barplot<a href="data-visualization.html#barplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We create a basic barplot to show the number of patient for each stage using the <code>geom_bar</code> function:</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="data-visualization.html#cb246-1" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggplot2))</span></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="data-visualization.html#cb247-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb247-2"><a href="data-visualization.html#cb247-2" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stage))</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-89-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>Let’s add some colors. We can set colors for all bars:</p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="data-visualization.html#cb248-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb248-2"><a href="data-visualization.html#cb248-2" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stage), <span class="at">fill =</span> <span class="st">&quot;blue3&quot;</span>)</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-90-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>Or based on stage:</p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="data-visualization.html#cb249-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb249-2"><a href="data-visualization.html#cb249-2" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">fill =</span> stage))</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-91-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>One of the main features of ggplot is that we can easily split data on x axis based on another column. Let’s say we want a bar for each treatment within each stage; we can achieve it setting the column in another aes option:</p>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="data-visualization.html#cb250-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb250-2"><a href="data-visualization.html#cb250-2" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">fill =</span> treatment), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-92-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>We can set different options in geom bar (both in aes or not), like color (the color of the outline of the bar), linewidth (the size of the outline), linetype (type of the outline of the bars, like dotted or continuous). <a href="https://ggplot2.tidyverse.org/reference/geom_bar.html#aesthetics">Here</a> you can find all the options. Here an example:</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="data-visualization.html#cb251-1" tabindex="-1"></a>all_n_barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb251-2"><a href="data-visualization.html#cb251-2" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">fill =</span> treatment, <span class="at">linetype =</span> site), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>)</span>
+<span id="cb251-3"><a href="data-visualization.html#cb251-3" tabindex="-1"></a>all_n_barplot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-93-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<div id="stat-identity" class="section level4 hasAnchor" number="3.2.1.1">
+<h4><span class="header-section-number">3.2.1.1</span> Stat identity<a href="data-visualization.html#stat-identity" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In this case, geom_bar counts the occurrence of each label of stage and plot them. But what if we have a dataframe with the actual data we want to plot? Let’s say that we want to plot the mean values of “diastolic_bp_mmhg” of Stage I females for each treatment; first, we have to create the dataframe for it by filtering the data and calculating the mean:</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="data-visualization.html#cb252-1" tabindex="-1"></a>stageI_femalse_diastolic_means <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb252-2"><a href="data-visualization.html#cb252-2" tabindex="-1"></a>  <span class="fu">filter</span>(stage <span class="sc">==</span> <span class="st">&quot;I&quot;</span> <span class="sc">&amp;</span> sex <span class="sc">==</span> <span class="st">&quot;Female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb252-3"><a href="data-visualization.html#cb252-3" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment) <span class="sc">%&gt;%</span></span>
+<span id="cb252-4"><a href="data-visualization.html#cb252-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">&quot;mean_diastolic&quot;</span> <span class="ot">=</span> <span class="fu">mean</span>(diastolic_bp_mmhg))</span>
+<span id="cb252-5"><a href="data-visualization.html#cb252-5" tabindex="-1"></a>stageI_femalse_diastolic_means</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 3 × 2
+  treatment mean_diastolic
+  &lt;fct&gt;              &lt;dbl&gt;
+1 Control             96.7
+2 Drug_A              92  
+3 Drug_B              92  </code></pre>
+<p>Then we can use the function specifying both x and y as aes:</p>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="data-visualization.html#cb254-1" tabindex="-1"></a>stageI_female_diastolic_means_barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(stageI_femalse_diastolic_means) <span class="sc">+</span></span>
+<span id="cb254-2"><a href="data-visualization.html#cb254-2" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> treatment, <span class="at">y =</span> mean_diastolic, <span class="at">fill =</span> treatment), <span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>)</span>
+<span id="cb254-3"><a href="data-visualization.html#cb254-3" tabindex="-1"></a>stageI_female_diastolic_means_barplot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-95-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="scatter-plot" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Scatter plot<a href="data-visualization.html#scatter-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If we want to create a scatter plot, we can use <code>geom_point</code> function.</p>
+<p>We can create the plot between weight and height:</p>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="data-visualization.html#cb255-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb255-2"><a href="data-visualization.html#cb255-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> height_cm, <span class="at">y =</span> weight_kg))</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-96-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>Just from this plot we can see that there is a positive correlation.
+We can also change color, shape size of the dots. As before, all that is inserted in aes will apply to each dot based on the value of the corresponding column, while outside aes is applied to all dots:</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="data-visualization.html#cb256-1" tabindex="-1"></a>corr_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb256-2"><a href="data-visualization.html#cb256-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> height_cm, <span class="at">y =</span> weight_kg, <span class="at">color =</span> age), <span class="at">size =</span> <span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">18</span>)</span>
+<span id="cb256-3"><a href="data-visualization.html#cb256-3" tabindex="-1"></a>corr_plot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-97-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+<a href="https://ggplot2.tidyverse.org/reference/geom_point.html#aesthetics">Here</a> the complete list of options for geom_point.</p>
+</div>
+<div id="boxplot" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Boxplot<a href="data-visualization.html#boxplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Next, we will see how to create a boxplot, that is one of the most used plot when showing data distribution. Here we look at the diastolic bp in different smoking levels.</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="data-visualization.html#cb257-1" tabindex="-1"></a>diastolic_bp_boxplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb257-2"><a href="data-visualization.html#cb257-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> smoking, <span class="at">y =</span> diastolic_bp_mmhg, <span class="at">fill =</span> smoking), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">outlier.color =</span> <span class="st">&quot;black&quot;</span>)</span>
+<span id="cb257-3"><a href="data-visualization.html#cb257-3" tabindex="-1"></a>diastolic_bp_boxplot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-98-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html#aesthetics">Here</a> the complete list of options for geom_boxplot.</p>
+</div>
+<div id="density-plot" class="section level3 hasAnchor" number="3.2.4">
+<h3><span class="header-section-number">3.2.4</span> Density plot<a href="data-visualization.html#density-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Another way to visualize the distribution of the data is the density plot. Let’s see the distribution of BMI among stage groups.</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="data-visualization.html#cb258-1" tabindex="-1"></a>BMI_stages_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb258-2"><a href="data-visualization.html#cb258-2" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> BMI, <span class="at">fill =</span> stage), <span class="at">alpha =</span> <span class="fl">0.3</span>)</span>
+<span id="cb258-3"><a href="data-visualization.html#cb258-3" tabindex="-1"></a>BMI_stages_density</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-99-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="combine-geom" class="section level3 hasAnchor" number="3.2.5">
+<h3><span class="header-section-number">3.2.5</span> Combine geom<a href="data-visualization.html#combine-geom" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can also combine geometries. For example, let’s add to the <em>stageI_female_diastolic_means_barplot</em> the actual values with <code>geom_text</code>:</p>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="data-visualization.html#cb259-1" tabindex="-1"></a>stageI_female_diastolic_means_barplot <span class="ot">&lt;-</span> stageI_female_diastolic_means_barplot <span class="sc">+</span></span>
+<span id="cb259-2"><a href="data-visualization.html#cb259-2" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> treatment, <span class="at">y =</span> mean_diastolic, <span class="at">label =</span> <span class="fu">round</span>(mean_diastolic)), <span class="at">nudge_y =</span> <span class="dv">5</span>)</span>
+<span id="cb259-3"><a href="data-visualization.html#cb259-3" tabindex="-1"></a>stageI_female_diastolic_means_barplot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-100-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>We can combine as many as we want, another example is combine geom_boxplot with geom_point to add individual data points on the plot.</p>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="data-visualization.html#cb260-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb260-2"><a href="data-visualization.html#cb260-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">y =</span> diastolic_bp_mmhg, <span class="at">fill =</span> sex), </span>
+<span id="cb260-3"><a href="data-visualization.html#cb260-3" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">outlier.color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.75</span>)) <span class="sc">+</span></span>
+<span id="cb260-4"><a href="data-visualization.html#cb260-4" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">y =</span> diastolic_bp_mmhg, <span class="at">fill =</span> sex),</span>
+<span id="cb260-5"><a href="data-visualization.html#cb260-5" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.75</span>), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">shape =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-101-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="labs" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Labs<a href="data-visualization.html#labs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>All these plots are a good starting point, but we can now start to personalize them. The first thing we can change are labs.</p>
+<p>Labs comprehends axis title, plot title and subtitle, legend titles, caption and tag (<a href="https://ggplot2.tidyverse.org/reference/labs">here</a> the reference page with examples).</p>
+<pre><code>ggplot() +
+  geom_&lt;type&gt;() +
+  labs()</code></pre>
+<p>Let’s change the labels of the correlation plot:</p>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="data-visualization.html#cb262-1" tabindex="-1"></a>corr_plot <span class="ot">&lt;-</span> corr_plot <span class="sc">+</span></span>
+<span id="cb262-2"><a href="data-visualization.html#cb262-2" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Correlation between height and weight&quot;</span>,</span>
+<span id="cb262-3"><a href="data-visualization.html#cb262-3" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Height (cm)&quot;</span>,</span>
+<span id="cb262-4"><a href="data-visualization.html#cb262-4" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Weight (kg)&quot;</span>,</span>
+<span id="cb262-5"><a href="data-visualization.html#cb262-5" tabindex="-1"></a>       <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">&quot;Correlation between height and weight on&quot;</span>, <span class="fu">dim</span>(df)[<span class="dv">1</span>], <span class="st">&quot;patients. Age: &quot;</span>, </span>
+<span id="cb262-6"><a href="data-visualization.html#cb262-6" tabindex="-1"></a>                       <span class="fu">min</span>(df<span class="sc">$</span>age), <span class="st">&quot;-&quot;</span>, <span class="fu">max</span>(df<span class="sc">$</span>age), <span class="st">&quot;years&quot;</span>))</span>
+<span id="cb262-7"><a href="data-visualization.html#cb262-7" tabindex="-1"></a>corr_plot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-102-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="scales" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Scales<a href="data-visualization.html#scales" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The definition of scales from the official <a href="https://ggplot2.tidyverse.org/reference/#scales">documentation</a> is “Scales control the details of how data values are translated to visual properties”. Practically speaking, with scales we can control the data on the axis, the colors and the other parameters of the aesthetics (linetype, size, fill) by calling the correspondent function (that’s what “<type>” meant in the mock code).</p>
+<pre><code>ggplot() +
+  geom_&lt;type&gt;() +
+  labs() +
+  scale_&lt;type&gt;() </code></pre>
+<p>We will see the main application of it.</p>
+<div id="axis" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> Axis<a href="data-visualization.html#axis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>With <code>scales_x/y_&lt;type&gt;</code> (if continuous, binned, manual or discrete) we can control the details of the axis, such as breaks, labels, limits, mathematical transformation and so on.</p>
+<p>For example, we can change the breaks on both x and y axis of diastolic_bp_boxplot:</p>
+<ul>
+<li>on y axis, the distance between breaks is now 10, we change it to 5</li>
+<li>on x axis, we change the labels of the axis with the first letter uppercase</li>
+</ul>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="data-visualization.html#cb264-1" tabindex="-1"></a>diastolic_bp_boxplot <span class="ot">&lt;-</span> diastolic_bp_boxplot <span class="sc">+</span></span>
+<span id="cb264-2"><a href="data-visualization.html#cb264-2" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Smoking&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Diastolic blood pressure (mmHg)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb264-3"><a href="data-visualization.html#cb264-3" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fu">max</span>(df<span class="sc">$</span>diastolic_bp_mmhg), <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb264-4"><a href="data-visualization.html#cb264-4" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Current&quot;</span>, <span class="st">&quot;Former&quot;</span>, <span class="st">&quot;Never&quot;</span>))</span>
+<span id="cb264-5"><a href="data-visualization.html#cb264-5" tabindex="-1"></a>diastolic_bp_boxplot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-103-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>QUESTO SOLO NEL SITO</p>
+<p>We can also apply mathematical transformation to continuous axis (like log scales):</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="data-visualization.html#cb265-1" tabindex="-1"></a>BMI_stages_density <span class="sc">+</span></span>
+<span id="cb265-2"><a href="data-visualization.html#cb265-2" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">&quot;log10&quot;</span>)</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-104-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="data-visualization.html#cb266-1" tabindex="-1"></a>BMI_stages_density <span class="sc">+</span></span>
+<span id="cb266-2"><a href="data-visualization.html#cb266-2" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>()</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-105-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="colors" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> Colors<a href="data-visualization.html#colors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When we set <code>fill</code> or <code>color</code> aesthetics, we actually do not choose the colors that ggplot apply, we just say to it to make them different. With scales, we can set the colors we want. This <a href="https://coolors.co/">site</a> is very useful to choose colors.</p>
+<p>For example, in stageI_female_diastolic_means_barplot, we want the Control to be gray, Drug_A to be blueish and Drug_B to be red. We can set it up like this:</p>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="data-visualization.html#cb267-1" tabindex="-1"></a>stageI_female_diastolic_means_barplot <span class="ot">&lt;-</span> stageI_female_diastolic_means_barplot <span class="sc">+</span></span>
+<span id="cb267-2"><a href="data-visualization.html#cb267-2" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Control&quot;</span> <span class="ot">=</span> <span class="st">&quot;#568A81&quot;</span>,</span>
+<span id="cb267-3"><a href="data-visualization.html#cb267-3" tabindex="-1"></a>                               <span class="st">&quot;Drug_A&quot;</span> <span class="ot">=</span> <span class="st">&quot;#9FC2CC&quot;</span>,</span>
+<span id="cb267-4"><a href="data-visualization.html#cb267-4" tabindex="-1"></a>                               <span class="st">&quot;Drug_B&quot;</span> <span class="ot">=</span> <span class="st">&quot;#F95738&quot;</span>))</span>
+<span id="cb267-5"><a href="data-visualization.html#cb267-5" tabindex="-1"></a>stageI_female_diastolic_means_barplot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-106-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>See this <a href="https://www.pluralsight.com/blog/tutorials/understanding-hexadecimal-colors-simple#:~:text=Hex%20color%20codes%20start%20with,0%20to%20255%20in%20RGB">insite</a>.) on hex color codes.</p>
+<p>We can also change the color bar of corr_plot:</p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="data-visualization.html#cb268-1" tabindex="-1"></a>corr_plot <span class="ot">&lt;-</span> corr_plot <span class="sc">+</span></span>
+<span id="cb268-2"><a href="data-visualization.html#cb268-2" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#B8B7BA&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#3E2F5B&quot;</span>)</span>
+<span id="cb268-3"><a href="data-visualization.html#cb268-3" tabindex="-1"></a>corr_plot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-107-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>See this stackoverflow <a href="https://stackoverflow.com/questions/70942728/understanding-color-scales-in-ggplot2">post</a> for some useful tips and explanation on color scales in ggplot.</p>
+<div class="exercise">
+<p><span id="exr:boxplot" class="exercise"><strong>Exercise 3.1  </strong></span>Create a boxplot of platelets_10e9l in males, divided by stage (x axis) and treatment (fill). Then:</p>
+<ul>
+<li>y axis label should be “Platelets 10^9/L”, with breaks every 75 starting from the minum value of platelets_10e9l up to the maximum value of platelets_10e9l</li>
+<li>Treatment colors should be the same as the ones in stageI_female_diastolic_means_barplot</li>
+<li>The title of the plot shoul be meaningful</li>
+</ul>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="data-visualization.html#cb269-1" tabindex="-1"></a>males_df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb269-2"><a href="data-visualization.html#cb269-2" tabindex="-1"></a>    <span class="fu">filter</span>(sex <span class="sc">==</span> <span class="st">&quot;Male&quot;</span>)</span>
+<span id="cb269-3"><a href="data-visualization.html#cb269-3" tabindex="-1"></a></span>
+<span id="cb269-4"><a href="data-visualization.html#cb269-4" tabindex="-1"></a><span class="fu">ggplot</span>(males_df) <span class="sc">+</span></span>
+<span id="cb269-5"><a href="data-visualization.html#cb269-5" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">y =</span> platelets_10e9l, <span class="at">fill =</span> treatment)) <span class="sc">+</span></span>
+<span id="cb269-6"><a href="data-visualization.html#cb269-6" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Platelets 10^9/L&quot;</span>,</span>
+<span id="cb269-7"><a href="data-visualization.html#cb269-7" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">&quot;Distribution of Platelets concentration in males&quot;</span>) <span class="sc">+</span></span>
+<span id="cb269-8"><a href="data-visualization.html#cb269-8" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Control&quot;</span> <span class="ot">=</span> <span class="st">&quot;#568A81&quot;</span>,</span>
+<span id="cb269-9"><a href="data-visualization.html#cb269-9" tabindex="-1"></a>                               <span class="st">&quot;Drug_A&quot;</span> <span class="ot">=</span> <span class="st">&quot;#9FC2CC&quot;</span>,</span>
+<span id="cb269-10"><a href="data-visualization.html#cb269-10" tabindex="-1"></a>                               <span class="st">&quot;Drug_B&quot;</span> <span class="ot">=</span> <span class="st">&quot;#F95738&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb269-11"><a href="data-visualization.html#cb269-11" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(males_df<span class="sc">$</span>platelets_10e9l), <span class="fu">max</span>(males_df<span class="sc">$</span>platelets_10e9l), <span class="dv">75</span>))</span></code></pre></div>
+<img src="R-course-2026_files/figure-html/unnamed-chunk-108-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+</details>
+</div>
+</div>
+<div id="facet" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Facet<a href="data-visualization.html#facet" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://ggplot2.tidyverse.org/reference/#facetting">Faceting</a> allow us to create a grid of panels, splitting data based on categorical variables.</p>
+<pre><code>ggplot() +
+  geom_&lt;type&gt;() +
+  labs() +
+  scale_&lt;type&gt;() +
+  facet_&lt;type&gt;() +
+</code></pre>
+<p>Let’s see how we can rearrange the same data as in all_n_barplot but using multiple panels:</p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="data-visualization.html#cb271-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb271-2"><a href="data-visualization.html#cb271-2" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">fill =</span> treatment), <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb271-3"><a href="data-visualization.html#cb271-3" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> site)</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-109-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>We can also customize the labels, similar to using scales:</p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="data-visualization.html#cb272-1" tabindex="-1"></a>corr_plot <span class="sc">+</span></span>
+<span id="cb272-2"><a href="data-visualization.html#cb272-2" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> age <span class="sc">&gt;</span> <span class="dv">55</span>, <span class="at">labeller =</span> <span class="fu">labeller</span>(<span class="st">`</span><span class="at">age &gt; 55</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span> <span class="ot">=</span> <span class="st">&quot;&gt; 55 yo&quot;</span>, <span class="st">&quot;FALSE&quot;</span> <span class="ot">=</span> <span class="st">&quot;&lt; 55 yo&quot;</span>)))</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-110-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="theme" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Theme<a href="data-visualization.html#theme" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ok, let’s now see the last part (and maybe the most useful) of code. <a href="https://ggplot2.tidyverse.org/reference/#themes">Theme</a> allow us to control practically every single elements of the plot (except for the data): lines, font, labels, breaks, etc.</p>
+<pre><code>ggplot() +
+  geom_&lt;type&gt;() +
+  labs() +
+  scale_&lt;type&gt;() +
+  facet_&lt;type&gt;() +
+  theme_&lt;type&gt;
+</code></pre>
+<p>There are few pre-installed theme, and we can further customize things with <code>theme</code>. Let’s firt apply classic theme to diastolic_bp_boxplot:</p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="data-visualization.html#cb274-1" tabindex="-1"></a>diastolic_bp_boxplot <span class="ot">&lt;-</span> diastolic_bp_boxplot <span class="sc">+</span></span>
+<span id="cb274-2"><a href="data-visualization.html#cb274-2" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb274-3"><a href="data-visualization.html#cb274-3" tabindex="-1"></a>diastolic_bp_boxplot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-111-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<p>And now let’s customize corr_plot:</p>
+<ul>
+<li>Title in bold and 16 pt size</li>
+<li>Add major grid lines in gray and 0.3 pt size</li>
+<li>Rotate x axis labels to 45°</li>
+<li>Change the adjustment of plot caption to left</li>
+<li>Add bottom margin to x title</li>
+</ul>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="data-visualization.html#cb275-1" tabindex="-1"></a>corr_plot <span class="ot">&lt;-</span> corr_plot <span class="sc">+</span></span>
+<span id="cb275-2"><a href="data-visualization.html#cb275-2" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb275-3"><a href="data-visualization.html#cb275-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">16</span>), </span>
+<span id="cb275-4"><a href="data-visualization.html#cb275-4" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;gray&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>), </span>
+<span id="cb275-5"><a href="data-visualization.html#cb275-5" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb275-6"><a href="data-visualization.html#cb275-6" tabindex="-1"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb275-7"><a href="data-visualization.html#cb275-7" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">12</span>)))</span>
+<span id="cb275-8"><a href="data-visualization.html#cb275-8" tabindex="-1"></a>corr_plot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-112-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="save-the-plots" class="section level2 hasAnchor" number="3.7">
+<h2><span class="header-section-number">3.7</span> Save the plots<a href="data-visualization.html#save-the-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To save a plot to a file, we can use the function <code>ggsave</code> like this:</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="data-visualization.html#cb276-1" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot =</span> corr_plot, <span class="at">filename =</span> <span class="st">&quot;output/height_weight_corr-plot.pdf&quot;</span>, <span class="at">units =</span> <span class="st">&quot;mm&quot;</span>, <span class="at">width =</span> <span class="dv">200</span>, <span class="at">height =</span> <span class="dv">140</span>)</span></code></pre></div>
+<p>We can set units, width and height. See this <a href="https://www.christophenicault.com/post/understand_size_dimension_ggplot2/">article</a> for further details about dimensions, dpi, dots etc.</p>
+</div>
+<div id="advanced-examples" class="section level2 hasAnchor" number="3.8">
+<h2><span class="header-section-number">3.8</span> Advanced examples<a href="data-visualization.html#advanced-examples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here are some more advanced examples:</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="data-visualization.html#cb277-1" tabindex="-1"></a>BMI_stages_density <span class="sc">+</span></span>
+<span id="cb277-2"><a href="data-visualization.html#cb277-2" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;BMI distribution at different stages&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;Stage&quot;</span>) <span class="sc">+</span> <span class="co"># change labels</span></span>
+<span id="cb277-3"><a href="data-visualization.html#cb277-3" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.1</span>))) <span class="sc">+</span> <span class="co"># remove space at the bottom of y axis</span></span>
+<span id="cb277-4"><a href="data-visualization.html#cb277-4" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fu">max</span>(df<span class="sc">$</span>BMI), <span class="fl">2.5</span>)) <span class="sc">+</span> <span class="co"># reduce outer space of x axis</span></span>
+<span id="cb277-5"><a href="data-visualization.html#cb277-5" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;I&quot;</span> <span class="ot">=</span> <span class="st">&quot;#E0A890&quot;</span>, <span class="st">&quot;II&quot;</span> <span class="ot">=</span> <span class="st">&quot;#2B59C3&quot;</span>, <span class="st">&quot;III&quot;</span> <span class="ot">=</span> <span class="st">&quot;#9E2B25&quot;</span>, <span class="st">&quot;IV&quot;</span> <span class="ot">=</span> <span class="st">&quot;#23CE6B&quot;</span>)) <span class="sc">+</span> <span class="co"># change fill colors</span></span>
+<span id="cb277-6"><a href="data-visualization.html#cb277-6" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb277-7"><a href="data-visualization.html#cb277-7" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.line.y =</span> <span class="fu">element_blank</span>(), <span class="co"># remove y-axes line</span></span>
+<span id="cb277-8"><a href="data-visualization.html#cb277-8" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="co"># remove y-axes labels</span></span>
+<span id="cb277-9"><a href="data-visualization.html#cb277-9" tabindex="-1"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(), <span class="co"># remove y-axes ticks</span></span>
+<span id="cb277-10"><a href="data-visualization.html#cb277-10" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(), <span class="co"># remove y-axes title</span></span>
+<span id="cb277-11"><a href="data-visualization.html#cb277-11" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>, <span class="co"># change legend position</span></span>
+<span id="cb277-12"><a href="data-visualization.html#cb277-12" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">family =</span> <span class="st">&quot;sans&quot;</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">8</span>)), <span class="co"># change title style</span></span>
+<span id="cb277-13"><a href="data-visualization.html#cb277-13" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">10</span>)),</span>
+<span id="cb277-14"><a href="data-visualization.html#cb277-14" tabindex="-1"></a>        <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="at">x =</span> <span class="dv">5</span>, <span class="at">units =</span> <span class="st">&quot;mm&quot;</span>) <span class="co"># change legens key size</span></span>
+<span id="cb277-15"><a href="data-visualization.html#cb277-15" tabindex="-1"></a>        )</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-114-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="data-visualization.html#cb278-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb278-2"><a href="data-visualization.html#cb278-2" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="fu">aes</span>(<span class="at">x =</span> stage, <span class="at">y =</span> height_cm, <span class="at">color =</span> weight_kg <span class="sc">&gt;</span> <span class="dv">90</span>), <span class="at">fun.data =</span> <span class="st">&quot;mean_se&quot;</span>, <span class="at">geom =</span> <span class="st">&quot;pointrange&quot;</span>, <span class="at">size =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb278-3"><a href="data-visualization.html#cb278-3" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Height (cm)&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Weight&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb278-4"><a href="data-visualization.html#cb278-4" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span> <span class="ot">=</span> <span class="st">&quot;&gt; 90kg&quot;</span>, <span class="st">&quot;FALSE&quot;</span> <span class="ot">=</span> <span class="st">&quot;&lt; 90kg&quot;</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;TRUE&quot;</span> <span class="ot">=</span> <span class="st">&quot;red&quot;</span>, <span class="st">&quot;FALSE&quot;</span> <span class="ot">=</span> <span class="st">&quot;blue&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb278-5"><a href="data-visualization.html#cb278-5" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-115-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<div class="exercise">
+<p><span id="exr:final-plot" class="exercise"><strong>Exercise 3.2  </strong></span>Create a plot that shows if the levels of creatinine_mgdl changes depending on the year in each site. Set a proper scale for y axis, split the plot in panels, change the colors of the years, add a title.
+<strong>Tip</strong>: visit_year now is numeric, while we want it to be……..</p>
+<p><strong>bonus</strong> add the information about the numerosity in each group (year/site) at the bottom of x axis.</p>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="data-visualization.html#cb279-1" tabindex="-1"></a>df<span class="sc">$</span>visit_year <span class="ot">&lt;-</span> <span class="fu">factor</span>(df<span class="sc">$</span>visit_year)</span>
+<span id="cb279-2"><a href="data-visualization.html#cb279-2" tabindex="-1"></a></span>
+<span id="cb279-3"><a href="data-visualization.html#cb279-3" tabindex="-1"></a>df_n <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb279-4"><a href="data-visualization.html#cb279-4" tabindex="-1"></a>    <span class="fu">group_by</span>(site, visit_year) <span class="sc">|&gt;</span></span>
+<span id="cb279-5"><a href="data-visualization.html#cb279-5" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>)</span>
+<span id="cb279-6"><a href="data-visualization.html#cb279-6" tabindex="-1"></a></span>
+<span id="cb279-7"><a href="data-visualization.html#cb279-7" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb279-8"><a href="data-visualization.html#cb279-8" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> visit_year, <span class="at">y =</span> creatinine_mgdl, <span class="at">fill =</span> visit_year), </span>
+<span id="cb279-9"><a href="data-visualization.html#cb279-9" tabindex="-1"></a>                 <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.75</span>)) <span class="sc">+</span></span>
+<span id="cb279-10"><a href="data-visualization.html#cb279-10" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="at">data =</span> df_n, </span>
+<span id="cb279-11"><a href="data-visualization.html#cb279-11" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> visit_year, <span class="at">y =</span> <span class="fu">min</span>(df<span class="sc">$</span>creatinine_mgdl) <span class="sc">-</span> <span class="fl">0.1</span>, <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;n=&quot;</span>, n)),</span>
+<span id="cb279-12"><a href="data-visualization.html#cb279-12" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb279-13"><a href="data-visualization.html#cb279-13" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Creatinine (mg/dL)&quot;</span>,</span>
+<span id="cb279-14"><a href="data-visualization.html#cb279-14" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">&quot;Creatinine levels increase over time in 2 sites out of 3&quot;</span>,</span>
+<span id="cb279-15"><a href="data-visualization.html#cb279-15" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb279-16"><a href="data-visualization.html#cb279-16" tabindex="-1"></a>         <span class="at">fill =</span> <span class="st">&quot;Year&quot;</span>) <span class="sc">+</span></span>
+<span id="cb279-17"><a href="data-visualization.html#cb279-17" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;2018&quot;</span> <span class="ot">=</span> <span class="st">&quot;#D6F49D&quot;</span>,</span>
+<span id="cb279-18"><a href="data-visualization.html#cb279-18" tabindex="-1"></a>                                 <span class="st">&quot;2020&quot;</span> <span class="ot">=</span> <span class="st">&quot;#C1EF6C&quot;</span>,</span>
+<span id="cb279-19"><a href="data-visualization.html#cb279-19" tabindex="-1"></a>                                 <span class="st">&quot;2023&quot;</span> <span class="ot">=</span> <span class="st">&quot;#A2E723&quot;</span>,</span>
+<span id="cb279-20"><a href="data-visualization.html#cb279-20" tabindex="-1"></a>                                 <span class="st">&quot;2025&quot;</span> <span class="ot">=</span> <span class="st">&quot;#59810E&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb279-21"><a href="data-visualization.html#cb279-21" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fu">max</span>(df<span class="sc">$</span>creatinine_mgdl), <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb279-22"><a href="data-visualization.html#cb279-22" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> site) <span class="sc">+</span></span>
+<span id="cb279-23"><a href="data-visualization.html#cb279-23" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span></code></pre></div>
+<img src="R-course-2026_files/figure-html/unnamed-chunk-116-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+</details>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="strings-factors-and-dataframe-handling.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/miotsdata/R-course_2026/edit/main/03-Data-visualization_complete.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["R-course-2026.pdf", "https://github.com/miotsdata/R-course_2026/raw/main/03-Data-visualization_complete.Rmd"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

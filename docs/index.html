@@ -23,7 +23,7 @@
 <meta name="author" content="Matteo Miotto" />
 
 
-<meta name="date" content="2026-04-23" />
+<meta name="date" content="2026-04-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -65,9 +65,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 <style type="text/css">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -77,7 +76,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -212,6 +211,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#home-exercise-1"><i class="fa fa-check"></i><b>2.5</b> Home exercise</a></li>
 <li class="chapter" data-level="2.6" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#bonus-how-the-clinical-data-were-created"><i class="fa fa-check"></i><b>2.6</b> Bonus: how the clinical data were created</a></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i><b>3</b> Data visualization</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-visualization.html"><a href="data-visualization.html#data-visualization-in-r-with-ggplot2"><i class="fa fa-check"></i><b>3.1</b> Data visualization in R with ggplot2</a></li>
+<li class="chapter" data-level="3.2" data-path="data-visualization.html"><a href="data-visualization.html#geom"><i class="fa fa-check"></i><b>3.2</b> Geom</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data-visualization.html"><a href="data-visualization.html#barplot"><i class="fa fa-check"></i><b>3.2.1</b> Barplot</a>
+<ul>
+<li class="chapter" data-level="3.2.1.1" data-path="data-visualization.html"><a href="data-visualization.html#stat-identity"><i class="fa fa-check"></i><b>3.2.1.1</b> Stat identity</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2.2" data-path="data-visualization.html"><a href="data-visualization.html#scatter-plot"><i class="fa fa-check"></i><b>3.2.2</b> Scatter plot</a></li>
+<li class="chapter" data-level="3.2.3" data-path="data-visualization.html"><a href="data-visualization.html#boxplot"><i class="fa fa-check"></i><b>3.2.3</b> Boxplot</a></li>
+<li class="chapter" data-level="3.2.4" data-path="data-visualization.html"><a href="data-visualization.html#density-plot"><i class="fa fa-check"></i><b>3.2.4</b> Density plot</a></li>
+<li class="chapter" data-level="3.2.5" data-path="data-visualization.html"><a href="data-visualization.html#combine-geom"><i class="fa fa-check"></i><b>3.2.5</b> Combine geom</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-visualization.html"><a href="data-visualization.html#labs"><i class="fa fa-check"></i><b>3.3</b> Labs</a></li>
+<li class="chapter" data-level="3.4" data-path="data-visualization.html"><a href="data-visualization.html#scales"><i class="fa fa-check"></i><b>3.4</b> Scales</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="data-visualization.html"><a href="data-visualization.html#axis"><i class="fa fa-check"></i><b>3.4.1</b> Axis</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-visualization.html"><a href="data-visualization.html#colors"><i class="fa fa-check"></i><b>3.4.2</b> Colors</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-visualization.html"><a href="data-visualization.html#facet"><i class="fa fa-check"></i><b>3.5</b> Facet</a></li>
+<li class="chapter" data-level="3.6" data-path="data-visualization.html"><a href="data-visualization.html#theme"><i class="fa fa-check"></i><b>3.6</b> Theme</a></li>
+<li class="chapter" data-level="3.7" data-path="data-visualization.html"><a href="data-visualization.html#save-the-plots"><i class="fa fa-check"></i><b>3.7</b> Save the plots</a></li>
+<li class="chapter" data-level="3.8" data-path="data-visualization.html"><a href="data-visualization.html#advanced-examples"><i class="fa fa-check"></i><b>3.8</b> Advanced examples</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/miotsdata/R-course_2026">GitHub</a></li>
 
@@ -236,7 +260,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title">R and clinical/lab data</h1>
 <h2 class="subtitle"><em>2026 edition</em></h2>
 <p class="author"><em>Matteo Miotto</em></p>
-<p class="date"><em>2026-04-23</em></p>
+<p class="date"><em>2026-04-25</em></p>
 </div>
 <div id="welcome" class="section level1 unnumbered hasAnchor">
 <h1>Welcome<a href="index.html#welcome" class="anchor-section" aria-label="Anchor link to header"></a></h1>
