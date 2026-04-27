@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Statistics | R and clinical/lab data</title>
+  <meta name="description" content="A practical R course on how to handle clinical/lab data" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Statistics | R and clinical/lab data" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="A practical R course on how to handle clinical/lab data" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Statistics | R and clinical/lab data" />
+  
+  <meta name="twitter:description" content="A practical R course on how to handle clinical/lab data" />
+  
+
+<meta name="author" content="Matteo Miotto" />
+
+
+<meta name="date" content="2026-04-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-visualization.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<!-- Google Site Verification -->
+<meta name="google-site-verification" content="P0RfkDLRkI9YOyaM0HXNdE0a0FI5lWKV1L-A9jTEPiI" />
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W3T8LKLD');</script>
+<!-- End Google Tag Manager -->
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R course 2026</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html"><i class="fa fa-check"></i><b>1</b> Dataframes, vectors and numbers</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#dataframes"><i class="fa fa-check"></i><b>1.1</b> Dataframes</a></li>
+<li class="chapter" data-level="1.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#import-file"><i class="fa fa-check"></i><b>1.2</b> Import file</a>
+<ul>
+<li class="chapter" data-level="1.2.0.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#notes-about-variables"><i class="fa fa-check"></i><b>1.2.0.1</b> Notes about variables</a></li>
+<li class="chapter" data-level="1.2.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#first-steps-on-a-dataframe"><i class="fa fa-check"></i><b>1.2.1</b> First steps on a dataframe</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#vectors"><i class="fa fa-check"></i><b>1.3</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#accessing-dataframe-columns"><i class="fa fa-check"></i><b>1.3.1</b> Accessing dataframe columns</a></li>
+<li class="chapter" data-level="1.3.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#accessing-values-of-a-vector-slicing"><i class="fa fa-check"></i><b>1.3.2</b> Accessing values of a vector: slicing</a>
+<ul>
+<li class="chapter" data-level="1.3.2.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#replace-a-value-by-index"><i class="fa fa-check"></i><b>1.3.2.1</b> Replace a value by index</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3.3" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#numbers-in-r"><i class="fa fa-check"></i><b>1.3.3</b> Numbers in R</a>
+<ul>
+<li class="chapter" data-level="1.3.3.1" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#declare-a-new-numeric-variable"><i class="fa fa-check"></i><b>1.3.3.1</b> Declare a new numeric variable</a></li>
+<li class="chapter" data-level="1.3.3.2" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#arithmetical-operations"><i class="fa fa-check"></i><b>1.3.3.2</b> Arithmetical operations</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3.4" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#vector-number-operations"><i class="fa fa-check"></i><b>1.3.4</b> Vector-number operations</a></li>
+<li class="chapter" data-level="1.3.5" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#operations-between-vectors"><i class="fa fa-check"></i><b>1.3.5</b> Operations between vectors</a></li>
+<li class="chapter" data-level="1.3.6" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#sumamry-statistics-of-numeric-vectors"><i class="fa fa-check"></i><b>1.3.6</b> Sumamry statistics of numeric vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#save-a-dataframe"><i class="fa fa-check"></i><b>1.4</b> Save a dataframe</a></li>
+<li class="chapter" data-level="1.5" data-path="dataframes-vectors-and-numbers.html"><a href="dataframes-vectors-and-numbers.html#home-exercise"><i class="fa fa-check"></i><b>1.5</b> Home exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html"><i class="fa fa-check"></i><b>2</b> Strings, Factors and Dataframe Handling</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#what-we-will-see-today"><i class="fa fa-check"></i><b>2.1</b> What we will see today</a></li>
+<li class="chapter" data-level="2.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#strings-and-factors"><i class="fa fa-check"></i><b>2.2</b> Strings and Factors</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#operations-on-strings"><i class="fa fa-check"></i><b>2.2.1</b> Operations on strings</a>
+<ul>
+<li class="chapter" data-level="2.2.1.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#character-substitution"><i class="fa fa-check"></i><b>2.2.1.1</b> Character substitution</a></li>
+<li class="chapter" data-level="2.2.1.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#other-useful-functions-to-handle-strings"><i class="fa fa-check"></i><b>2.2.1.2</b> Other useful functions to handle strings</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#operations-on-multiple-columns"><i class="fa fa-check"></i><b>2.2.2</b> Operations on multiple columns</a>
+<ul>
+<li class="chapter" data-level="2.2.2.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#split-a-column-and-merge-multiple-columns"><i class="fa fa-check"></i><b>2.2.2.1</b> Split a column and merge multiple columns</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#column-and-row-names"><i class="fa fa-check"></i><b>2.2.3</b> Column and row names</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#dataframe-handling"><i class="fa fa-check"></i><b>2.3</b> Dataframe Handling</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#create-new-columns-with-mutate"><i class="fa fa-check"></i><b>2.3.1</b> Create new columns with mutate</a></li>
+<li class="chapter" data-level="2.3.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#select"><i class="fa fa-check"></i><b>2.3.2</b> select</a></li>
+<li class="chapter" data-level="2.3.3" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#boolean-operators"><i class="fa fa-check"></i><b>2.3.3</b> Boolean Operators</a>
+<ul>
+<li class="chapter" data-level="2.3.3.1" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#comparison-operators"><i class="fa fa-check"></i><b>2.3.3.1</b> Comparison operators</a></li>
+<li class="chapter" data-level="2.3.3.2" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#logical-operators"><i class="fa fa-check"></i><b>2.3.3.2</b> Logical operators</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3.4" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#filter-and-filter-out"><i class="fa fa-check"></i><b>2.3.4</b> filter and filter out</a></li>
+<li class="chapter" data-level="2.3.5" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#group_by-summarize-and-reframe"><i class="fa fa-check"></i><b>2.3.5</b> group_by, summarize and reframe</a></li>
+<li class="chapter" data-level="2.3.6" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#join-merge"><i class="fa fa-check"></i><b>2.3.6</b> Join / Merge</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#save-your-results"><i class="fa fa-check"></i><b>2.4</b> Save your results</a></li>
+<li class="chapter" data-level="2.5" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#home-exercise-1"><i class="fa fa-check"></i><b>2.5</b> Home exercise</a></li>
+<li class="chapter" data-level="2.6" data-path="strings-factors-and-dataframe-handling.html"><a href="strings-factors-and-dataframe-handling.html#bonus-how-the-clinical-data-were-created"><i class="fa fa-check"></i><b>2.6</b> Bonus: how the clinical data were created</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i><b>3</b> Data visualization</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-visualization.html"><a href="data-visualization.html#data-visualization-in-r-with-ggplot2"><i class="fa fa-check"></i><b>3.1</b> Data visualization in R with ggplot2</a></li>
+<li class="chapter" data-level="3.2" data-path="data-visualization.html"><a href="data-visualization.html#geom"><i class="fa fa-check"></i><b>3.2</b> Geom</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data-visualization.html"><a href="data-visualization.html#barplot"><i class="fa fa-check"></i><b>3.2.1</b> Barplot</a>
+<ul>
+<li class="chapter" data-level="3.2.1.1" data-path="data-visualization.html"><a href="data-visualization.html#stat-identity"><i class="fa fa-check"></i><b>3.2.1.1</b> Stat identity</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2.2" data-path="data-visualization.html"><a href="data-visualization.html#scatter-plot"><i class="fa fa-check"></i><b>3.2.2</b> Scatter plot</a></li>
+<li class="chapter" data-level="3.2.3" data-path="data-visualization.html"><a href="data-visualization.html#boxplot"><i class="fa fa-check"></i><b>3.2.3</b> Boxplot</a></li>
+<li class="chapter" data-level="3.2.4" data-path="data-visualization.html"><a href="data-visualization.html#density-plot"><i class="fa fa-check"></i><b>3.2.4</b> Density plot</a></li>
+<li class="chapter" data-level="3.2.5" data-path="data-visualization.html"><a href="data-visualization.html#combine-geom"><i class="fa fa-check"></i><b>3.2.5</b> Combine geom</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-visualization.html"><a href="data-visualization.html#labs"><i class="fa fa-check"></i><b>3.3</b> Labs</a></li>
+<li class="chapter" data-level="3.4" data-path="data-visualization.html"><a href="data-visualization.html#scales"><i class="fa fa-check"></i><b>3.4</b> Scales</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="data-visualization.html"><a href="data-visualization.html#axis"><i class="fa fa-check"></i><b>3.4.1</b> Axis</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-visualization.html"><a href="data-visualization.html#colors"><i class="fa fa-check"></i><b>3.4.2</b> Colors</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-visualization.html"><a href="data-visualization.html#facet"><i class="fa fa-check"></i><b>3.5</b> Facet</a></li>
+<li class="chapter" data-level="3.6" data-path="data-visualization.html"><a href="data-visualization.html#theme"><i class="fa fa-check"></i><b>3.6</b> Theme</a></li>
+<li class="chapter" data-level="3.7" data-path="data-visualization.html"><a href="data-visualization.html#save-the-plots"><i class="fa fa-check"></i><b>3.7</b> Save the plots</a></li>
+<li class="chapter" data-level="3.8" data-path="data-visualization.html"><a href="data-visualization.html#advanced-examples"><i class="fa fa-check"></i><b>3.8</b> Advanced examples</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="statistics.html"><a href="statistics.html"><i class="fa fa-check"></i><b>4</b> Statistics</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="statistics.html"><a href="statistics.html#categorical-data"><i class="fa fa-check"></i><b>4.1</b> Categorical data</a></li>
+<li class="chapter" data-level="4.2" data-path="statistics.html"><a href="statistics.html#contingency-table"><i class="fa fa-check"></i><b>4.2</b> Contingency table</a></li>
+<li class="chapter" data-level="4.3" data-path="statistics.html"><a href="statistics.html#chi-squared-test"><i class="fa fa-check"></i><b>4.3</b> Chi-squared test</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="statistics.html"><a href="statistics.html#fishers-exact-test"><i class="fa fa-check"></i><b>4.3.1</b> Fisher’s Exact test</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="statistics.html"><a href="statistics.html#comparing-continuous-variables"><i class="fa fa-check"></i><b>4.4</b> Comparing continuous variables</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="statistics.html"><a href="statistics.html#shapiro-wilk-test"><i class="fa fa-check"></i><b>4.4.1</b> Shapiro-Wilk test</a></li>
+<li class="chapter" data-level="4.4.2" data-path="statistics.html"><a href="statistics.html#outlier-detection"><i class="fa fa-check"></i><b>4.4.2</b> Outlier detection</a></li>
+<li class="chapter" data-level="4.4.3" data-path="statistics.html"><a href="statistics.html#t-test"><i class="fa fa-check"></i><b>4.4.3</b> T test</a></li>
+<li class="chapter" data-level="4.4.4" data-path="statistics.html"><a href="statistics.html#mann-whitney"><i class="fa fa-check"></i><b>4.4.4</b> Mann-Whitney</a></li>
+<li class="chapter" data-level="4.4.5" data-path="statistics.html"><a href="statistics.html#anova"><i class="fa fa-check"></i><b>4.4.5</b> ANOVA</a></li>
+<li class="chapter" data-level="4.4.6" data-path="statistics.html"><a href="statistics.html#pearson-correlation-test"><i class="fa fa-check"></i><b>4.4.6</b> Pearson correlation test</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="statistics.html"><a href="statistics.html#pca"><i class="fa fa-check"></i><b>4.5</b> PCA</a></li>
+<li class="chapter" data-level="4.6" data-path="statistics.html"><a href="statistics.html#linear-models"><i class="fa fa-check"></i><b>4.6</b> Linear models</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="statistics.html"><a href="statistics.html#linear-model-with-continuous-outcome"><i class="fa fa-check"></i><b>4.6.1</b> Linear model with continuous outcome</a>
+<ul>
+<li class="chapter" data-level="4.6.1.1" data-path="statistics.html"><a href="statistics.html#predict"><i class="fa fa-check"></i><b>4.6.1.1</b> Predict</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6.2" data-path="statistics.html"><a href="statistics.html#generalized-linear-model-with-dicotomic-outcome"><i class="fa fa-check"></i><b>4.6.2</b> Generalized linear model with dicotomic outcome</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/miotsdata/R-course_2026">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R and clinical/lab data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="statistics" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Statistics<a href="statistics.html#statistics" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="statistics.html#cb280-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<p>First of all the choice of the right test is fundamental: here, you can see a scheme describing how to choose the right test depending on you design:</p>
+<p align="center">
+<img src="assets/img/statistical-tests.png" width="600" />
+</p>
+<div id="categorical-data" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Categorical data<a href="statistics.html#categorical-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Measure the association between the different categories of categorical variables, so if the two variables are independent or not (e.g. smoking and lung cancer).</p>
+<p>The two test we will see are the <strong>Chi-squared test</strong> and the <strong>Fisher exact test</strong> (only 2x2 contingency table and with low numerosity).</p>
+</div>
+<div id="contingency-table" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Contingency table<a href="statistics.html#contingency-table" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Contingency table is used to count the occurrence of the combination of the different levels of categorical variables. In R, to get a contingency table we use the function <code>table</code>.</p>
+<p>We will load our patient data and see the correlation between stage and site, to see whether there is any difference in distribution.</p>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="statistics.html#cb281-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;output/clinical_data_enriched.csv&quot;</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb281-2"><a href="statistics.html#cb281-2" tabindex="-1"></a><span class="fu">summary</span>(df)</span></code></pre></div>
+<pre class="code-out"><code>   patient_id     site         visit_date    visit_year    visit_month    
+ PT-001 :  1   Milan:96   2020-07-21:  3   Min.   :2018   Min.   : 1.000  
+ PT-002 :  1   Rome :77   2025-03-20:  3   1st Qu.:2020   1st Qu.: 3.000  
+ PT-003 :  1   Turin:67   2018-03-03:  2   Median :2023   Median : 6.000  
+ PT-004 :  1              2018-05-18:  2   Mean   :2022   Mean   : 5.754  
+ PT-005 :  1              2018-07-18:  2   3rd Qu.:2025   3rd Qu.: 8.000  
+ PT-006 :  1              2020-05-21:  2   Max.   :2025   Max.   :11.000  
+ (Other):234              (Other)   :226                                  
+   visit_day          age           sex         smoking     treatment  stage   
+ Min.   : 1.00   Min.   :26.0   Female:118   current:63   Control:74   I  :76  
+ 1st Qu.: 9.00   1st Qu.:49.0   Male  :122   former :90   Drug_A :88   II :73  
+ Median :16.00   Median :57.5                never  :87   Drug_B :78   III:53  
+ Mean   :16.23   Mean   :57.3                                          IV :38  
+ 3rd Qu.:23.00   3rd Qu.:65.0                                                  
+ Max.   :31.00   Max.   :85.0                                                  
+                                                                               
+   weight_kg        height_cm     systolic_bp_mmhg diastolic_bp_mmhg
+ Min.   : 39.40   Min.   :148.9   Min.   :115.0    Min.   : 73.00   
+ 1st Qu.: 65.35   1st Qu.:162.2   1st Qu.:139.0    1st Qu.: 90.75   
+ Median : 75.65   Median :168.5   Median :146.5    Median : 97.00   
+ Mean   : 76.87   Mean   :169.2   Mean   :146.7    Mean   : 96.11   
+ 3rd Qu.: 87.83   3rd Qu.:174.8   3rd Qu.:153.2    3rd Qu.:102.00   
+ Max.   :132.90   Max.   :200.1   Max.   :192.0    Max.   :120.00   
+                                                                    
+  glucose_mgdl   cholesterol_mgdl    crp_ngml        height_m    
+ Min.   : 60.0   Min.   :113.0    Min.   : 1.92   Min.   :1.489  
+ 1st Qu.: 98.0   1st Qu.:189.8    1st Qu.: 5.30   1st Qu.:1.623  
+ Median :109.0   Median :207.0    Median : 8.37   Median :1.685  
+ Mean   :108.8   Mean   :207.9    Mean   :10.35   Mean   :1.692  
+ 3rd Qu.:118.0   3rd Qu.:226.0    3rd Qu.:13.02   3rd Qu.:1.748  
+ Max.   :149.0   Max.   :307.0    Max.   :42.09   Max.   :2.001  
+                                                                 
+      BMI              BMI_class   hemoglobin_gdl    wbc_10e9l     
+ Min.   :16.00   Normal     : 58   Min.   : 9.20   Min.   : 2.310  
+ 1st Qu.:23.77   Obese      : 13   1st Qu.:12.40   1st Qu.: 5.518  
+ Median :26.85   Overweight :102   Median :13.25   Median : 7.000  
+ Mean   :26.71   Underweight: 67   Mean   :13.50   Mean   : 6.758  
+ 3rd Qu.:29.80                     3rd Qu.:14.70   3rd Qu.: 7.902  
+ Max.   :40.70                     Max.   :17.00   Max.   :11.380  
+                                   NA&#39;s   :80      NA&#39;s   :80      
+ platelets_10e9l     alt_ul       creatinine_mgdl
+ Min.   : 60.0   Min.   : 10.00   Min.   :0.630  
+ 1st Qu.:191.8   1st Qu.: 32.75   1st Qu.:1.018  
+ Median :232.0   Median : 46.50   Median :1.140  
+ Mean   :231.7   Mean   : 52.20   Mean   :1.138  
+ 3rd Qu.:271.0   3rd Qu.: 61.00   3rd Qu.:1.252  
+ Max.   :391.0   Max.   :161.00   Max.   :1.580  
+ NA&#39;s   :80      NA&#39;s   :80       NA&#39;s   :80     </code></pre>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="statistics.html#cb283-1" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   240 obs. of  26 variables:
+ $ patient_id       : Factor w/ 240 levels &quot;PT-001&quot;,&quot;PT-002&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ site             : Factor w/ 3 levels &quot;Milan&quot;,&quot;Rome&quot;,..: 1 2 2 3 3 1 2 2 1 2 ...
+ $ visit_date       : Factor w/ 218 levels &quot;2018-01-14&quot;,&quot;2018-01-24&quot;,..: 129 75 150 52 104 108 80 214 57 146 ...
+ $ visit_year       : int  2023 2020 2023 2020 2023 2023 2020 2025 2020 2023 ...
+ $ visit_month      : int  7 8 10 3 3 4 9 10 4 9 ...
+ $ visit_day        : int  20 15 15 6 30 15 9 7 19 27 ...
+ $ age              : int  40 40 59 46 58 53 51 34 43 60 ...
+ $ sex              : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 1 2 2 1 2 1 2 2 ...
+ $ smoking          : Factor w/ 3 levels &quot;current&quot;,&quot;former&quot;,..: 3 1 2 1 2 1 2 3 3 2 ...
+ $ treatment        : Factor w/ 3 levels &quot;Control&quot;,&quot;Drug_A&quot;,..: 2 3 2 2 3 1 2 1 3 2 ...
+ $ stage            : Factor w/ 4 levels &quot;I&quot;,&quot;II&quot;,&quot;III&quot;,..: 2 1 1 1 3 4 1 1 3 2 ...
+ $ weight_kg        : num  85.9 100.9 65 95.9 75.7 ...
+ $ height_cm        : num  173 185 166 182 168 ...
+ $ systolic_bp_mmhg : int  164 143 152 142 160 150 137 146 151 159 ...
+ $ diastolic_bp_mmhg: int  101 102 98 88 96 107 96 106 94 104 ...
+ $ glucose_mgdl     : int  113 105 110 120 131 78 108 93 106 110 ...
+ $ cholesterol_mgdl : int  172 239 146 232 192 232 163 199 200 185 ...
+ $ crp_ngml         : num  5.89 6.13 7.81 3.35 21.72 ...
+ $ height_m         : num  1.73 1.85 1.66 1.81 1.68 ...
+ $ BMI              : num  28.8 29.4 23.7 29.1 26.8 22.9 24.2 29.8 24.8 26.9 ...
+ $ BMI_class        : Factor w/ 4 levels &quot;Normal&quot;,&quot;Obese&quot;,..: 3 3 4 3 3 4 4 3 4 3 ...
+ $ hemoglobin_gdl   : num  NA 15 11.8 16 15.4 NA 14 16.2 10.5 15.6 ...
+ $ wbc_10e9l        : num  NA 7.49 7.46 7.09 6.63 NA 6.99 9.26 4.79 5.65 ...
+ $ platelets_10e9l  : int  NA 270 252 233 192 NA 195 188 163 269 ...
+ $ alt_ul           : int  NA 56 27 20 16 NA 61 51 50 18 ...
+ $ creatinine_mgdl  : num  NA 1.58 1.09 1.17 1.06 NA 1.15 1.06 1.21 1.08 ...</code></pre>
+<p>And now we can use <code>table</code> to get the contingency table:</p>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="statistics.html#cb285-1" tabindex="-1"></a>cont_table <span class="ot">&lt;-</span> <span class="fu">table</span>(df<span class="sc">$</span>site, df<span class="sc">$</span>stage)</span>
+<span id="cb285-2"><a href="statistics.html#cb285-2" tabindex="-1"></a>cont_table</span></code></pre></div>
+<pre class="code-out"><code>       
+         I II III IV
+  Milan 23 35  19 19
+  Rome  33 16  21  7
+  Turin 20 22  13 12</code></pre>
+<p>To make it clearer, we can add header to it:</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="statistics.html#cb287-1" tabindex="-1"></a>cont_table <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="st">&quot;site&quot;</span> <span class="ot">=</span> df<span class="sc">$</span>site, <span class="st">&quot;stage&quot;</span> <span class="ot">=</span> df<span class="sc">$</span>stage)</span>
+<span id="cb287-2"><a href="statistics.html#cb287-2" tabindex="-1"></a>cont_table</span></code></pre></div>
+<pre class="code-out"><code>       stage
+site     I II III IV
+  Milan 23 35  19 19
+  Rome  33 16  21  7
+  Turin 20 22  13 12</code></pre>
+</div>
+<div id="chi-squared-test" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Chi-squared test<a href="statistics.html#chi-squared-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To perform the chi-squared test, we use the <code>chisq.test</code> on the contingency table.</p>
+<p>It is very useful to store the results of any statistical test into a variable:</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="statistics.html#cb289-1" tabindex="-1"></a>chisq_res <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(cont_table)</span>
+<span id="cb289-2"><a href="statistics.html#cb289-2" tabindex="-1"></a>chisq_res</span></code></pre></div>
+<pre class="code-out"><code>
+    Pearson&#39;s Chi-squared test
+
+data:  cont_table
+X-squared = 13.277, df = 6, p-value = 0.03884</code></pre>
+<p>Here, we can see that the association between the two variables is significant (this does not mean it is a causative association).</p>
+<p>We can inspect the result object, if we want to then use the results (for example, print the p-value alone or insert it in a graph):</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="statistics.html#cb291-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;P-value of the Chi-squared test is:&quot;</span>, chisq_res<span class="sc">$</span>p.value))</span></code></pre></div>
+<pre class="code-out"><code>[1] &quot;P-value of the Chi-squared test is: 0.0388429396366515&quot;</code></pre>
+<p>Let’s create a figure for this result.</p>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="statistics.html#cb293-1" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb293-2"><a href="statistics.html#cb293-2" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> site, <span class="at">fill =</span> stage), <span class="at">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="sc">+</span></span>
+<span id="cb293-3"><a href="statistics.html#cb293-3" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb293-4"><a href="statistics.html#cb293-4" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Proportion of stages in each site&quot;</span>,</span>
+<span id="cb293-5"><a href="statistics.html#cb293-5" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">&quot;Chi-squared test p-value: &quot;</span>, chisq_res<span class="sc">$</span>p.value),</span>
+<span id="cb293-6"><a href="statistics.html#cb293-6" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">&quot;Proportion&quot;</span>) <span class="sc">+</span></span>
+<span id="cb293-7"><a href="statistics.html#cb293-7" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-123-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<div id="fishers-exact-test" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Fisher’s Exact test<a href="statistics.html#fishers-exact-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can apply, just for example, the Fisher’s exact test on sex and 2 sites: Turin and Rome (remember, Fisher’s exact test wants a 2x2 table). The function to use is <code>fisher.test</code>:</p>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="statistics.html#cb294-1" tabindex="-1"></a>filtered_df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb294-2"><a href="statistics.html#cb294-2" tabindex="-1"></a>    <span class="fu">filter_out</span>(site <span class="sc">==</span> <span class="st">&quot;Milan&quot;</span>)</span>
+<span id="cb294-3"><a href="statistics.html#cb294-3" tabindex="-1"></a></span>
+<span id="cb294-4"><a href="statistics.html#cb294-4" tabindex="-1"></a>cont_table_fisher <span class="ot">&lt;-</span> <span class="fu">table</span>(filtered_df<span class="sc">$</span>sex, filtered_df<span class="sc">$</span>site)</span>
+<span id="cb294-5"><a href="statistics.html#cb294-5" tabindex="-1"></a></span>
+<span id="cb294-6"><a href="statistics.html#cb294-6" tabindex="-1"></a>fisher_res <span class="ot">&lt;-</span> <span class="fu">fisher.test</span>(cont_table_fisher)</span>
+<span id="cb294-7"><a href="statistics.html#cb294-7" tabindex="-1"></a>fisher_res</span></code></pre></div>
+<pre class="code-out"><code>
+    Fisher&#39;s Exact Test for Count Data
+
+data:  cont_table_fisher
+p-value = 0.6199
+alternative hypothesis: two.sided</code></pre>
+<p>We can see that there is no significant correlation between those 2 sites and sex of the patients.</p>
+</div>
+</div>
+<div id="comparing-continuous-variables" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Comparing continuous variables<a href="statistics.html#comparing-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>First thing to do is to check for parametric assumptions, which are:</p>
+<ul>
+<li><p><strong>Normality</strong>: data in each group must be normally distributed</p></li>
+<li><p><strong>Homoschedasticity</strong>: there must be equal variances between groups you are going to compare</p></li>
+<li><p><strong>Independency</strong>: data belonging to a group should be independent</p></li>
+<li><p><strong>No outlier</strong>s: there should not be any outlier in any group.</p></li>
+</ul>
+<p>For sake of time, today we will see only the shapiro-test for normality. You can see a full reference of the tests to perform <a href="https://miotsdata.github.io/R-for-biologist/intro-stat-chapter.html#evaluate-parametric-assumptions">here</a>.</p>
+<div id="shapiro-wilk-test" class="section level3 hasAnchor" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Shapiro-Wilk test<a href="statistics.html#shapiro-wilk-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To test for normality of the data, we use the Shapiro-Wilk test on a single vector (so we need to repeat it for each group).</p>
+<p>The function to use is <code>shapiro.test</code>, and here we apply just on diastolic_bp_mmhg in smokers.</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="statistics.html#cb296-1" tabindex="-1"></a>smoker_patients_diastolic_bp_mmhg <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb296-2"><a href="statistics.html#cb296-2" tabindex="-1"></a>  <span class="fu">filter</span>(smoking <span class="sc">==</span> <span class="st">&quot;current&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb296-3"><a href="statistics.html#cb296-3" tabindex="-1"></a>  <span class="fu">pull</span>(diastolic_bp_mmhg)</span>
+<span id="cb296-4"><a href="statistics.html#cb296-4" tabindex="-1"></a></span>
+<span id="cb296-5"><a href="statistics.html#cb296-5" tabindex="-1"></a><span class="fu">head</span>(smoker_patients_diastolic_bp_mmhg)</span></code></pre></div>
+<pre class="code-out"><code>[1] 102  88 107  76  97  84</code></pre>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="statistics.html#cb298-1" tabindex="-1"></a><span class="co"># Shapiro test</span></span>
+<span id="cb298-2"><a href="statistics.html#cb298-2" tabindex="-1"></a>shap_res <span class="ot">&lt;-</span> <span class="fu">shapiro.test</span>(smoker_patients_diastolic_bp_mmhg)</span>
+<span id="cb298-3"><a href="statistics.html#cb298-3" tabindex="-1"></a>shap_res</span></code></pre></div>
+<pre class="code-out"><code>
+    Shapiro-Wilk normality test
+
+data:  smoker_patients_diastolic_bp_mmhg
+W = 0.98022, p-value = 0.4045</code></pre>
+<p>Ok, this group of data has a normal distribution (p-value &gt; 0.05). But how can we apply to all of type of smokers?</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="statistics.html#cb300-1" tabindex="-1"></a>shap_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb300-2"><a href="statistics.html#cb300-2" tabindex="-1"></a>  <span class="fu">group_by</span>(smoking) <span class="sc">%&gt;%</span></span>
+<span id="cb300-3"><a href="statistics.html#cb300-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">&quot;shapiro_p-value&quot;</span> <span class="ot">=</span> <span class="fu">shapiro.test</span>(diastolic_bp_mmhg)<span class="sc">$</span>p.value, </span>
+<span id="cb300-4"><a href="statistics.html#cb300-4" tabindex="-1"></a>            <span class="st">&quot;shapiro-W&quot;</span> <span class="ot">=</span> <span class="fu">shapiro.test</span>(diastolic_bp_mmhg)<span class="sc">$</span>statistic)</span>
+<span id="cb300-5"><a href="statistics.html#cb300-5" tabindex="-1"></a></span>
+<span id="cb300-6"><a href="statistics.html#cb300-6" tabindex="-1"></a>shap_df</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 3 × 3
+  smoking `shapiro_p-value` `shapiro-W`
+  &lt;fct&gt;               &lt;dbl&gt;       &lt;dbl&gt;
+1 current             0.404       0.980
+2 former              0.434       0.986
+3 never               0.780       0.990</code></pre>
+<p>And we can check which of them are not normal by filtering this dataframe:</p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="statistics.html#cb302-1" tabindex="-1"></a>shap_df <span class="sc">%&gt;%</span></span>
+<span id="cb302-2"><a href="statistics.html#cb302-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">shapiro_p-value</span><span class="st">`</span> <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 0 × 3
+# ℹ 3 variables: smoking &lt;fct&gt;, shapiro_p-value &lt;dbl&gt;, shapiro-W &lt;dbl&gt;</code></pre>
+<p>They are all normal, so we can use parametric tests to compare them.</p>
+</div>
+<div id="outlier-detection" class="section level3 hasAnchor" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> Outlier detection<a href="statistics.html#outlier-detection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Outlier detection is a crucial point in the analyses, it helps to understand whether we have some wrong input data (very out of scale) and whether we can apply parametric or non parametric tests.</p>
+<div class="exercise">
+<p><span id="exr:outliers" class="exercise"><strong>Exercise 4.1  </strong></span>Let’s say that an outlier is a value which is &lt; 1st quartile (25th quantile) - 1.5 IQR or &gt; 3rd quartile (75th quantile) + 1.5 IQR.</p>
+<p>To help:</p>
+<ul>
+<li><code>quantile(x, 0.25)</code> finds the 25th quantile (1st quartile) of a vectors of values x</li>
+<li><code>IQR(x)</code> finds the interquartile range of a vectors of values x</li>
+<li>there are NAs…</li>
+</ul>
+<p>Find, if there are, outliers in creatinine levels in both stage I and stage IV patients.</p>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="statistics.html#cb304-1" tabindex="-1"></a><span class="co"># Extract data</span></span>
+<span id="cb304-2"><a href="statistics.html#cb304-2" tabindex="-1"></a>stageI_creatinine <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb304-3"><a href="statistics.html#cb304-3" tabindex="-1"></a>  <span class="fu">filter</span>(stage <span class="sc">==</span> <span class="st">&quot;I&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb304-4"><a href="statistics.html#cb304-4" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb304-5"><a href="statistics.html#cb304-5" tabindex="-1"></a>  <span class="fu">pull</span>(creatinine_mgdl)</span>
+<span id="cb304-6"><a href="statistics.html#cb304-6" tabindex="-1"></a></span>
+<span id="cb304-7"><a href="statistics.html#cb304-7" tabindex="-1"></a>stageIV_creatinine <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb304-8"><a href="statistics.html#cb304-8" tabindex="-1"></a>  <span class="fu">filter</span>(stage <span class="sc">==</span> <span class="st">&quot;IV&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb304-9"><a href="statistics.html#cb304-9" tabindex="-1"></a>    <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb304-10"><a href="statistics.html#cb304-10" tabindex="-1"></a>  <span class="fu">pull</span>(creatinine_mgdl)</span>
+<span id="cb304-11"><a href="statistics.html#cb304-11" tabindex="-1"></a></span>
+<span id="cb304-12"><a href="statistics.html#cb304-12" tabindex="-1"></a><span class="co"># Calculate outliers</span></span>
+<span id="cb304-13"><a href="statistics.html#cb304-13" tabindex="-1"></a>stageI_outliers <span class="ot">&lt;-</span> (stageI_creatinine <span class="sc">&lt;</span> <span class="fu">quantile</span>(stageI_creatinine, <span class="fl">0.25</span>) <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span>  <span class="fu">IQR</span>(stageI_creatinine)) <span class="sc">|</span> (stageI_creatinine <span class="sc">&gt;</span> <span class="fu">quantile</span>(stageI_creatinine, <span class="fl">0.75</span>) <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">IQR</span>(stageI_creatinine))</span>
+<span id="cb304-14"><a href="statistics.html#cb304-14" tabindex="-1"></a></span>
+<span id="cb304-15"><a href="statistics.html#cb304-15" tabindex="-1"></a>stageIV_outliers <span class="ot">&lt;-</span> (stageIV_creatinine <span class="sc">&lt;</span> <span class="fu">quantile</span>(stageIV_creatinine, <span class="fl">0.25</span>) <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">IQR</span>(stageIV_creatinine)) <span class="sc">|</span> (stageIV_creatinine <span class="sc">&gt;</span> <span class="fu">quantile</span>(stageIV_creatinine, <span class="fl">0.75</span>) <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">IQR</span>(stageIV_creatinine))</span>
+<span id="cb304-16"><a href="statistics.html#cb304-16" tabindex="-1"></a></span>
+<span id="cb304-17"><a href="statistics.html#cb304-17" tabindex="-1"></a><span class="co"># Get outliers</span></span>
+<span id="cb304-18"><a href="statistics.html#cb304-18" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">mean</span>(stageI_creatinine))</span></code></pre></div>
+<pre class="code-out"><code>[1] 1.138936</code></pre>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="statistics.html#cb306-1" tabindex="-1"></a><span class="fu">print</span>(stageI_creatinine[stageI_outliers])</span></code></pre></div>
+<pre class="code-out"><code>[1] 1.58 0.66</code></pre>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="statistics.html#cb308-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">mean</span>(stageIV_creatinine))</span></code></pre></div>
+<pre class="code-out"><code>[1] 1.144</code></pre>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="statistics.html#cb310-1" tabindex="-1"></a><span class="fu">print</span>(stageIV_creatinine[stageIV_outliers])</span></code></pre></div>
+<pre class="code-out"><code>numeric(0)</code></pre>
+<details>
+</div>
+<div id="t-test" class="section level3 hasAnchor" number="4.4.3">
+<h3><span class="header-section-number">4.4.3</span> T test<a href="statistics.html#t-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If we now want to compare diastolic_bp_mmhg between current smokers and patients who never smoke, we can apply standard t-test as both of them have normal distributions.</p>
+<p>We can isolate the data from the dataframe:</p>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="statistics.html#cb312-1" tabindex="-1"></a>t_test_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb312-2"><a href="statistics.html#cb312-2" tabindex="-1"></a>  <span class="fu">filter_out</span>(smoking <span class="sc">==</span> <span class="st">&quot;former&quot;</span>)</span>
+<span id="cb312-3"><a href="statistics.html#cb312-3" tabindex="-1"></a><span class="fu">str</span>(t_test_df)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   150 obs. of  26 variables:
+ $ patient_id       : Factor w/ 240 levels &quot;PT-001&quot;,&quot;PT-002&quot;,..: 1 2 4 6 8 9 11 12 13 15 ...
+ $ site             : Factor w/ 3 levels &quot;Milan&quot;,&quot;Rome&quot;,..: 1 2 3 1 2 1 1 2 1 3 ...
+ $ visit_date       : Factor w/ 218 levels &quot;2018-01-14&quot;,&quot;2018-01-24&quot;,..: 129 75 52 108 214 57 125 170 8 27 ...
+ $ visit_year       : int  2023 2020 2020 2023 2025 2020 2023 2025 2018 2018 ...
+ $ visit_month      : int  7 8 3 4 10 4 6 3 2 7 ...
+ $ visit_day        : int  20 15 6 15 7 19 29 20 23 10 ...
+ $ age              : int  40 40 46 53 34 43 65 52 58 75 ...
+ $ sex              : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 2 1 1 2 1 2 2 1 ...
+ $ smoking          : Factor w/ 3 levels &quot;current&quot;,&quot;former&quot;,..: 3 1 1 1 3 3 1 3 3 1 ...
+ $ treatment        : Factor w/ 3 levels &quot;Control&quot;,&quot;Drug_A&quot;,..: 2 3 2 1 1 3 1 2 2 1 ...
+ $ stage            : Factor w/ 4 levels &quot;I&quot;,&quot;II&quot;,&quot;III&quot;,..: 2 1 1 4 1 3 2 3 2 1 ...
+ $ weight_kg        : num  85.9 100.9 95.9 69.6 75.3 ...
+ $ height_cm        : num  173 185 182 174 159 ...
+ $ systolic_bp_mmhg : int  164 143 142 150 146 151 125 147 162 149 ...
+ $ diastolic_bp_mmhg: int  101 102 88 107 106 94 76 96 98 97 ...
+ $ glucose_mgdl     : int  113 105 120 78 93 106 94 86 141 117 ...
+ $ cholesterol_mgdl : int  172 239 232 232 199 200 209 222 223 204 ...
+ $ crp_ngml         : num  5.89 6.13 3.35 32.42 5.08 ...
+ $ height_m         : num  1.73 1.85 1.81 1.74 1.59 ...
+ $ BMI              : num  28.8 29.4 29.1 22.9 29.8 24.8 30.5 29.6 27 30.2 ...
+ $ BMI_class        : Factor w/ 4 levels &quot;Normal&quot;,&quot;Obese&quot;,..: 3 3 3 4 3 4 1 3 3 1 ...
+ $ hemoglobin_gdl   : num  NA 15 16 NA 16.2 10.5 12.4 14.5 13.5 12.7 ...
+ $ wbc_10e9l        : num  NA 7.49 7.09 NA 9.26 4.79 8.39 7.87 3.95 6.37 ...
+ $ platelets_10e9l  : int  NA 270 233 NA 188 163 165 263 193 288 ...
+ $ alt_ul           : int  NA 56 20 NA 51 50 47 51 95 36 ...
+ $ creatinine_mgdl  : num  NA 1.58 1.17 NA 1.06 1.21 1.12 1.03 1.27 1.18 ...</code></pre>
+<p>We can now apply t-test, using <code>t.test</code> function:</p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="statistics.html#cb314-1" tabindex="-1"></a>t_test_res <span class="ot">&lt;-</span> <span class="fu">t.test</span>(t_test_df<span class="sc">$</span>diastolic_bp_mmhg <span class="sc">~</span> t_test_df<span class="sc">$</span>smoking)</span>
+<span id="cb314-2"><a href="statistics.html#cb314-2" tabindex="-1"></a>t_test_res</span></code></pre></div>
+<pre class="code-out"><code>
+    Welch Two Sample t-test
+
+data:  t_test_df$diastolic_bp_mmhg by t_test_df$smoking
+t = 2.0406, df = 114.58, p-value = 0.04359
+alternative hypothesis: true difference in means between group current and group never is not equal to 0
+95 percent confidence interval:
+ 0.09540767 6.42238105
+sample estimates:
+mean in group current   mean in group never 
+             98.06349              94.80460 </code></pre>
+<p>Also for this object, we can have access to each individual result:</p>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="statistics.html#cb316-1" tabindex="-1"></a><span class="fu">print</span>(t_test_res<span class="sc">$</span>p.value)</span></code></pre></div>
+<pre class="code-out"><code>[1] 0.04358633</code></pre>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="statistics.html#cb318-1" tabindex="-1"></a><span class="fu">print</span>(t_test_res<span class="sc">$</span>estimate)</span></code></pre></div>
+<pre class="code-out"><code>mean in group current   mean in group never 
+             98.06349              94.80460 </code></pre>
+</div>
+<div id="mann-whitney" class="section level3 hasAnchor" number="4.4.4">
+<h3><span class="header-section-number">4.4.4</span> Mann-Whitney<a href="statistics.html#mann-whitney" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s pretend that the distribution of diastolic_bp_mmhg in former smokers is not normal; if we want to perform a comparison between former and current, we cannot use standard t.test, but the Mann-Whitney test. The function to use is <code>wilcox.test</code>.</p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="statistics.html#cb320-1" tabindex="-1"></a>mann_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb320-2"><a href="statistics.html#cb320-2" tabindex="-1"></a>  <span class="fu">filter_out</span>(smoking <span class="sc">==</span> <span class="st">&quot;never&quot;</span>)</span>
+<span id="cb320-3"><a href="statistics.html#cb320-3" tabindex="-1"></a></span>
+<span id="cb320-4"><a href="statistics.html#cb320-4" tabindex="-1"></a>wilcox_res <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(mann_df<span class="sc">$</span>diastolic_bp_mmhg <span class="sc">~</span> mann_df<span class="sc">$</span>smoking)</span>
+<span id="cb320-5"><a href="statistics.html#cb320-5" tabindex="-1"></a>wilcox_res</span></code></pre></div>
+<pre class="code-out"><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  mann_df$diastolic_bp_mmhg by mann_df$smoking
+W = 3267.5, p-value = 0.1089
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+<p>We can see that there is no significant difference.</p>
+<div class="exercise">
+<p><span id="exr:two-samples" class="exercise"><strong>Exercise 4.2  </strong></span>Is there a significant difference in weight between current smokers and former smokers? Choose the right test and plot the results.</p>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="statistics.html#cb322-1" tabindex="-1"></a>smoking_df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb322-2"><a href="statistics.html#cb322-2" tabindex="-1"></a>    <span class="fu">filter_out</span>(smoking <span class="sc">==</span> <span class="st">&quot;never&quot;</span>)</span>
+<span id="cb322-3"><a href="statistics.html#cb322-3" tabindex="-1"></a></span>
+<span id="cb322-4"><a href="statistics.html#cb322-4" tabindex="-1"></a>smoking_df <span class="sc">|&gt;</span> </span>
+<span id="cb322-5"><a href="statistics.html#cb322-5" tabindex="-1"></a>    <span class="fu">group_by</span>(smoking) <span class="sc">|&gt;</span></span>
+<span id="cb322-6"><a href="statistics.html#cb322-6" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="st">&quot;shapiro_p-value&quot;</span> <span class="ot">=</span> <span class="fu">shapiro.test</span>(weight_kg)<span class="sc">$</span>p.value, </span>
+<span id="cb322-7"><a href="statistics.html#cb322-7" tabindex="-1"></a>              <span class="st">&quot;shapiro-W&quot;</span> <span class="ot">=</span> <span class="fu">shapiro.test</span>(weight_kg)<span class="sc">$</span>statistic)</span></code></pre></div>
+<pre class="code-out"><code># A tibble: 2 × 3
+  smoking `shapiro_p-value` `shapiro-W`
+  &lt;fct&gt;               &lt;dbl&gt;       &lt;dbl&gt;
+1 current            0.0773       0.966
+2 former             0.0430       0.971</code></pre>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="statistics.html#cb324-1" tabindex="-1"></a>wilcox_res <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(smoking_df<span class="sc">$</span>weight_kg <span class="sc">~</span> smoking_df<span class="sc">$</span>smoking)</span>
+<span id="cb324-2"><a href="statistics.html#cb324-2" tabindex="-1"></a>wilcox_res</span></code></pre></div>
+<pre class="code-out"><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  smoking_df$weight_kg by smoking_df$smoking
+W = 3001.5, p-value = 0.5383
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="statistics.html#cb326-1" tabindex="-1"></a><span class="fu">ggplot</span>(smoking_df) <span class="sc">+</span></span>
+<span id="cb326-2"><a href="statistics.html#cb326-2" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> smoking, <span class="at">y =</span> weight_kg, <span class="at">fill =</span> smoking)) <span class="sc">+</span></span>
+<span id="cb326-3"><a href="statistics.html#cb326-3" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Weight (kg)&quot;</span>,</span>
+<span id="cb326-4"><a href="statistics.html#cb326-4" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">&quot;No difference in weight between current and former smokers&quot;</span>,</span>
+<span id="cb326-5"><a href="statistics.html#cb326-5" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">&quot;Mann-Whitney test p-value: &quot;</span>, <span class="fu">round</span>(wilcox_res<span class="sc">$</span>p.value, <span class="dv">2</span>))) <span class="sc">+</span></span>
+<span id="cb326-6"><a href="statistics.html#cb326-6" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-136-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<details>
+</div>
+<div id="anova" class="section level3 hasAnchor" number="4.4.5">
+<h3><span class="header-section-number">4.4.5</span> ANOVA<a href="statistics.html#anova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When the groups are more than 2, we should first do the ANOVA and then, <strong>only if it is significant</strong> perform pairwise comparisons.</p>
+<p>Let’s check whether systolic_bp_mmhg is different between males and females and based on BMI class.</p>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="statistics.html#cb327-1" tabindex="-1"></a>aov_res <span class="ot">&lt;-</span> <span class="fu">aov</span>(df<span class="sc">$</span>systolic_bp_mmhg <span class="sc">~</span> df<span class="sc">$</span>BMI_class <span class="sc">*</span> df<span class="sc">$</span>sex)</span>
+<span id="cb327-2"><a href="statistics.html#cb327-2" tabindex="-1"></a><span class="fu">summary</span>(aov_res)</span></code></pre></div>
+<pre class="code-out"><code>                     Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+df$BMI_class          3   1412   470.7   3.624 0.01378 * 
+df$sex                1   1151  1150.8   8.862 0.00322 **
+df$BMI_class:df$sex   3    496   165.4   1.274 0.28396   
+Residuals           232  30126   129.9                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>So, both sex and BMI class influence systolic_bp_mmhg; but not the interaction. To get which BMI_class are different we perform the pairwise t test:</p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="statistics.html#cb329-1" tabindex="-1"></a><span class="fu">pairwise.t.test</span>(<span class="at">x =</span> df<span class="sc">$</span>systolic_bp_mmhg, <span class="at">g =</span> df<span class="sc">$</span>BMI_class, <span class="at">p.adjust.method =</span> <span class="st">&quot;bonferroni&quot;</span>)</span></code></pre></div>
+<pre class="code-out"><code>
+    Pairwise comparisons using t tests with pooled SD 
+
+data:  df$systolic_bp_mmhg and df$BMI_class 
+
+            Normal Obese Overweight
+Obese       0.022  -     -         
+Overweight  0.589  0.204 -         
+Underweight 0.165  0.590 1.000     
+
+P value adjustment method: bonferroni </code></pre>
+<p>The only BMI class comparison in which the systolic_bp_mmhg is different is Obese vs Normal.</p>
+</div>
+<div id="pearson-correlation-test" class="section level3 hasAnchor" number="4.4.6">
+<h3><span class="header-section-number">4.4.6</span> Pearson correlation test<a href="statistics.html#pearson-correlation-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To perform a correlation test between continuous variables, we use <code>cor.test</code> with method “pearson” (if variables are normally distributed, otherwise “spearman” or “kendall”).</p>
+<p><strong>REMEMBER</strong>: correlation is not causation.</p>
+<p>Let’s pretend all variable are normally distributed and see the correlation between <em>wbc_10e9l</em> and <em>crp_ngml</em>:</p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="statistics.html#cb331-1" tabindex="-1"></a>corr_res <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(df<span class="sc">$</span>wbc_10e9l, df<span class="sc">$</span>crp_ngml, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span>
+<span id="cb331-2"><a href="statistics.html#cb331-2" tabindex="-1"></a>corr_res</span></code></pre></div>
+<pre class="code-out"><code>
+    Pearson&#39;s product-moment correlation
+
+data:  df$wbc_10e9l and df$crp_ngml
+t = 1.383, df = 158, p-value = 0.1686
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.04658334  0.26011079
+sample estimates:
+      cor 
+0.1093659 </code></pre>
+<p>There is not a significant correlation.</p>
+<div class="exercise">
+<p><span id="exr:correlation" class="exercise"><strong>Exercise 4.3  </strong></span>Is there a significant correlation between <em>glucose_mgdl</em> and <em>cholesterol_mgdl</em> in patients?</p>
+<p>Plot the result.</p>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="statistics.html#cb333-1" tabindex="-1"></a>corr_df <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(df)</span>
+<span id="cb333-2"><a href="statistics.html#cb333-2" tabindex="-1"></a>corr_res <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(corr_df<span class="sc">$</span>glucose_mgdl, corr_df<span class="sc">$</span>cholesterol_mgdl, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span>
+<span id="cb333-3"><a href="statistics.html#cb333-3" tabindex="-1"></a>corr_res</span></code></pre></div>
+<pre class="code-out"><code>
+    Pearson&#39;s product-moment correlation
+
+data:  corr_df$glucose_mgdl and corr_df$cholesterol_mgdl
+t = 2.281, df = 158, p-value = 0.02388
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.02406027 0.32471529
+sample estimates:
+      cor 
+0.1785525 </code></pre>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="statistics.html#cb335-1" tabindex="-1"></a>corr_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(corr_df) <span class="sc">+</span></span>
+<span id="cb335-2"><a href="statistics.html#cb335-2" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> glucose_mgdl, <span class="at">x =</span> cholesterol_mgdl)) <span class="sc">+</span></span>
+<span id="cb335-3"><a href="statistics.html#cb335-3" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Glucose (mg/dL)&quot;</span>,</span>
+<span id="cb335-4"><a href="statistics.html#cb335-4" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">&quot;Cholesterol (mg/dL)&quot;</span>,</span>
+<span id="cb335-5"><a href="statistics.html#cb335-5" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">&quot;Positive correlation between glucose and cholesterol levels&quot;</span>,</span>
+<span id="cb335-6"><a href="statistics.html#cb335-6" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">&quot;Pearson correlation: &quot;</span>, <span class="fu">round</span>(corr_res<span class="sc">$</span>estimate, <span class="dv">2</span>))) <span class="sc">+</span></span>
+<span id="cb335-7"><a href="statistics.html#cb335-7" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span>
+<span id="cb335-8"><a href="statistics.html#cb335-8" tabindex="-1"></a></span>
+<span id="cb335-9"><a href="statistics.html#cb335-9" tabindex="-1"></a>corr_plot</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-141-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<details>
+</div>
+</div>
+<div id="pca" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> PCA<a href="statistics.html#pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>PCA (Principal Component Analysis) is useful to evaluate whether data can be clustered in groups based on any factor that we have (age, sex, stage, …).</p>
+<p>To perform PCA, we should ouse only numeric scaled data. Se we first have to select only numeric variables and scale them.</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="statistics.html#cb336-1" tabindex="-1"></a>data_n <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb336-2"><a href="statistics.html#cb336-2" tabindex="-1"></a>    <span class="fu">na.omit</span>() <span class="sc">|&gt;</span></span>
+<span id="cb336-3"><a href="statistics.html#cb336-3" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
+<span id="cb336-4"><a href="statistics.html#cb336-4" tabindex="-1"></a></span>
+<span id="cb336-5"><a href="statistics.html#cb336-5" tabindex="-1"></a><span class="fu">str</span>(data_n)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   160 obs. of  18 variables:
+ $ visit_year       : int  2020 2023 2020 2023 2020 2025 2020 2023 2023 2025 ...
+ $ visit_month      : int  8 10 3 3 9 10 4 9 6 3 ...
+ $ visit_day        : int  15 15 6 30 9 7 19 27 29 20 ...
+ $ age              : int  40 59 46 58 51 34 43 60 65 52 ...
+ $ weight_kg        : num  100.9 65 95.9 75.7 69.7 ...
+ $ height_cm        : num  185 166 182 168 170 ...
+ $ systolic_bp_mmhg : int  143 152 142 160 137 146 151 159 125 147 ...
+ $ diastolic_bp_mmhg: int  102 98 88 96 96 106 94 104 76 96 ...
+ $ glucose_mgdl     : int  105 110 120 131 108 93 106 110 94 86 ...
+ $ cholesterol_mgdl : int  239 146 232 192 163 199 200 185 209 222 ...
+ $ crp_ngml         : num  6.13 7.81 3.35 21.72 5.41 ...
+ $ height_m         : num  1.85 1.66 1.81 1.68 1.7 ...
+ $ BMI              : num  29.4 23.7 29.1 26.8 24.2 29.8 24.8 26.9 30.5 29.6 ...
+ $ hemoglobin_gdl   : num  15 11.8 16 15.4 14 16.2 10.5 15.6 12.4 14.5 ...
+ $ wbc_10e9l        : num  7.49 7.46 7.09 6.63 6.99 9.26 4.79 5.65 8.39 7.87 ...
+ $ platelets_10e9l  : int  270 252 233 192 195 188 163 269 165 263 ...
+ $ alt_ul           : int  56 27 20 16 61 51 50 18 47 51 ...
+ $ creatinine_mgdl  : num  1.58 1.09 1.17 1.06 1.15 1.06 1.21 1.08 1.12 1.03 ...
+ - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int [1:80] 1 6 14 21 25 33 46 49 52 54 ...
+  ..- attr(*, &quot;names&quot;)= chr [1:80] &quot;1&quot; &quot;6&quot; &quot;14&quot; &quot;21&quot; ...</code></pre>
+<p>We have to get rid of visit year, month and day, as they should not be considered numeric in this case, rather factors.</p>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="statistics.html#cb338-1" tabindex="-1"></a>data_n <span class="ot">&lt;-</span> data_n <span class="sc">|&gt;</span></span>
+<span id="cb338-2"><a href="statistics.html#cb338-2" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;visit_&quot;</span>))</span>
+<span id="cb338-3"><a href="statistics.html#cb338-3" tabindex="-1"></a></span>
+<span id="cb338-4"><a href="statistics.html#cb338-4" tabindex="-1"></a><span class="fu">str</span>(data_n)</span></code></pre></div>
+<pre class="code-out"><code>&#39;data.frame&#39;:   160 obs. of  15 variables:
+ $ age              : int  40 59 46 58 51 34 43 60 65 52 ...
+ $ weight_kg        : num  100.9 65 95.9 75.7 69.7 ...
+ $ height_cm        : num  185 166 182 168 170 ...
+ $ systolic_bp_mmhg : int  143 152 142 160 137 146 151 159 125 147 ...
+ $ diastolic_bp_mmhg: int  102 98 88 96 96 106 94 104 76 96 ...
+ $ glucose_mgdl     : int  105 110 120 131 108 93 106 110 94 86 ...
+ $ cholesterol_mgdl : int  239 146 232 192 163 199 200 185 209 222 ...
+ $ crp_ngml         : num  6.13 7.81 3.35 21.72 5.41 ...
+ $ height_m         : num  1.85 1.66 1.81 1.68 1.7 ...
+ $ BMI              : num  29.4 23.7 29.1 26.8 24.2 29.8 24.8 26.9 30.5 29.6 ...
+ $ hemoglobin_gdl   : num  15 11.8 16 15.4 14 16.2 10.5 15.6 12.4 14.5 ...
+ $ wbc_10e9l        : num  7.49 7.46 7.09 6.63 6.99 9.26 4.79 5.65 8.39 7.87 ...
+ $ platelets_10e9l  : int  270 252 233 192 195 188 163 269 165 263 ...
+ $ alt_ul           : int  56 27 20 16 61 51 50 18 47 51 ...
+ $ creatinine_mgdl  : num  1.58 1.09 1.17 1.06 1.15 1.06 1.21 1.08 1.12 1.03 ...
+ - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int [1:80] 1 6 14 21 25 33 46 49 52 54 ...
+  ..- attr(*, &quot;names&quot;)= chr [1:80] &quot;1&quot; &quot;6&quot; &quot;14&quot; &quot;21&quot; ...</code></pre>
+<p>Now we have to scale data:</p>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="statistics.html#cb340-1" tabindex="-1"></a>data_n_scaled <span class="ot">&lt;-</span> <span class="fu">scale</span>(data_n)</span></code></pre></div>
+<p>To confirm that they have been scaled:</p>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="statistics.html#cb341-1" tabindex="-1"></a><span class="co"># little exercise: confirm that for each variable mean ~ 0 and sd = 1</span></span>
+<span id="cb341-2"><a href="statistics.html#cb341-2" tabindex="-1"></a></span>
+<span id="cb341-3"><a href="statistics.html#cb341-3" tabindex="-1"></a><span class="fu">apply</span>(data_n_scaled, <span class="dv">2</span>, mean)</span></code></pre></div>
+<pre class="code-out"><code>              age         weight_kg         height_cm  systolic_bp_mmhg 
+    -1.082467e-16     -2.785272e-15      1.150469e-15     -5.211109e-16 
+diastolic_bp_mmhg      glucose_mgdl  cholesterol_mgdl          crp_ngml 
+     2.914335e-16      3.955170e-17     -3.060052e-16      2.040035e-16 
+         height_m               BMI    hemoglobin_gdl         wbc_10e9l 
+     2.989969e-15      5.551115e-16     -4.742734e-15      1.526557e-15 
+  platelets_10e9l            alt_ul   creatinine_mgdl 
+    -1.387779e-18     -1.387779e-16      1.879920e-15 </code></pre>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="statistics.html#cb343-1" tabindex="-1"></a><span class="fu">apply</span>(data_n_scaled, <span class="dv">2</span>, sd)</span></code></pre></div>
+<pre class="code-out"><code>              age         weight_kg         height_cm  systolic_bp_mmhg 
+                1                 1                 1                 1 
+diastolic_bp_mmhg      glucose_mgdl  cholesterol_mgdl          crp_ngml 
+                1                 1                 1                 1 
+         height_m               BMI    hemoglobin_gdl         wbc_10e9l 
+                1                 1                 1                 1 
+  platelets_10e9l            alt_ul   creatinine_mgdl 
+                1                 1                 1 </code></pre>
+<p>To perform PCA, we use <code>prcomp</code> function:</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="statistics.html#cb345-1" tabindex="-1"></a>pca_res <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(data_n_scaled, <span class="at">center =</span> F, <span class="at">scale. =</span> F)</span>
+<span id="cb345-2"><a href="statistics.html#cb345-2" tabindex="-1"></a>pca_res</span></code></pre></div>
+<pre class="code-out"><code>Standard deviations (1, .., p=15):
+ [1] 1.912258e+00 1.513155e+00 1.198225e+00 1.148116e+00 1.015913e+00
+ [6] 9.597070e-01 9.321631e-01 9.017047e-01 8.814928e-01 8.032314e-01
+[11] 7.133833e-01 6.701814e-01 5.296499e-01 6.166601e-02 1.439706e-15
+
+Rotation (n x k) = (15 x 15):
+                           PC1          PC2         PC3          PC4
+age                0.008330314 -0.434005567 -0.05421122  0.235479055
+weight_kg         -0.477734288  0.011178321 -0.09567052 -0.210115072
+height_cm         -0.365304360  0.390722311  0.02010322  0.220378230
+systolic_bp_mmhg  -0.223192721 -0.348380634  0.31736070  0.349042281
+diastolic_bp_mmhg -0.164838721 -0.333543008  0.40895939  0.339825013
+glucose_mgdl      -0.241516653 -0.216418273 -0.24080333  0.007671028
+cholesterol_mgdl  -0.104945115 -0.274894361 -0.37944086  0.081850470
+crp_ngml          -0.129743208  0.021505087  0.44081292 -0.429896917
+height_m          -0.365304360  0.390722311  0.02010322  0.220378230
+BMI               -0.364370368 -0.216549105 -0.13560650 -0.397096477
+hemoglobin_gdl    -0.297504455  0.137908795 -0.13646690  0.196583824
+wbc_10e9l          0.008459241  0.128814723  0.29511743 -0.126508471
+platelets_10e9l    0.082793288 -0.008592387 -0.44038790  0.037973578
+alt_ul            -0.117603922 -0.256685107  0.04630145 -0.398935550
+creatinine_mgdl   -0.315611319 -0.047259459 -0.05162191 -0.038211446
+                           PC5         PC6          PC7         PC8         PC9
+age                0.236338866 -0.41999664 -0.101996500 -0.09669130  0.29086350
+weight_kg          0.024747252  0.05574043 -0.032095684  0.13246964 -0.14563527
+height_cm          0.175233679  0.03255715  0.033106657  0.11449815  0.08663982
+systolic_bp_mmhg  -0.162631293  0.17911526 -0.076744860  0.05053639 -0.11228380
+diastolic_bp_mmhg -0.115842387  0.24927132 -0.006192917  0.17171252  0.06245884
+glucose_mgdl       0.054530234 -0.21732486 -0.485915233 -0.30724573 -0.30610735
+cholesterol_mgdl   0.130655961 -0.18578891  0.405818323  0.58257658 -0.09940667
+crp_ngml           0.235883262 -0.05194062 -0.395750869  0.22832212  0.23695996
+height_m           0.175233679  0.03255715  0.033106657  0.11449815  0.08663982
+BMI               -0.092001580  0.04070725 -0.063909718  0.10919816 -0.22676613
+hemoglobin_gdl    -0.437602610  0.01001426  0.056650636 -0.35956963 -0.06861943
+wbc_10e9l         -0.619699305 -0.58149117  0.074295609  0.24023399 -0.06313973
+platelets_10e9l   -0.411932917  0.29664230 -0.441613574  0.32569607  0.47072619
+alt_ul            -0.113292712  0.34739457  0.430660345 -0.24955969  0.21554525
+creatinine_mgdl   -0.007243073 -0.30189898  0.172397833 -0.24825899  0.61218679
+                         PC10        PC11          PC12         PC13
+age                0.16163362 -0.24928742  0.5340819816  0.207365391
+weight_kg         -0.13771123 -0.25816540  0.1098718353  0.132978903
+height_cm          0.25249113 -0.10825117  0.0101489045  0.041847706
+systolic_bp_mmhg   0.01017092 -0.23922452  0.0182918726 -0.684845129
+diastolic_bp_mmhg -0.09863487  0.21772001 -0.2343978658  0.598159203
+glucose_mgdl       0.39160327  0.18757599 -0.4163160098  0.022466399
+cholesterol_mgdl   0.08709701  0.40086145 -0.0380195920 -0.165651557
+crp_ngml           0.04359699  0.44822308  0.2115814342 -0.181013559
+height_m           0.25249113 -0.10825117  0.0101489045  0.041847706
+BMI               -0.31900769 -0.24816854  0.1140144723  0.135712304
+hemoglobin_gdl    -0.12366052  0.50814131  0.4822604936 -0.017783375
+wbc_10e9l          0.24612723 -0.14285067 -0.0690764039  0.070497229
+platelets_10e9l    0.10829681 -0.07365816  0.0003121005 -0.008273408
+alt_ul             0.57431722 -0.01800349  0.0274637770  0.018342739
+creatinine_mgdl   -0.36814365  0.02023977 -0.4202024057 -0.155520201
+                           PC14          PC15
+age                0.0077207637 -9.829322e-17
+weight_kg         -0.7479755644 -2.752480e-15
+height_cm          0.1847014652  7.071068e-01
+systolic_bp_mmhg   0.0024058682  4.343534e-17
+diastolic_bp_mmhg  0.0007140495 -3.797019e-16
+glucose_mgdl      -0.0026863190  1.933892e-16
+cholesterol_mgdl  -0.0053727625  1.816828e-16
+crp_ngml          -0.0010498380  2.489934e-17
+height_m           0.1847014652 -7.071068e-01
+BMI                0.6098707954  2.236487e-15
+hemoglobin_gdl     0.0028866137 -1.450525e-16
+wbc_10e9l         -0.0114953445 -5.216905e-18
+platelets_10e9l   -0.0098323540 -4.732011e-17
+alt_ul             0.0026862862  1.102728e-16
+creatinine_mgdl   -0.0036667895 -1.127992e-16</code></pre>
+<p>We can now create another df in which we have all the info about our patients + the coordinate of the PCs, so that we can plot the data.</p>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="statistics.html#cb347-1" tabindex="-1"></a>pc_data_df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb347-2"><a href="statistics.html#cb347-2" tabindex="-1"></a>    <span class="fu">na.omit</span>() <span class="sc">|&gt;</span></span>
+<span id="cb347-3"><a href="statistics.html#cb347-3" tabindex="-1"></a>    <span class="fu">cbind</span>( <span class="fu">data.frame</span>(pca_res<span class="sc">$</span>x))</span>
+<span id="cb347-4"><a href="statistics.html#cb347-4" tabindex="-1"></a>    </span>
+<span id="cb347-5"><a href="statistics.html#cb347-5" tabindex="-1"></a><span class="fu">head</span>(pc_data_df)</span></code></pre></div>
+<pre class="code-out"><code>  patient_id  site visit_date visit_year visit_month visit_day age    sex
+2     PT-002  Rome 2020-08-15       2020           8        15  40   Male
+3     PT-003  Rome 2023-10-15       2023          10        15  59 Female
+4     PT-004 Turin 2020-03-06       2020           3         6  46   Male
+5     PT-005 Turin 2023-03-30       2023           3        30  58   Male
+7     PT-007  Rome 2020-09-09       2020           9         9  51   Male
+8     PT-008  Rome 2025-10-07       2025          10         7  34 Female
+  smoking treatment stage weight_kg height_cm systolic_bp_mmhg
+2 current    Drug_B     I     100.9     185.3              143
+3  former    Drug_A     I      65.0     165.6              152
+4 current    Drug_A     I      95.9     181.5              142
+5  former    Drug_B   III      75.7     168.1              160
+7  former    Drug_A     I      69.7     169.7              137
+8   never   Control     I      75.3     159.0              146
+  diastolic_bp_mmhg glucose_mgdl cholesterol_mgdl crp_ngml height_m  BMI
+2               102          105              239     6.13    1.853 29.4
+3                98          110              146     7.81    1.656 23.7
+4                88          120              232     3.35    1.815 29.1
+5                96          131              192    21.72    1.681 26.8
+7                96          108              163     5.41    1.697 24.2
+8               106           93              199     5.08    1.590 29.8
+    BMI_class hemoglobin_gdl wbc_10e9l platelets_10e9l alt_ul creatinine_mgdl
+2  Overweight           15.0      7.49             270     56            1.58
+3 Underweight           11.8      7.46             252     27            1.09
+4  Overweight           16.0      7.09             233     20            1.17
+5  Overweight           15.4      6.63             192     16            1.06
+7 Underweight           14.0      6.99             195     61            1.15
+8  Overweight           16.2      9.26             188     51            1.06
+         PC1        PC2        PC3         PC4        PC5         PC6
+2 -3.1848752  1.5940551 -0.8330956  0.42893639 -0.7556020  0.15162987
+3  1.5043769  0.1310580  1.0588467  0.72295656 -0.2805843 -0.02007899
+4 -1.9499679  1.9368075 -1.6129773  0.82280702 -0.3562495 -0.49865886
+5 -0.7172053 -0.2052340  0.9639881  0.60533057  0.1025643 -0.62852241
+7  0.5943474  1.0061787  0.4715918  0.02971275 -0.2755777  0.20823014
+8  0.4423734  0.2620532  1.0162111 -0.34260605 -2.5520409  0.60211481
+         PC7        PC8         PC9        PC10       PC11        PC12
+2  1.3256103  0.7741280  1.30447738 -0.64066623  0.2798982 -1.41411138
+3 -1.3199058 -0.5254682  0.16217081 -0.24345315 -1.2285633 -0.53511971
+4  0.1358980  0.2480322 -1.07321376 -0.30823140  0.3172393 -0.01790244
+5 -1.8563071 -0.5588202 -1.09376445 -0.29296465  1.1500676  0.54120182
+7  0.3861093 -1.3948701 -0.03683629  0.06404422 -0.1240594 -0.31877450
+8  1.2551166 -0.1767724 -1.47110004 -1.50399528  1.0036042 -0.11140713
+         PC13         PC14          PC15
+2  0.20183004 -0.077333696 -8.332455e-16
+3  0.08353174 -0.008189665 -1.429784e-15
+4 -0.15939163 -0.036984617 -5.794623e-16
+5 -0.93463483  0.026541502 -2.003229e-15
+7  0.68253066  0.025616541 -2.836055e-15
+8  0.48527809  0.024698988 -2.456588e-15</code></pre>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="statistics.html#cb349-1" tabindex="-1"></a><span class="fu">ggplot</span>(pc_data_df) <span class="sc">+</span></span>
+<span id="cb349-2"><a href="statistics.html#cb349-2" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> sex), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb349-3"><a href="statistics.html#cb349-3" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> site) <span class="sc">+</span></span>
+<span id="cb349-4"><a href="statistics.html#cb349-4" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-148-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="statistics.html#cb350-1" tabindex="-1"></a><span class="fu">ggplot</span>(pc_data_df) <span class="sc">+</span></span>
+<span id="cb350-2"><a href="statistics.html#cb350-2" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> diastolic_bp_mmhg <span class="sc">&gt;</span> <span class="dv">90</span>), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb350-3"><a href="statistics.html#cb350-3" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-149-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="linear-models" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Linear models<a href="statistics.html#linear-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Lastly, let’s see linear models, that determine which features are important in predicting or influencing an outcome feature (e.g. BMI/age and diabetes).</p>
+<div id="linear-model-with-continuous-outcome" class="section level3 hasAnchor" number="4.6.1">
+<h3><span class="header-section-number">4.6.1</span> Linear model with continuous outcome<a href="statistics.html#linear-model-with-continuous-outcome" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If the outcome is continuous, we can use <code>lm</code> function.</p>
+<p>Let’s see if we can create a model that predicts glucose levels starting from all the others variables:</p>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="statistics.html#cb351-1" tabindex="-1"></a>lm_data <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb351-2"><a href="statistics.html#cb351-2" tabindex="-1"></a>    <span class="fu">na.omit</span>() <span class="sc">|&gt;</span></span>
+<span id="cb351-3"><a href="statistics.html#cb351-3" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;visit_&quot;</span>), <span class="sc">-</span> <span class="st">&quot;patient_id&quot;</span>)</span>
+<span id="cb351-4"><a href="statistics.html#cb351-4" tabindex="-1"></a></span>
+<span id="cb351-5"><a href="statistics.html#cb351-5" tabindex="-1"></a>lm_res <span class="ot">&lt;-</span> <span class="fu">lm</span>(glucose_mgdl <span class="sc">~</span> ., <span class="at">data =</span> lm_data)</span>
+<span id="cb351-6"><a href="statistics.html#cb351-6" tabindex="-1"></a><span class="fu">summary</span>(lm_res)</span></code></pre></div>
+<pre class="code-out"><code>
+Call:
+lm(formula = glucose_mgdl ~ ., data = lm_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-30.315  -6.941  -0.241   6.351  33.009 
+
+Coefficients: (1 not defined because of singularities)
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          111.128909 130.213184   0.853 0.394951    
+siteRome              -4.343176   2.797351  -1.553 0.122894    
+siteTurin             -2.870328   2.862795  -1.003 0.317859    
+age                    0.466927   0.123516   3.780 0.000236 ***
+sexMale                4.224451   3.702029   1.141 0.255871    
+smokingformer         -6.108882   3.248254  -1.881 0.062204 .  
+smokingnever           1.023849   3.222333   0.318 0.751184    
+treatmentDrug_A        2.273550   2.766178   0.822 0.412599    
+treatmentDrug_B        3.304591   2.991571   1.105 0.271313    
+stageII               -3.407747   2.874672  -1.185 0.237958    
+stageIII              -2.920170   3.417514  -0.854 0.394380    
+stageIV               -9.152404   4.229189  -2.164 0.032243 *  
+weight_kg              0.466022   0.759459   0.614 0.540512    
+height_cm             -0.448431   0.742911  -0.604 0.547129    
+systolic_bp_mmhg       0.077726   0.134848   0.576 0.565323    
+diastolic_bp_mmhg     -0.127067   0.158403  -0.802 0.423882    
+cholesterol_mgdl      -0.008258   0.040264  -0.205 0.837802    
+crp_ngml               0.061043   0.206082   0.296 0.767535    
+height_m                     NA         NA      NA       NA    
+BMI                    0.290750   2.305197   0.126 0.899821    
+BMI_classObese         6.946945  11.355943   0.612 0.541751    
+BMI_classOverweight    4.870855   4.463734   1.091 0.277155    
+BMI_classUnderweight  11.372951   7.377695   1.542 0.125563    
+hemoglobin_gdl         0.577618   0.953527   0.606 0.545700    
+wbc_10e9l             -0.808985   0.620294  -1.304 0.194419    
+platelets_10e9l        0.013806   0.020099   0.687 0.493357    
+alt_ul                -0.004121   0.044427  -0.093 0.926234    
+creatinine_mgdl       -0.973014   7.784103  -0.125 0.900712    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 13.24 on 133 degrees of freedom
+Multiple R-squared:  0.3527,    Adjusted R-squared:  0.2261 
+F-statistic: 2.787 on 26 and 133 DF,  p-value: 7.005e-05</code></pre>
+<p>From this we can see that age is significantly associated with the outcome (every year results in a predicted increase of 0.466927), as well as being of stage IV (compared to stage I, -9.152404).</p>
+<p>We can also use the same function to create a simple linear model that returns us intercept and slope of the line that correlates <em>glucose_mgdl</em> and <em>cholesterol_mgdl</em> in stage III patients (remember [#correlation]?):</p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="statistics.html#cb353-1" tabindex="-1"></a>gl_chol_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(glucose_mgdl <span class="sc">~</span> cholesterol_mgdl, <span class="at">data =</span> corr_df)</span>
+<span id="cb353-2"><a href="statistics.html#cb353-2" tabindex="-1"></a><span class="fu">summary</span>(gl_chol_lm)</span></code></pre></div>
+<pre class="code-out"><code>
+Call:
+lm(formula = glucose_mgdl ~ cholesterol_mgdl, data = corr_df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-33.691 -11.546   0.438   8.858  39.000 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      92.18423    7.89821  11.672   &lt;2e-16 ***
+cholesterol_mgdl  0.08642    0.03789   2.281   0.0239 *  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 14.85 on 158 degrees of freedom
+Multiple R-squared:  0.03188,   Adjusted R-squared:  0.02575 
+F-statistic: 5.203 on 1 and 158 DF,  p-value: 0.02388</code></pre>
+<p>We got the same results, but we also have <em>Intercept</em> and <em>Estimate</em>, that we can use to plot a line in corr_plot:</p>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="statistics.html#cb355-1" tabindex="-1"></a>corr_plot <span class="sc">+</span></span>
+<span id="cb355-2"><a href="statistics.html#cb355-2" tabindex="-1"></a>      <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">slope =</span> gl_chol_lm<span class="sc">$</span>coefficients[<span class="st">&quot;cholesterol_mgdl&quot;</span>],</span>
+<span id="cb355-3"><a href="statistics.html#cb355-3" tabindex="-1"></a>                      <span class="at">intercept =</span> gl_chol_lm<span class="sc">$</span>coefficients[<span class="st">&quot;(Intercept)&quot;</span>]), </span>
+<span id="cb355-4"><a href="statistics.html#cb355-4" tabindex="-1"></a>                  <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="R-course-2026_files/figure-html/unnamed-chunk-152-1.png" alt="" width="85%" style="display: block; margin: auto;" /></p>
+<div id="predict" class="section level4 hasAnchor" number="4.6.1.1">
+<h4><span class="header-section-number">4.6.1.1</span> Predict<a href="statistics.html#predict" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We can then use this model to make predictions. For example, which is the expected value of Glucose given a Cholesterol level of 170?</p>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="statistics.html#cb356-1" tabindex="-1"></a><span class="fu">predict</span>(gl_chol_lm, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="st">&quot;cholesterol_mgdl&quot;</span> <span class="ot">=</span> <span class="dv">160</span>), <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span></code></pre></div>
+<pre class="code-out"><code>       1 
+106.0121 </code></pre>
+</div>
+</div>
+<div id="generalized-linear-model-with-dicotomic-outcome" class="section level3 hasAnchor" number="4.6.2">
+<h3><span class="header-section-number">4.6.2</span> Generalized linear model with dicotomic outcome<a href="statistics.html#generalized-linear-model-with-dicotomic-outcome" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can also do the other way round (which is more meaningful for us): check which predictors are associated with diabetes, using a generalized linear model:</p>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="statistics.html#cb358-1" tabindex="-1"></a><span class="fu">library</span>(MASS)</span></code></pre></div>
+<pre><code>
+Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:dplyr&#39;:
+
+    select</code></pre>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="statistics.html#cb361-1" tabindex="-1"></a>df_poli <span class="ot">&lt;-</span> lm_data <span class="sc">|&gt;</span></span>
+<span id="cb361-2"><a href="statistics.html#cb361-2" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>height_m, <span class="sc">-</span>BMI_class, <span class="sc">-</span>weight_kg, <span class="sc">-</span>height_cm, <span class="sc">-</span>site, <span class="sc">-</span>treatment)</span>
+<span id="cb361-3"><a href="statistics.html#cb361-3" tabindex="-1"></a></span>
+<span id="cb361-4"><a href="statistics.html#cb361-4" tabindex="-1"></a></span>
+<span id="cb361-5"><a href="statistics.html#cb361-5" tabindex="-1"></a>polr_res <span class="ot">&lt;-</span> <span class="fu">polr</span>(stage <span class="sc">~</span> ., <span class="at">data =</span> df_poli, <span class="at">method =</span> <span class="st">&quot;logistic&quot;</span>)</span>
+<span id="cb361-6"><a href="statistics.html#cb361-6" tabindex="-1"></a><span class="fu">summary</span>(polr_res)</span></code></pre></div>
+<pre><code>
+Re-fitting to get Hessian</code></pre>
+<pre class="code-out"><code>Call:
+polr(formula = stage ~ ., data = df_poli, method = &quot;logistic&quot;)
+
+Coefficients:
+                       Value Std. Error  t value
+age                0.0232525   0.017088  1.36076
+sexMale            0.4197909   0.446624  0.93992
+smokingformer      0.2306958   0.449945  0.51272
+smokingnever       0.7644046   0.466764  1.63767
+systolic_bp_mmhg  -0.0068315   0.019111 -0.35746
+diastolic_bp_mmhg  0.0132073   0.022251  0.59355
+glucose_mgdl      -0.0237946   0.011726 -2.02925
+cholesterol_mgdl   0.0032712   0.005369  0.60928
+crp_ngml           0.1707731   0.029469  5.79491
+BMI               -0.1134834   0.040660 -2.79106
+hemoglobin_gdl    -0.2752424   0.129483 -2.12571
+wbc_10e9l          0.0151978   0.086915  0.17486
+platelets_10e9l    0.0001578   0.002627  0.06005
+alt_ul             0.0084260   0.006276  1.34248
+creatinine_mgdl    0.9294965   1.049239  0.88588
+
+Intercepts:
+       Value   Std. Error t value
+I|II   -4.4825  3.0120    -1.4882
+II|III -2.6685  3.0035    -0.8885
+III|IV -0.8728  2.9869    -0.2922
+
+Residual Deviance: 361.4394 
+AIC: 397.4394 </code></pre>
+<p>Important predictors are the ones with t value &gt; 2 or &lt; -2.</p>
+<p>Higher levels of CRP are strongly associated with increased odds of being in a more advanced stage; conversely, higher BMI, hemoglobin, and glucose levels are associated with lower odds of advanced stage.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-visualization.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/miotsdata/R-course_2026/edit/main/04-Statistics_complete.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["R-course-2026.pdf", "https://github.com/miotsdata/R-course_2026/raw/main/04-Statistics_complete.Rmd"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -175,9 +175,9 @@ stageIV_creatinine <- df %>%
   pull(creatinine_mgdl)
 
 # Calculate outliers
-stageI_outliers <- (stageI_creatinine < quantile(stageI_creatinine, 0.25) - IQR(stageI_creatinine)) | (stageI_creatinine > quantile(stageI_creatinine, 0.75) + IQR(stageI_creatinine))
+stageI_outliers <- (stageI_creatinine < quantile(stageI_creatinine, 0.25) - 1.5 *  IQR(stageI_creatinine)) | (stageI_creatinine > quantile(stageI_creatinine, 0.75) + 1.5 * IQR(stageI_creatinine))
 
-stageIV_outliers <- (stageIV_creatinine < quantile(stageIV_creatinine, 0.25) - IQR(stageIV_creatinine)) | (stageIV_creatinine > quantile(stageIV_creatinine, 0.75) + IQR(stageIV_creatinine))
+stageIV_outliers <- (stageIV_creatinine < quantile(stageIV_creatinine, 0.25) - 1.5 * IQR(stageIV_creatinine)) | (stageIV_creatinine > quantile(stageIV_creatinine, 0.75) + 1.5 * IQR(stageIV_creatinine))
 
 # Get outliers
 print(mean(stageI_creatinine))
@@ -270,14 +270,13 @@ aov_res <- aov(df$systolic_bp_mmhg ~ df$BMI_class * df$sex)
 summary(aov_res)
 ```
 
-So, both sex and BMI class influence systolic_bp_mmhg; but to which comparisons are significant we have to perform a pairwise t-test:
+So, both sex and BMI class influence systolic_bp_mmhg; but not the interaction. To get which BMI_class are different we perform the pairwise t test:
 
 ```{r}
-groups <- interaction(df$BMI_class, df$sex)
-pairwise.t.test(x = df$systolic_bp_mmhg, g = groups, p.adjust.method = "bonferroni")
+pairwise.t.test(x = df$systolic_bp_mmhg, g = df$BMI_class, p.adjust.method = "bonferroni")
 ```
 
-So, overall, the difference is only between Normal Male and both Obese and overweight females.
+The only BMI class comparison in which the systolic_bp_mmhg is different is Obese vs Normal.
 
 ### Pearson correlation test
 
