@@ -2,6 +2,8 @@ name: Notify students on update
 on:
   push:
     branches: [master]
+  paths:
+      - 'docs/**'
 
 jobs:
   notify:
