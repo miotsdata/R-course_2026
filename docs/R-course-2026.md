@@ -129,7 +129,7 @@ To do it, we use 3 functions that you need to remember (tatoo yourself):
           area        intensity       
      Min.   :3000   Min.   : 9130286  
      1st Qu.:3259   1st Qu.:16283904  
-     Median :3517   Median :18894104  
+     Median :3517   Median :18894103  
      Mean   :3508   Mean   :19419175  
      3rd Qu.:3769   3rd Qu.:22090201  
      Max.   :3988   Max.   :29812114  
@@ -735,7 +735,7 @@ patients enrolled in a multi-site trial. Let’s import it and, as always,
     ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
     ✔ dplyr     1.2.1     ✔ readr     2.2.0
     ✔ forcats   1.0.1     ✔ stringr   1.6.0
-    ✔ ggplot2   4.0.2     ✔ tibble    3.3.1
+    ✔ ggplot2   4.0.3     ✔ tibble    3.3.1
     ✔ lubridate 1.9.5     ✔ tidyr     1.3.2
     ✔ purrr     1.2.2     
     ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -838,21 +838,21 @@ handled as categorical predictors) and for plotting purposes.
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Use <strong>string</strong> when…</th>
 <th>Use <strong>factor</strong> when…</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>Text is free-form or unpredictable</td>
 <td>The variable takes a limited set of known values</td>
 </tr>
-<tr>
+<tr class="even">
 <td>You need to manipulate the text</td>
 <td>Order matters (e.g., stage I &lt; II &lt; III &lt; IV)</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Unique identifiers (patient IDs)</td>
 <td>Input to statistical models</td>
 </tr>
@@ -1128,29 +1128,29 @@ A few more `stringr` functions you will find very useful:
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Function</th>
 <th>What it does</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><code>str_detect(x, pattern)</code></td>
 <td>Returns TRUE/FALSE: does the string contain the pattern?</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>str_starts(x, pattern)</code></td>
 <td>Does the string <em>start</em> with the pattern?</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>str_ends(x, pattern)</code></td>
 <td>Does the string <em>end</em> with the pattern?</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>str_pad(x, width, side, pad)</code></td>
 <td>Pads a string to a given width</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>str_sub(x, start, end)</code></td>
 <td>Extracts a substring by position</td>
 </tr>
@@ -1461,7 +1461,7 @@ These operators compare two values and return a boolean:
 
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Operator</th>
 <th>Meaning</th>
 <th>Example</th>
@@ -1469,37 +1469,37 @@ These operators compare two values and return a boolean:
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><code>==</code></td>
 <td>equal to</td>
 <td><code>3 == 3</code></td>
 <td><code>TRUE</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>!=</code></td>
 <td>not equal to</td>
 <td><code>3 != 4</code></td>
 <td><code>TRUE</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>&gt;</code></td>
 <td>greater than</td>
 <td><code>5 &gt; 3</code></td>
 <td><code>TRUE</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>&lt;</code></td>
 <td>less than</td>
 <td><code>2 &lt; 1</code></td>
 <td><code>FALSE</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>&gt;=</code></td>
 <td>greater or equal</td>
 <td><code>3 &gt;= 3</code></td>
 <td><code>TRUE</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>&lt;=</code></td>
 <td>less or equal</td>
 <td><code>2 &lt;= 1</code></td>
@@ -1558,24 +1558,24 @@ We often need to combine multiple conditions. This is done with
 <col style="width: 33%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Operator</th>
 <th>Meaning</th>
 <th>Example</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><code>&amp;</code></td>
 <td>AND — both conditions must be true</td>
 <td><code>age &gt; 50 &amp; sex == "Female"</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>\|</code></td>
 <td>OR — at least one condition must be true</td>
 <td><code>stage == "III" \| stage == "IV"</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>!</code></td>
 <td>NOT — negates a condition</td>
 <td><code>!is.na(crp_ngml)</code></td>
@@ -1969,26 +1969,26 @@ join:
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Join type</th>
 <th>What it does</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><code>left_join(x, y)</code></td>
 <td>Keep <strong>all rows from x</strong>, add y columns where available
 (NA if no match)</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>right_join(x, y)</code></td>
 <td>Keep all rows from y</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>inner_join(x, y)</code></td>
 <td>Keep only rows that exist in <strong>both</strong> x and y</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>full_join(x, y)</code></td>
 <td>Keep all rows from both, NA where no match</td>
 </tr>
@@ -3444,13 +3444,13 @@ To confirm that they have been scaled:
     apply(data_n_scaled, 2, mean)
 
                   age         weight_kg         height_cm  systolic_bp_mmhg 
-        -1.082467e-16     -2.785272e-15      1.150469e-15     -5.211109e-16 
+        -1.307256e-16     -3.620592e-16      1.146123e-15     -4.966372e-16 
     diastolic_bp_mmhg      glucose_mgdl  cholesterol_mgdl          crp_ngml 
-         2.914335e-16      3.955170e-17     -3.060052e-16      2.040035e-16 
+         2.995596e-16      1.127231e-18     -3.578572e-16     -3.238851e-17 
              height_m               BMI    hemoglobin_gdl         wbc_10e9l 
-         2.989969e-15      5.551115e-16     -4.742734e-15      1.526557e-15 
+         4.793675e-16     -1.910446e-16     -2.797160e-16      1.546709e-16 
       platelets_10e9l            alt_ul   creatinine_mgdl 
-        -1.387779e-18     -1.387779e-16      1.879920e-15 
+        -1.187201e-18     -1.036389e-16      6.266217e-16 
 
     apply(data_n_scaled, 2, sd)
 
@@ -3471,7 +3471,7 @@ To perform PCA, we use `prcomp` function:
     Standard deviations (1, .., p=15):
      [1] 1.912258e+00 1.513155e+00 1.198225e+00 1.148116e+00 1.015913e+00
      [6] 9.597070e-01 9.321631e-01 9.017047e-01 8.814928e-01 8.032314e-01
-    [11] 7.133833e-01 6.701814e-01 5.296499e-01 6.166601e-02 1.439706e-15
+    [11] 7.133833e-01 6.701814e-01 5.296499e-01 6.166601e-02 9.127822e-16
 
     Rotation (n x k) = (15 x 15):
                                PC1          PC2         PC3          PC4
@@ -3491,53 +3491,53 @@ To perform PCA, we use `prcomp` function:
     alt_ul            -0.117603922 -0.256685107  0.04630145 -0.398935550
     creatinine_mgdl   -0.315611319 -0.047259459 -0.05162191 -0.038211446
                                PC5         PC6          PC7         PC8         PC9
-    age                0.236338866 -0.41999664 -0.101996500 -0.09669130  0.29086350
-    weight_kg          0.024747252  0.05574043 -0.032095684  0.13246964 -0.14563527
-    height_cm          0.175233679  0.03255715  0.033106657  0.11449815  0.08663982
-    systolic_bp_mmhg  -0.162631293  0.17911526 -0.076744860  0.05053639 -0.11228380
-    diastolic_bp_mmhg -0.115842387  0.24927132 -0.006192917  0.17171252  0.06245884
-    glucose_mgdl       0.054530234 -0.21732486 -0.485915233 -0.30724573 -0.30610735
-    cholesterol_mgdl   0.130655961 -0.18578891  0.405818323  0.58257658 -0.09940667
-    crp_ngml           0.235883262 -0.05194062 -0.395750869  0.22832212  0.23695996
-    height_m           0.175233679  0.03255715  0.033106657  0.11449815  0.08663982
-    BMI               -0.092001580  0.04070725 -0.063909718  0.10919816 -0.22676613
-    hemoglobin_gdl    -0.437602610  0.01001426  0.056650636 -0.35956963 -0.06861943
-    wbc_10e9l         -0.619699305 -0.58149117  0.074295609  0.24023399 -0.06313973
-    platelets_10e9l   -0.411932917  0.29664230 -0.441613574  0.32569607  0.47072619
-    alt_ul            -0.113292712  0.34739457  0.430660345 -0.24955969  0.21554525
-    creatinine_mgdl   -0.007243073 -0.30189898  0.172397833 -0.24825899  0.61218679
+    age                0.236338866 -0.41999664  0.101996500 -0.09669130  0.29086350
+    weight_kg          0.024747252  0.05574043  0.032095684  0.13246964 -0.14563527
+    height_cm          0.175233679  0.03255715 -0.033106657  0.11449815  0.08663982
+    systolic_bp_mmhg  -0.162631293  0.17911526  0.076744860  0.05053639 -0.11228380
+    diastolic_bp_mmhg -0.115842387  0.24927132  0.006192917  0.17171252  0.06245884
+    glucose_mgdl       0.054530234 -0.21732486  0.485915233 -0.30724573 -0.30610735
+    cholesterol_mgdl   0.130655961 -0.18578891 -0.405818323  0.58257658 -0.09940667
+    crp_ngml           0.235883262 -0.05194062  0.395750869  0.22832212  0.23695996
+    height_m           0.175233679  0.03255715 -0.033106657  0.11449815  0.08663982
+    BMI               -0.092001580  0.04070725  0.063909718  0.10919816 -0.22676613
+    hemoglobin_gdl    -0.437602610  0.01001426 -0.056650636 -0.35956963 -0.06861943
+    wbc_10e9l         -0.619699305 -0.58149117 -0.074295609  0.24023399 -0.06313973
+    platelets_10e9l   -0.411932917  0.29664230  0.441613574  0.32569607  0.47072619
+    alt_ul            -0.113292712  0.34739457 -0.430660345 -0.24955969  0.21554525
+    creatinine_mgdl   -0.007243073 -0.30189898 -0.172397833 -0.24825899  0.61218679
                              PC10        PC11          PC12         PC13
-    age                0.16163362 -0.24928742  0.5340819816  0.207365391
-    weight_kg         -0.13771123 -0.25816540  0.1098718353  0.132978903
-    height_cm          0.25249113 -0.10825117  0.0101489045  0.041847706
-    systolic_bp_mmhg   0.01017092 -0.23922452  0.0182918726 -0.684845129
-    diastolic_bp_mmhg -0.09863487  0.21772001 -0.2343978658  0.598159203
-    glucose_mgdl       0.39160327  0.18757599 -0.4163160098  0.022466399
-    cholesterol_mgdl   0.08709701  0.40086145 -0.0380195920 -0.165651557
-    crp_ngml           0.04359699  0.44822308  0.2115814342 -0.181013559
-    height_m           0.25249113 -0.10825117  0.0101489045  0.041847706
-    BMI               -0.31900769 -0.24816854  0.1140144723  0.135712304
-    hemoglobin_gdl    -0.12366052  0.50814131  0.4822604936 -0.017783375
-    wbc_10e9l          0.24612723 -0.14285067 -0.0690764039  0.070497229
-    platelets_10e9l    0.10829681 -0.07365816  0.0003121005 -0.008273408
-    alt_ul             0.57431722 -0.01800349  0.0274637770  0.018342739
-    creatinine_mgdl   -0.36814365  0.02023977 -0.4202024057 -0.155520201
+    age                0.16163362 -0.24928742  0.5340819816 -0.207365391
+    weight_kg         -0.13771123 -0.25816540  0.1098718353 -0.132978903
+    height_cm          0.25249113 -0.10825117  0.0101489045 -0.041847706
+    systolic_bp_mmhg   0.01017092 -0.23922452  0.0182918726  0.684845129
+    diastolic_bp_mmhg -0.09863487  0.21772001 -0.2343978658 -0.598159203
+    glucose_mgdl       0.39160327  0.18757599 -0.4163160098 -0.022466399
+    cholesterol_mgdl   0.08709701  0.40086145 -0.0380195920  0.165651557
+    crp_ngml           0.04359699  0.44822308  0.2115814342  0.181013559
+    height_m           0.25249113 -0.10825117  0.0101489045 -0.041847706
+    BMI               -0.31900769 -0.24816854  0.1140144723 -0.135712304
+    hemoglobin_gdl    -0.12366052  0.50814131  0.4822604936  0.017783375
+    wbc_10e9l          0.24612723 -0.14285067 -0.0690764039 -0.070497229
+    platelets_10e9l    0.10829681 -0.07365816  0.0003121005  0.008273408
+    alt_ul             0.57431722 -0.01800349  0.0274637770 -0.018342739
+    creatinine_mgdl   -0.36814365  0.02023977 -0.4202024057  0.155520201
                                PC14          PC15
-    age                0.0077207637 -9.829322e-17
-    weight_kg         -0.7479755644 -2.752480e-15
-    height_cm          0.1847014652  7.071068e-01
-    systolic_bp_mmhg   0.0024058682  4.343534e-17
-    diastolic_bp_mmhg  0.0007140495 -3.797019e-16
-    glucose_mgdl      -0.0026863190  1.933892e-16
-    cholesterol_mgdl  -0.0053727625  1.816828e-16
-    crp_ngml          -0.0010498380  2.489934e-17
-    height_m           0.1847014652 -7.071068e-01
-    BMI                0.6098707954  2.236487e-15
-    hemoglobin_gdl     0.0028866137 -1.450525e-16
-    wbc_10e9l         -0.0114953445 -5.216905e-18
-    platelets_10e9l   -0.0098323540 -4.732011e-17
-    alt_ul             0.0026862862  1.102728e-16
-    creatinine_mgdl   -0.0036667895 -1.127992e-16
+    age               -0.0077207637  3.712802e-16
+    weight_kg          0.7479755644  2.524768e-16
+    height_cm         -0.1847014652 -7.071068e-01
+    systolic_bp_mmhg  -0.0024058682  1.126616e-18
+    diastolic_bp_mmhg -0.0007140495 -6.330386e-17
+    glucose_mgdl       0.0026863190 -9.027537e-17
+    cholesterol_mgdl   0.0053727625 -2.792104e-16
+    crp_ngml           0.0010498380 -4.024681e-18
+    height_m          -0.1847014652  7.071068e-01
+    BMI               -0.6098707954  2.154088e-16
+    hemoglobin_gdl    -0.0028866137  3.022242e-17
+    wbc_10e9l          0.0114953445 -3.120194e-17
+    platelets_10e9l    0.0098323540  1.924663e-16
+    alt_ul            -0.0026862862 -4.819710e-16
+    creatinine_mgdl    0.0036667895 -5.456474e-18
 
 We can now create another df in which we have all the info about our
 patients + the coordinate of the PCs, so that we can plot the data.
@@ -3584,19 +3584,19 @@ patients + the coordinate of the PCs, so that we can plot the data.
     7  0.5943474  1.0061787  0.4715918  0.02971275 -0.2755777  0.20823014
     8  0.4423734  0.2620532  1.0162111 -0.34260605 -2.5520409  0.60211481
              PC7        PC8         PC9        PC10       PC11        PC12
-    2  1.3256103  0.7741280  1.30447738 -0.64066623  0.2798982 -1.41411138
-    3 -1.3199058 -0.5254682  0.16217081 -0.24345315 -1.2285633 -0.53511971
-    4  0.1358980  0.2480322 -1.07321376 -0.30823140  0.3172393 -0.01790244
-    5 -1.8563071 -0.5588202 -1.09376445 -0.29296465  1.1500676  0.54120182
-    7  0.3861093 -1.3948701 -0.03683629  0.06404422 -0.1240594 -0.31877450
-    8  1.2551166 -0.1767724 -1.47110004 -1.50399528  1.0036042 -0.11140713
+    2 -1.3256103  0.7741280  1.30447738 -0.64066623  0.2798982 -1.41411138
+    3  1.3199058 -0.5254682  0.16217081 -0.24345315 -1.2285633 -0.53511971
+    4 -0.1358980  0.2480322 -1.07321376 -0.30823140  0.3172393 -0.01790244
+    5  1.8563071 -0.5588202 -1.09376445 -0.29296465  1.1500676  0.54120182
+    7 -0.3861093 -1.3948701 -0.03683629  0.06404422 -0.1240594 -0.31877450
+    8 -1.2551166 -0.1767724 -1.47110004 -1.50399528  1.0036042 -0.11140713
              PC13         PC14          PC15
-    2  0.20183004 -0.077333696 -8.332455e-16
-    3  0.08353174 -0.008189665 -1.429784e-15
-    4 -0.15939163 -0.036984617 -5.794623e-16
-    5 -0.93463483  0.026541502 -2.003229e-15
-    7  0.68253066  0.025616541 -2.836055e-15
-    8  0.48527809  0.024698988 -2.456588e-15
+    2 -0.20183004  0.077333696 -2.722210e-15
+    3 -0.08353174  0.008189665  2.880921e-16
+    4  0.15939163  0.036984617 -1.381056e-15
+    5  0.93463483 -0.026541502  1.010757e-15
+    7 -0.68253066 -0.025616541  5.606148e-16
+    8 -0.48527809 -0.024698988  1.271017e-16
 
     ggplot(pc_data_df) +
         geom_point(aes(x = PC1, y = PC2, color = sex), size = 3) +
@@ -3789,3 +3789,794 @@ being in a more advanced stage; conversely, higher BMI, hemoglobin, and
 glucose levels are associated with lower odds of advanced stage.
 
 <!--chapter:end:04-Statistics_complete.Rmd-->
+
+# 5 For loops and If/Else statements
+
+    library(tidyverse)
+
+So far, every time we needed to repeat an operation on a different
+subset of data, we either copy-pasted the code or used tidyverse
+functions like `group_by`. Both approaches have limits: copy-pasting is
+error-prone and does not scale, while `group_by` only works inside a
+tidy pipeline.
+
+**For loops** and **if/else statements** are the building blocks of any
+programming language and will let you automate repetitive tasks in a
+much more flexible way.
+
+------------------------------------------------------------------------
+
+## 5.1 For loops
+
+The idea behind a for loop is simple: *repeat a block of code for each
+element of a sequence*.
+
+The syntax in R is:
+
+    for (variable in sequence) {
+        # code to repeat
+    }
+
+-   `sequence` is any vector or list: `c(1, 2, 3)`, `1:10`, a vector of
+    filenames, …
+-   `variable` is a name you choose; at each iteration it takes the next
+    value of the sequence
+-   the code inside the `{}` is executed once per element
+
+### 5.1.1 A first example
+
+The simplest possible loop: print each number from 1 to 5.
+
+    for (i in 1:5) {
+        print(i)
+    }
+
+    [1] 1
+    [1] 2
+    [1] 3
+    [1] 4
+    [1] 5
+
+`i` here is just a conventional name (short for *index*), but you can
+call it whatever you want.
+
+### 5.1.2 Looping over a character vector
+
+You can loop over any vector, not just numbers. Here we loop over a
+vector of stop codons:
+
+    stop_codons <- c("UAG", "UAA", "UGA")
+
+    for (stop_c in stop_codons) {
+        print(paste("Stop codon in this iteration is:", stop_c))
+        Sys.sleep(2)
+    }
+
+    [1] "Stop codon in this iteration is: UAG"
+    [1] "Stop codon in this iteration is: UAA"
+    [1] "Stop codon in this iteration is: UGA"
+
+Let’s say we have a vector of area values in mm² and we want to convert
+each one to µm²:
+
+    areas_mm2 <- c(0.0042, 0.0031, 0.0058, 0.0049, 0.0037)
+
+    for (area in areas_mm2) {
+        area_um2 <- area * 1e6
+        print(paste(area, "mm² =", area_um2, "µm²"))
+    }
+
+    [1] "0.0042 mm² = 4200 µm²"
+    [1] "0.0031 mm² = 3100 µm²"
+    [1] "0.0058 mm² = 5800 µm²"
+    [1] "0.0049 mm² = 4900 µm²"
+    [1] "0.0037 mm² = 3700 µm²"
+
+### 5.1.3 Collecting results: the importance of initialising a container
+
+In the example above, we just printed the results. Most of the time you
+want to **store** them. The right way to do this is to create an empty
+vector *before* the loop and fill it at each iteration.
+
+    areas_um2 <- c()   # empty container
+
+    for (i in 1:length(areas_mm2)) {
+      areas_um2[i] <- areas_mm2[i] * 1e6
+    }
+
+    areas_um2
+
+    [1] 4200 3100 5800 4900 3700
+
+Notice that we are now looping over the *index* `i` (from 1 to the
+length of the vector) rather than the values directly. This is very
+useful when you need to refer to the position of an element, for example
+to store the result in the same position of another vector.
+
+### 5.1.4 Looping over a list of dataframes
+
+In biology, a very common scenario is having multiple dataframes — one
+per sample, one per experiment, etc. — and wanting to apply the same
+operation to each of them. We can store them in a **list** and loop over
+the list.
+
+Let’s create a small example with 3 mini-dataframes:
+
+    df1 <- data.frame(group = c("wt", "KO"), intensity = c(450, 1420), area = c(0.005, 0.0048))
+    df2 <- data.frame(group = c("wt", "KO"), intensity = c(510, 1380), area = c(0.0052, 0.0051))
+    df3 <- data.frame(group = c("wt", "KO"), intensity = c(490, 1600), area = c(0.0049, 0.0047))
+
+    sample_list <- list(df1, df2, df3)
+
+Now we loop over the list and calculate the normalised intensity for
+each dataframe:
+
+    for (i in 1:length(sample_list)) {
+      
+        df <- sample_list[[i]]   # [[]] extracts one element from a list
+        df$norm_intensity <- df$intensity / (df$area * 1e6)
+        sample_list[[i]] <- df   # store the modified df back in the list
+      
+    }
+
+    # Let's check the first element
+    sample_list[[1]]
+
+      group intensity   area norm_intensity
+    1    wt       450 0.0050      0.0900000
+    2    KO      1420 0.0048      0.2958333
+
+Note the `[[]]` double brackets: to extract a single element from a list
+you always use `[[]]`, not `[]`.
+
+### 5.1.5 Naming the elements of a list
+
+It is good practice to name the elements of a list, so that you can
+refer to them by name later:
+
+    names(sample_list) <- c("sample_1", "sample_2", "sample_3")
+
+    sample_list[["sample_1"]]
+
+      group intensity   area norm_intensity
+    1    wt       450 0.0050      0.0900000
+    2    KO      1420 0.0048      0.2958333
+
+------------------------------------------------------------------------
+
+## 5.2 If/Else statements
+
+An `if/else` statement lets you execute different code depending on
+whether a condition is `TRUE` or `FALSE`.
+
+The syntax is:
+
+    if (condition) {
+        # code if condition is TRUE
+    } else {
+        # code if condition is FALSE
+    }
+
+### 5.2.1 A simple example
+
+    x <- 15
+
+    if (x > 10) {
+        print("x is greater than 10")
+    } else {
+        print("x is 10 or less")
+    }
+
+    [1] "x is greater than 10"
+
+Change `x` to `5` and re-run to see the other branch.
+
+### 5.2.2 else if: more than two cases
+
+When you have more than two possible outcomes, you can chain conditions
+with `else if`:
+
+    p_value <- 0.03
+
+    if (p_value < 0.001) {
+        print("Highly significant (***)")
+    } else if (p_value < 0.01) {
+        print("Very significant (**)")
+    } else if (p_value < 0.05) {
+        print("Significant (*)")
+    } else {
+        print("Not significant")
+    }
+
+    [1] "Significant (*)"
+
+R evaluates the conditions in order and executes the **first** block
+whose condition is `TRUE`. Once a match is found, the rest are skipped.
+
+## 5.3 Putting it all together: reading files in a loop
+
+In the next session we will do this for real with our immunofluorescence
+data, but let’s preview the full pattern here. The typical workflow is:
+
+1.  Get the list of files to process
+2.  Create an empty list to collect results
+3.  Loop over the files: read each one, process it, store it in the list
+4.  Combine all dataframes into one big dataframe with `bind_rows`
+
+<!-- -->
+
+    # 1. Get the list of files
+    files <- list.files(path = "data/day-5", pattern = "*.csv", full.names = TRUE)
+    files
+
+    [1] "data/day-5/slide_1.csv" "data/day-5/slide_2.csv" "data/day-5/slide_3.csv"
+    [4] "data/day-5/slide_4.csv" "data/day-5/slide_5.csv"
+
+    # 2. Empty list to collect results
+    results_list <- list()
+
+    # 3. Loop
+    for (i in 1:length(files)) {
+      
+      # Read the file
+      df <- read.csv(files[i])
+      
+      # Add a column with the sample name (useful to know where each row comes from)
+      df$sample <- basename(files[i])
+      
+      # Convert area from mm2 to um2
+      df$area_um2 <- df$area * 1e6
+      
+      # Calculate normalised intensity
+      df$norm_intensity <- df$intensity / df$area_um2
+      
+      # Store in the list
+      results_list[[i]] <- df
+      
+    }
+
+    # 4. Combine into one dataframe
+    results_df <- bind_rows(results_list)
+
+    head(results_df)
+
+      group     area intensity      sample area_um2 norm_intensity
+    1    wt 0.006371    540.43 slide_1.csv     6371     0.08482656
+    2    wt 0.004435    489.39 slide_1.csv     4435     0.11034724
+    3    KO 0.005363    901.15 slide_1.csv     5363     0.16803095
+    4    KO 0.005633    740.53 slide_1.csv     5633     0.13146281
+    5    wt 0.007018    361.11 slide_2.csv     7018     0.05145483
+    6    wt 0.004937    472.12 slide_2.csv     4937     0.09562892
+
+We now have a single tidy dataframe with all samples, ready for
+statistical analysis.
+
+    # Quick sanity check: how many rows per sample?
+    results_df %>%
+      count(sample)
+
+           sample n
+    1 slide_1.csv 4
+    2 slide_2.csv 4
+    3 slide_3.csv 4
+    4 slide_4.csv 4
+    5 slide_5.csv 4
+
+    # And a first look at the normalised intensity by group
+    ggplot(results_df) +
+      geom_boxplot(aes(x = group, y = norm_intensity, fill = group)) +
+      labs(title = "Normalised intensity by group",
+           y = "Normalised intensity (a.u. / µm²)",
+           x = "Group") +
+      theme_classic()
+
+<img src="R-course-2026_files/figure-markdown_strict/unnamed-chunk-168-1.png" alt="" width="85%" style="display: block; margin: auto;" />
+
+<!--chapter:end:05-ForLoops_IfElse.Rmd-->
+
+# 6 Extra: Table 1
+
+Most of clinical paper have a descriptive Table 1 in which case groups
+are compared to check whether they are balanced for demographic and
+clinical variables.
+
+Let’s see how we can build our own Table 1 with R, starting from our
+previous table1\_dfset.
+
+## 6.1 Load necessary packages
+
+For this, we need to load some packages:
+
+    library(tidyverse)
+    library(rstatix)
+
+
+    Attaching package: 'rstatix'
+
+    The following object is masked from 'package:MASS':
+
+        select
+
+    The following object is masked from 'package:stats':
+
+        filter
+
+    library(effsize)
+    library(knitr)
+    library(kableExtra)
+
+
+    Attaching package: 'kableExtra'
+
+    The following object is masked from 'package:dplyr':
+
+        group_rows
+
+## 6.2 Load table1\_df
+
+    df = read.csv("output/clinical_data_enriched.csv", stringsAsFactors = TRUE)
+    str(df)
+
+    'data.frame':   240 obs. of  26 variables:
+     $ patient_id       : Factor w/ 240 levels "PT-001","PT-002",..: 1 2 3 4 5 6 7 8 9 10 ...
+     $ site             : Factor w/ 3 levels "Milan","Rome",..: 1 2 2 3 3 1 2 2 1 2 ...
+     $ visit_date       : Factor w/ 218 levels "2018-01-14","2018-01-24",..: 129 75 150 52 104 108 80 214 57 146 ...
+     $ visit_year       : int  2023 2020 2023 2020 2023 2023 2020 2025 2020 2023 ...
+     $ visit_month      : int  7 8 10 3 3 4 9 10 4 9 ...
+     $ visit_day        : int  20 15 15 6 30 15 9 7 19 27 ...
+     $ age              : int  40 40 59 46 58 53 51 34 43 60 ...
+     $ sex              : Factor w/ 2 levels "Female","Male": 2 2 1 2 2 1 2 1 2 2 ...
+     $ smoking          : Factor w/ 3 levels "current","former",..: 3 1 2 1 2 1 2 3 3 2 ...
+     $ treatment        : Factor w/ 3 levels "Control","Drug_A",..: 2 3 2 2 3 1 2 1 3 2 ...
+     $ stage            : Factor w/ 4 levels "I","II","III",..: 2 1 1 1 3 4 1 1 3 2 ...
+     $ weight_kg        : num  85.9 100.9 65 95.9 75.7 ...
+     $ height_cm        : num  173 185 166 182 168 ...
+     $ systolic_bp_mmhg : int  164 143 152 142 160 150 137 146 151 159 ...
+     $ diastolic_bp_mmhg: int  101 102 98 88 96 107 96 106 94 104 ...
+     $ glucose_mgdl     : int  113 105 110 120 131 78 108 93 106 110 ...
+     $ cholesterol_mgdl : int  172 239 146 232 192 232 163 199 200 185 ...
+     $ crp_ngml         : num  5.89 6.13 7.81 3.35 21.72 ...
+     $ height_m         : num  1.73 1.85 1.66 1.81 1.68 ...
+     $ BMI              : num  28.8 29.4 23.7 29.1 26.8 22.9 24.2 29.8 24.8 26.9 ...
+     $ BMI_class        : Factor w/ 4 levels "Normal","Obese",..: 3 3 4 3 3 4 4 3 4 3 ...
+     $ hemoglobin_gdl   : num  NA 15 11.8 16 15.4 NA 14 16.2 10.5 15.6 ...
+     $ wbc_10e9l        : num  NA 7.49 7.46 7.09 6.63 NA 6.99 9.26 4.79 5.65 ...
+     $ platelets_10e9l  : int  NA 270 252 233 192 NA 195 188 163 269 ...
+     $ alt_ul           : int  NA 56 27 20 16 NA 61 51 50 18 ...
+     $ creatinine_mgdl  : num  NA 1.58 1.09 1.17 1.06 NA 1.15 1.06 1.21 1.08 ...
+
+For demonstration purposes, we will reduce the table1\_dfset to only
+stage I and IV:
+
+    df = df %>% 
+        filter(stage %in% c("I", "IV")) %>% 
+        na.omit()
+
+## 6.3 Select column of interest
+
+As some of these columns are not of interest now (e.g. Patient ID,
+visit\_\*, height\_m, weight\_kg and BMI\_class), we can remove them to
+have a clean table1\_dfset:
+
+    table1_df = df %>% 
+        dplyr::select(-starts_with("visit_"), -patient_id, -height_m, weight_kg, -BMI_class)
+    str(table1_df)
+
+    'data.frame':   72 obs. of  19 variables:
+     $ site             : Factor w/ 3 levels "Milan","Rome",..: 2 2 3 2 2 3 2 1 1 2 ...
+     $ age              : int  40 59 46 51 34 75 57 52 45 58 ...
+     $ sex              : Factor w/ 2 levels "Female","Male": 2 1 2 2 1 1 2 1 2 2 ...
+     $ smoking          : Factor w/ 3 levels "current","former",..: 1 2 1 2 3 1 2 1 1 1 ...
+     $ treatment        : Factor w/ 3 levels "Control","Drug_A",..: 3 2 2 2 1 1 2 2 3 1 ...
+     $ stage            : Factor w/ 4 levels "I","II","III",..: 1 1 1 1 1 1 1 1 1 4 ...
+     $ weight_kg        : num  100.9 65 95.9 69.7 75.3 ...
+     $ height_cm        : num  185 166 182 170 159 ...
+     $ systolic_bp_mmhg : int  143 152 142 137 146 149 124 141 138 130 ...
+     $ diastolic_bp_mmhg: int  102 98 88 96 106 97 85 95 100 78 ...
+     $ glucose_mgdl     : int  105 110 120 108 93 117 129 107 96 106 ...
+     $ cholesterol_mgdl : int  239 146 232 163 199 204 238 170 248 137 ...
+     $ crp_ngml         : num  6.13 7.81 3.35 5.41 5.08 ...
+     $ BMI              : num  29.4 23.7 29.1 24.2 29.8 30.2 23.9 18.2 24.9 26.2 ...
+     $ hemoglobin_gdl   : num  15 11.8 16 14 16.2 12.7 15.4 12.9 14.7 12.4 ...
+     $ wbc_10e9l        : num  7.49 7.46 7.09 6.99 9.26 6.37 6.42 6.07 9.23 7.77 ...
+     $ platelets_10e9l  : int  270 252 233 195 188 288 241 260 275 195 ...
+     $ alt_ul           : int  56 27 20 61 51 36 41 32 29 42 ...
+     $ creatinine_mgdl  : num  1.58 1.09 1.17 1.15 1.06 1.18 1.2 1.03 1.38 1.34 ...
+     - attr(*, "na.action")= 'omit' Named int [1:42] 4 7 10 18 21 23 24 25 30 33 ...
+      ..- attr(*, "names")= chr [1:42] "4" "7" "10" "18" ...
+
+## 6.4 Define group levels
+
+First thing first, let’s define grouping variables and check that there
+are only 2 levels:
+
+    group.var = "stage"
+    table1_df[[group.var]] = droplevels(table1_df[[group.var]])
+    group_levels <- unique(na.omit(table1_df[[group.var]]))
+    if (length(group_levels) != 2)
+        stop(sprintf(
+            "`group.var` must have exactly 2 levels; '%s' has %d: %s",
+            group.var, length(group_levels), paste(group_levels, collapse = ", ")
+        ))
+
+    group_levels
+
+    [1] I  IV
+    Levels: I IV
+
+### 6.4.1 Group sizes
+
+Usually group sizes are at the top of the table, so we can start with
+them
+
+    sizes <- table1_df %>%
+        dplyr::count(.data[[group.var]]) %>%
+        dplyr::arrange(.data[[group.var]])
+
+
+    g1_name <- sprintf("%s (n = %d)", sizes[[1, 1]], sizes[[1, 2]])
+    g2_name <- sprintf("%s (n = %d)", sizes[[2, 1]], sizes[[2, 2]])
+
+    print(g1_name)
+
+    [1] "I (n = 47)"
+
+    print(g2_name)
+
+    [1] "IV (n = 25)"
+
+## 6.5 Detect variable types
+
+Now we can divide variables into numeric and categorical, so that we can
+treat them separately.
+
+    # ── Auto-detect variable types ───────────────────────────────────────────────
+    # Exclude the grouping variable from candidates
+    candidate_cols <- setdiff(colnames(table1_df), group.var)
+
+    # Everything else (factor, character, logical, or low-cardinality numeric) → categorical
+    cont.var <- candidate_cols[sapply(candidate_cols, function(col) {
+        is.numeric(table1_df[[col]]) && length(unique(na.omit(table1_df[[col]]))) > 3
+    })]
+
+
+    cat.var <- candidate_cols[sapply(candidate_cols, function(col) {
+        is.factor(table1_df[[col]]) ||
+            is.character(table1_df[[col]]) ||
+            is.logical(table1_df[[col]]) ||
+            (is.numeric(table1_df[[col]]) && length(unique(na.omit(table1_df[[col]]))) <= 3)
+    })]
+
+    message(sprintf(
+        "Auto-detected: %d continuous variable(s), %d categorical variable(s).\n  Continuous : %s\n  Categorical: %s",
+        length(cont.var), length(cat.var),
+        if (length(cont.var)) paste(cont.var, collapse = ", ") else "none",
+        if (length(cat.var))  paste(cat.var,  collapse = ", ") else "none"
+    ))
+
+    Auto-detected: 14 continuous variable(s), 4 categorical variable(s).
+      Continuous : age, weight_kg, height_cm, systolic_bp_mmhg, diastolic_bp_mmhg, glucose_mgdl, cholesterol_mgdl, crp_ngml, BMI, hemoglobin_gdl, wbc_10e9l, platelets_10e9l, alt_ul, creatinine_mgdl
+      Categorical: site, sex, smoking, treatment
+
+    if (length(cont.var) == 0) cont.var <- NULL
+    if (length(cat.var)  == 0) cat.var  <- NULL
+
+## 6.6 Continuous variables
+
+Let’s start with continuous variables. For each, we calculate p value of
+the differences in the two groups of the grouping variable, applying the
+right test based on parametric assumptions tests.
+
+    col_names <- c(
+        "Variable", g1_name, g2_name, "p-value", "Method", "Effect Size" 
+    )
+
+    # Helper: build an empty row with the right number of columns
+    empty_row <- function(var, g1 = "", g2 = "", p = NA_real_, method = "", es = "") {
+        row <- list(var, g1, g2, p, method, list(es))
+        setNames(as.data.frame(row, stringsAsFactors = FALSE), col_names)
+    }
+
+
+    result_rows <- list()
+
+    # ── Continuous variables ─────────────────────────────────────────────────────
+    if (!is.null(cont.var)) {
+        for (vname in cont.var) {
+            
+            x    <- table1_df[[vname]]
+            grp  <- table1_df[[group.var]]
+            vals <- split(x, grp)
+            
+            # Summary: mean ± SD per group (ignoring NAs)
+            fmt_mean_sd <- function(v) {
+                v <- na.omit(v)
+                sprintf("%.3f \u00b1 %.3f", mean(v), sd(v))   # ± as unicode
+            }
+            g1_val <- fmt_mean_sd(vals[[1]])
+            g2_val <- fmt_mean_sd(vals[[2]])
+            
+            # Normality check (Shapiro-Wilk, only reliable for n 3–5000)
+            safe_shapiro <- function(v) {
+                v <- na.omit(v)
+                if (length(v) < 3 || length(v) > 5000) return(list(p.value = 0))  # force non-parametric
+                shapiro.test(v)
+            }
+            sw1 <- safe_shapiro(vals[[1]])
+            sw2 <- safe_shapiro(vals[[2]])
+            both_normal <- sw1$p.value > 0.05 & sw2$p.value > 0.05
+            
+            if (both_normal) {
+                # Bartlett test for equal variances
+                bart_p <- bartlett.test(x ~ grp)$p.value
+                equal_var <- bart_p > 0.05
+                
+                test_res <- t.test(x ~ grp, var.equal = equal_var)
+                p_val    <- test_res$p.value
+                method   <- trimws(test_res$method)
+                
+                # Cohen's d effect size
+                es_val <- {
+                    d <- tryCatch(effsize::cohen.d(x ~ grp, )$estimate, error = function(e) NA)
+                    if (!is.na(d)) sprintf("d = %.3f", d) else "d = NA"
+                }
+                
+            } else {
+                # Non-parametric: Wilcoxon / Mann-Whitney
+                test_res <- suppressWarnings(wilcox.test(x ~ grp))
+                p_val    <- test_res$p.value
+                method   <- trimws(test_res$method)
+                
+                # Rank-biserial correlation as effect size
+                es_val <- {
+                    rb <- tryCatch(
+                        rstatix::wilcox_effsize(table1_df, as.formula(paste(vname, "~", group.var)))$effsize,
+                        error = function(e) NA
+                    )
+                    if (!is.na(rb)) sprintf("r = %.3f", rb) else "r = NA"
+                }
+            }
+            
+            result_rows <- c(result_rows, list(empty_row(vname, g1_val, g2_val, p_val, method, es_val)))
+        }
+    }
+
+    result_rows[[1]]
+
+      Variable      I (n = 47)     IV (n = 25)   p-value            Method
+    1      age 55.234 ± 11.493 57.520 ± 10.170 0.4064722 Two Sample t-test
+      Effect Size
+    1  d = -0.207
+
+## 6.7 Categorical variables
+
+We can do the same for categorical variables.
+
+    if (!is.null(cat.var)) {
+        for (vname in cat.var) {
+            
+            x   <- table1_df[[vname]]
+            grp <- table1_df[[group.var]]
+            
+            cont_tab <- table(x, grp)
+            n_levels <- nrow(cont_tab)
+            n_total  <- sum(cont_tab)
+            
+            # Percentages within each group
+            pct <- prop.table(cont_tab, margin = 2) * 100
+            g1_cells <- sprintf("%d (%.1f%%)", cont_tab[, 1], pct[, 1])
+            g2_cells <- sprintf("%d (%.1f%%)", cont_tab[, 2], pct[, 2])
+            
+            # Test selection
+            expected <- suppressWarnings(chisq.test(x, grp)$expected)
+            use_fisher <- n_levels == 2 && n_total <= 100 && any(expected < 5)
+            
+            if (use_fisher) {
+                test_res   <- suppressWarnings(fisher.test(cont_tab))
+                p_cat      <- test_res$p.value
+                method_cat <- "Fisher's Exact Test"
+            } else {
+                use_yates  <- n_levels == 2 && n_total <= 100
+                test_res   <- suppressWarnings(chisq.test(x, grp, correct = use_yates))
+                p_cat      <- test_res$p.value
+                method_cat <- trimws(test_res$method)
+            }
+            
+            # Cramér's V effect size
+            es_cat <- {
+                v <- tryCatch(rstatix::cramer_v(cont_tab), error = function(e) NA)
+                if (!is.na(v)) sprintf("V = %.3f", v) else "V = NA"
+            }
+            
+            # Header row (variable name + p-value)
+            result_rows <- c(result_rows, list(
+                empty_row(vname, "", "", p_cat, method_cat, es_cat)
+            ))
+            
+            # Level rows (indented with 2 spaces for readability)
+            for (j in seq_len(n_levels)) {
+                result_rows <- c(result_rows, list(
+                    empty_row(paste0("  ", rownames(cont_tab)[j]),
+                              g1_cells[j], g2_cells[j])
+                ))
+            }
+        }
+    }
+
+## 6.8 Combine everything
+
+We can combine everything now to have one table
+
+    out <- dplyr::bind_rows(result_rows)
+
+    # Format p-values: < 0.001 notation, round to 3 decimal places elsewhere
+    out[["p-value"]] <- sapply(out[["p-value"]], function(p) {
+        if (is.na(p)) return("")
+        if (p < 0.001) return("< 0.001")
+        formatC(p, digits = 3, format = "f")
+    })
+
+    out
+
+                Variable       I (n = 47)      IV (n = 25) p-value
+    1                age  55.234 ± 11.493  57.520 ± 10.170   0.406
+    2          weight_kg  78.836 ± 17.151  70.016 ± 19.384   0.051
+    3          height_cm  170.051 ± 9.863  169.248 ± 8.294   0.730
+    4   systolic_bp_mmhg 146.000 ± 10.807 144.080 ± 11.694   0.488
+    5  diastolic_bp_mmhg   94.000 ± 8.925   96.280 ± 9.062   0.308
+    6       glucose_mgdl 112.660 ± 14.918 102.480 ± 12.007   0.004
+    7   cholesterol_mgdl 202.234 ± 29.909 190.760 ± 33.686   0.143
+    8           crp_ngml    7.484 ± 5.133   16.605 ± 8.665 < 0.001
+    9                BMI   27.160 ± 4.846   24.228 ± 5.740   0.025
+    10    hemoglobin_gdl   13.796 ± 1.576   12.412 ± 0.909 < 0.001
+    11         wbc_10e9l    6.879 ± 1.871    6.736 ± 2.092   0.767
+    12   platelets_10e9l 229.085 ± 44.603 209.480 ± 56.791   0.111
+    13            alt_ul  49.043 ± 26.280  55.040 ± 33.768   0.500
+    14   creatinine_mgdl    1.139 ± 0.178    1.144 ± 0.172   0.908
+    15              site                                     0.035
+    16             Milan       14 (29.8%)       12 (48.0%)        
+    17              Rome       22 (46.8%)        4 (16.0%)        
+    18             Turin       11 (23.4%)        9 (36.0%)        
+    19               sex                                     0.863
+    20            Female       22 (46.8%)       13 (52.0%)        
+    21              Male       25 (53.2%)       12 (48.0%)        
+    22           smoking                                     0.346
+    23           current       10 (21.3%)        9 (36.0%)        
+    24            former       17 (36.2%)        6 (24.0%)        
+    25             never       20 (42.6%)       10 (40.0%)        
+    26         treatment                                     0.049
+    27           Control       18 (38.3%)        4 (16.0%)        
+    28            Drug_A       17 (36.2%)        8 (32.0%)        
+    29            Drug_B       12 (25.5%)       13 (52.0%)        
+                                                             Method Effect Size
+    1                                             Two Sample t-test  d = -0.207
+    2                                             Two Sample t-test   d = 0.491
+    3                                             Two Sample t-test   d = 0.086
+    4                                             Two Sample t-test   d = 0.173
+    5                                             Two Sample t-test  d = -0.254
+    6                                             Two Sample t-test   d = 0.728
+    7                                             Two Sample t-test   d = 0.367
+    8             Wilcoxon rank sum test with continuity correction      r = NA
+    9                                             Two Sample t-test   d = 0.567
+    10                                      Welch Two Sample t-test   d = 1.000
+    11                                            Two Sample t-test   d = 0.074
+    12                                            Two Sample t-test   d = 0.399
+    13            Wilcoxon rank sum test with continuity correction      r = NA
+    14                                            Two Sample t-test  d = -0.029
+    15                                   Pearson's Chi-squared test   V = 0.306
+    16                                                                         
+    17                                                                         
+    18                                                                         
+    19 Pearson's Chi-squared test with Yates' continuity correction   V = 0.020
+    20                                                                         
+    21                                                                         
+    22                                   Pearson's Chi-squared test   V = 0.172
+    23                                                                         
+    24                                                                         
+    25                                                                         
+    26                                   Pearson's Chi-squared test   V = 0.289
+    27                                                                         
+    28                                                                         
+    29                                                                         
+
+## 6.9 Save it
+
+We can now save it as html, and later on open it and save it as pdf.
+
+This is the helper function needed to create it.
+
+    format_desc_table <- function(tbl, output = "html", save_pdf = FALSE, pdf_path = "table.pdf") {
+      
+      # ── Extract methods for footnotes ─────────────────────────────────────────
+      is_header      <- !is.na(tbl[["p-value"]]) & tbl[["p-value"]] != ""
+      methods_raw    <- tbl[["Method"]][is_header]
+      unique_methods <- unique(methods_raw[methods_raw != ""])
+      
+      # ── Inject superscript letters next to p-values ───────────────────────────
+      pval_col <- tbl[["p-value"]]
+      pval_col[is_header] <- mapply(function(p, m) {
+        if (m == "" || is.na(m)) return(p)
+        idx <- which(unique_methods == m)
+        if (output == "html") {
+          paste0(p, "<sup>", letters[idx], "</sup>")
+        } else {
+          paste0(p, "$^", letters[idx], "$")
+        }
+      }, tbl[["p-value"]][is_header], methods_raw, SIMPLIFY = TRUE)
+      
+      # ── Drop Method column ────────────────────────────────────────────────────
+      out              <- tbl[, !colnames(tbl) %in% "Method"]
+      out[["p-value"]] <- pval_col
+      
+      # ── Significance colouring ────────────────────────────────────────────────
+      p_numeric <- suppressWarnings(as.numeric(tbl[["p-value"]]))
+      p_sig     <- p_numeric < 0.05 | tbl[["p-value"]] == "< 0.001"
+      p_color   <- ifelse(p_sig & !is.na(p_sig), "red", "black")
+      
+      # ── Identify categorical header rows (p-value present, group cols empty) ──
+      # These are variable name rows for categorical vars — need bold separately
+      g1_col       <- colnames(out)[2]
+      is_cat_header <- is_header & (is.na(out[[g1_col]]) | out[[g1_col]] == "")
+      
+      # ── Alignment ─────────────────────────────────────────────────────────────
+      align <- c("l", rep("c", ncol(out) - 1))
+      
+      # ── Build table ───────────────────────────────────────────────────────────
+      tab <- kbl(out,
+                 escape = FALSE,
+                 align  = align,
+                 format = output) |>
+        # Bold all header rows (continuous vars + categorical var names)
+        row_spec(seq_len(nrow(out)), extra_css = "height: 2em;") |>
+        column_spec(1, width = "18em") |>
+        column_spec(which(colnames(out) == "p-value"), color = p_color)
+      
+      # Bold categorical variable name rows in column 1
+      # (row_spec bold applies to whole row; column_spec lets us target just col 1
+      #  for the level rows that should NOT be bold)
+      if (any(is_cat_header)) {
+        tab <- tab |>
+          column_spec(1,
+                      width = "18em",
+                      bold  = is_cat_header)   # TRUE only for categorical headers
+      }
+      
+      tab <- tab |>
+        footnote(
+          general           = "Continuous variables expressed as mean ± SD; categorical as n (%).",
+          # One test per line via <br> in HTML, \\\\ newline in LaTeX   # ← CHANGE 3
+          alphabet          = if (output == "html") {
+                                paste0(unique_methods, "<br>")
+                              } else {
+                                unique_methods                  # LaTeX handles line breaks natively
+                              },
+          general_title     = "",
+          alphabet_title    = "Statistical tests: ",
+          footnote_as_chunk = FALSE,     # FALSE so each alphabet entry stays separate
+          escape            = FALSE
+        )
+      
+      if (output == "html") {
+        tab <- tab |> kable_classic(full_width = FALSE)
+      } else {
+        tab <- tab |> kable_styling(
+          latex_options = c("striped", "hold_position", "scale_down"),
+          font_size     = 9
+        )
+      }
+      
+      # ── Optionally save as HTML ───────────────────────────────────────────────
+      if (save_pdf) {
+        save_kable(tab, file = gsub("\\.pdf$", ".html", pdf_path), self_contained = TRUE)
+        message("Saved as HTML (open in browser → Print → Save as PDF): ",
+                gsub("\\.pdf$", ".html", pdf_path))
+      }
+      
+      tab
+    }
+
+And here is how we can call it.
+
+    #format_desc_table(out, output = "html", save_pdf = TRUE, pdf_path = "my_table.pdf")
+
+<!--chapter:end:06-Extra_table1.Rmd-->

@@ -332,7 +332,7 @@ To perform PCA, we should ouse only numeric scaled data. Se we first have to sel
 ```{r}
 data_n <- df |>
     na.omit() |>
-    select(where(is.numeric))
+    dplyr::select(where(is.numeric))
 
 str(data_n)
 ```
@@ -340,7 +340,7 @@ We have to get rid of visit year, month and day, as they should not be considere
 
 ```{r}
 data_n <- data_n |>
-    select(-starts_with("visit_"))
+    dplyr::select(-starts_with("visit_"))
 
 str(data_n)
 ```
@@ -404,7 +404,7 @@ Let's see if we can create a model that predicts glucose levels starting from al
 ```{r}
 lm_data <- df |>
     na.omit() |>
-    select(-starts_with("visit_"), - "patient_id")
+    dplyr::select(-starts_with("visit_"), - "patient_id")
 
 lm_res <- lm(glucose_mgdl ~ ., data = lm_data)
 summary(lm_res)

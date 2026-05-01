@@ -14,6 +14,8 @@ rmd_files:
   - 02-Strings_factors_dataframe_handling_complete.Rmd
   - 03-Data-visualization_complete.Rmd
   - 04-Statistics_complete.Rmd
+  - 05-ForLoops_IfElse.Rmd
+  - 06-Extra_table1.Rmd
 output_dir: docs
 edit:
   link: https://github.com/miotsdata/R-course_2026/edit/main/%s

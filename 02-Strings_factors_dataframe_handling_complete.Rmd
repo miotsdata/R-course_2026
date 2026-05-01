@@ -313,7 +313,7 @@ summary(clinical_data$BMI_class)
 ```{r}
 # keep only demographic and clinical variables
 demo_cols <- clinical_data |>
-  select(patient_id, site, age, sex, treatment, stage, BMI, BMI_class)
+  dplyr::select(patient_id, site, age, sex, treatment, stage, BMI, BMI_class)
 
 head(demo_cols)
 ```
@@ -325,7 +325,7 @@ To **drop** specific columns, use `-` before the column name:
 colnames(clinical_data)
 # drop the helper/intermediate columns we created
 clinical_data <- clinical_data |>
-  select(-visit_year_month)
+  dplyr::select(-visit_year_month)
 
 colnames(clinical_data)
 ```
@@ -335,10 +335,10 @@ colnames(clinical_data)
 
 ```{r}
 # select all columns that start with "diag"
-clinical_data |> select(starts_with("visit")) |> head()
+clinical_data |> dplyr::select(starts_with("visit")) |> head()
 
 # select all columns that contain "bp"
-clinical_data |> select(contains("bp")) |> head()
+clinical_data |> dplyr::select(contains("bp")) |> head()
 ```
 
 ---
@@ -501,7 +501,7 @@ Pipes shine when you chain multiple operations:
 # Female patients, over 55, from Milan, keep only key columns
 subset_females <- clinical_data |>
   filter(sex == "Female", age > 55, site == "Milan") |>
-  select(patient_id, age, stage, treatment, BMI, glucose_mgdl)
+  dplyr::select(patient_id, age, stage, treatment, BMI, glucose_mgdl)
 
 head(subset_females)
 nrow(subset_females)
@@ -530,7 +530,7 @@ exercise_result <- clinical_data |>
          glucose_mgdl >= 90,
          glucose_mgdl <= 130,
          treatment %in% c("Drug_A", "Drug_B")) |>
-  select(patient_id, site, stage, treatment, glucose_mgdl)
+  dplyr::select(patient_id, site, stage, treatment, glucose_mgdl)
 
 head(exercise_result)
 nrow(exercise_result)
@@ -777,7 +777,7 @@ clinical_data_enriched <- read.csv("output/clinical_data_enriched.csv")
 
 # 2. Keep only the columns of interest
 clean_data <- clinical_data_enriched |>
-  select(patient_id, site, sex, age, treatment, stage,
+  dplyr::select(patient_id, site, sex, age, treatment, stage,
          BMI, BMI_class, glucose_mgdl, cholesterol_mgdl,
          crp_ngml, hemoglobin_gdl, creatinine_mgdl)
 

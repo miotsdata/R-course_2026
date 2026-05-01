@@ -1,0 +1,363 @@
+# Extra: Table 1
+
+Most of clinical paper have a descriptive Table 1 in which case groups are compared to check whether they are balanced for demographic and clinical variables.
+
+Let's see how we can build our own Table 1 with R, starting from our previous table1_dfset.
+
+## Load necessary packages
+For this, we need to load some packages:
+
+```{r}
+library(tidyverse)
+library(rstatix)
+library(effsize)
+library(knitr)
+library(kableExtra)
+```
+
+## Load table1_df
+```{r}
+df = read.csv("output/clinical_data_enriched.csv", stringsAsFactors = TRUE)
+str(df)
+```
+
+For demonstration purposes, we will reduce the table1_dfset to only stage I and IV:
+
+```{r}
+df = df %>% 
+    filter(stage %in% c("I", "IV")) %>% 
+    na.omit()
+```
+
+
+## Select column of interest
+As some of these columns are not of interest now (e.g. Patient ID, visit_*, height_m, weight_kg and BMI_class), we can remove them to have a clean table1_dfset:
+
+```{r}
+table1_df = df %>% 
+    dplyr::select(-starts_with("visit_"), -patient_id, -height_m, weight_kg, -BMI_class)
+str(table1_df)
+```
+
+## Define group levels
+First thing first, let's define grouping variables and check that there are only 2 levels:
+```{r}
+group.var = "stage"
+table1_df[[group.var]] = droplevels(table1_df[[group.var]])
+group_levels <- unique(na.omit(table1_df[[group.var]]))
+if (length(group_levels) != 2)
+    stop(sprintf(
+        "`group.var` must have exactly 2 levels; '%s' has %d: %s",
+        group.var, length(group_levels), paste(group_levels, collapse = ", ")
+    ))
+
+group_levels
+```
+
+### Group sizes
+Usually group sizes are at the top of the table, so we can start with them
+
+```{r}
+sizes <- table1_df %>%
+    dplyr::count(.data[[group.var]]) %>%
+    dplyr::arrange(.data[[group.var]])
+
+
+g1_name <- sprintf("%s (n = %d)", sizes[[1, 1]], sizes[[1, 2]])
+g2_name <- sprintf("%s (n = %d)", sizes[[2, 1]], sizes[[2, 2]])
+
+print(g1_name)
+print(g2_name)
+```
+
+
+
+## Detect variable types
+Now we can divide variables into numeric and categorical, so that we can treat them separately.
+
+
+```{r}
+# ── Auto-detect variable types ───────────────────────────────────────────────
+# Exclude the grouping variable from candidates
+candidate_cols <- setdiff(colnames(table1_df), group.var)
+
+# Everything else (factor, character, logical, or low-cardinality numeric) → categorical
+cont.var <- candidate_cols[sapply(candidate_cols, function(col) {
+    is.numeric(table1_df[[col]]) && length(unique(na.omit(table1_df[[col]]))) > 3
+})]
+
+
+cat.var <- candidate_cols[sapply(candidate_cols, function(col) {
+    is.factor(table1_df[[col]]) ||
+        is.character(table1_df[[col]]) ||
+        is.logical(table1_df[[col]]) ||
+        (is.numeric(table1_df[[col]]) && length(unique(na.omit(table1_df[[col]]))) <= 3)
+})]
+
+message(sprintf(
+    "Auto-detected: %d continuous variable(s), %d categorical variable(s).\n  Continuous : %s\n  Categorical: %s",
+    length(cont.var), length(cat.var),
+    if (length(cont.var)) paste(cont.var, collapse = ", ") else "none",
+    if (length(cat.var))  paste(cat.var,  collapse = ", ") else "none"
+))
+
+if (length(cont.var) == 0) cont.var <- NULL
+if (length(cat.var)  == 0) cat.var  <- NULL
+
+```
+
+## Continuous variables
+Let's start with continuous variables. For each, we calculate p value of the differences in the two groups of the grouping variable, applying the right test based on parametric assumptions tests.
+
+
+```{r}
+col_names <- c(
+    "Variable", g1_name, g2_name, "p-value", "Method", "Effect Size" 
+)
+
+# Helper: build an empty row with the right number of columns
+empty_row <- function(var, g1 = "", g2 = "", p = NA_real_, method = "", es = "") {
+    row <- list(var, g1, g2, p, method, list(es))
+    setNames(as.data.frame(row, stringsAsFactors = FALSE), col_names)
+}
+
+
+result_rows <- list()
+
+# ── Continuous variables ─────────────────────────────────────────────────────
+if (!is.null(cont.var)) {
+    for (vname in cont.var) {
+        
+        x    <- table1_df[[vname]]
+        grp  <- table1_df[[group.var]]
+        vals <- split(x, grp)
+        
+        # Summary: mean ± SD per group (ignoring NAs)
+        fmt_mean_sd <- function(v) {
+            v <- na.omit(v)
+            sprintf("%.3f \u00b1 %.3f", mean(v), sd(v))   # ± as unicode
+        }
+        g1_val <- fmt_mean_sd(vals[[1]])
+        g2_val <- fmt_mean_sd(vals[[2]])
+        
+        # Normality check (Shapiro-Wilk, only reliable for n 3–5000)
+        safe_shapiro <- function(v) {
+            v <- na.omit(v)
+            if (length(v) < 3 || length(v) > 5000) return(list(p.value = 0))  # force non-parametric
+            shapiro.test(v)
+        }
+        sw1 <- safe_shapiro(vals[[1]])
+        sw2 <- safe_shapiro(vals[[2]])
+        both_normal <- sw1$p.value > 0.05 & sw2$p.value > 0.05
+        
+        if (both_normal) {
+            # Bartlett test for equal variances
+            bart_p <- bartlett.test(x ~ grp)$p.value
+            equal_var <- bart_p > 0.05
+            
+            test_res <- t.test(x ~ grp, var.equal = equal_var)
+            p_val    <- test_res$p.value
+            method   <- trimws(test_res$method)
+            
+            # Cohen's d effect size
+            es_val <- {
+                d <- tryCatch(effsize::cohen.d(x ~ grp, )$estimate, error = function(e) NA)
+                if (!is.na(d)) sprintf("d = %.3f", d) else "d = NA"
+            }
+            
+        } else {
+            # Non-parametric: Wilcoxon / Mann-Whitney
+            test_res <- suppressWarnings(wilcox.test(x ~ grp))
+            p_val    <- test_res$p.value
+            method   <- trimws(test_res$method)
+            
+            # Rank-biserial correlation as effect size
+            es_val <- {
+                rb <- tryCatch(
+                    rstatix::wilcox_effsize(table1_df, as.formula(paste(vname, "~", group.var)))$effsize,
+                    error = function(e) NA
+                )
+                if (!is.na(rb)) sprintf("r = %.3f", rb) else "r = NA"
+            }
+        }
+        
+        result_rows <- c(result_rows, list(empty_row(vname, g1_val, g2_val, p_val, method, es_val)))
+    }
+}
+
+result_rows[[1]]
+```
+
+## Categorical variables
+We can do the same for categorical variables.
+```{r}
+if (!is.null(cat.var)) {
+    for (vname in cat.var) {
+        
+        x   <- table1_df[[vname]]
+        grp <- table1_df[[group.var]]
+        
+        cont_tab <- table(x, grp)
+        n_levels <- nrow(cont_tab)
+        n_total  <- sum(cont_tab)
+        
+        # Percentages within each group
+        pct <- prop.table(cont_tab, margin = 2) * 100
+        g1_cells <- sprintf("%d (%.1f%%)", cont_tab[, 1], pct[, 1])
+        g2_cells <- sprintf("%d (%.1f%%)", cont_tab[, 2], pct[, 2])
+        
+        # Test selection
+        expected <- suppressWarnings(chisq.test(x, grp)$expected)
+        use_fisher <- n_levels == 2 && n_total <= 100 && any(expected < 5)
+        
+        if (use_fisher) {
+            test_res   <- suppressWarnings(fisher.test(cont_tab))
+            p_cat      <- test_res$p.value
+            method_cat <- "Fisher's Exact Test"
+        } else {
+            use_yates  <- n_levels == 2 && n_total <= 100
+            test_res   <- suppressWarnings(chisq.test(x, grp, correct = use_yates))
+            p_cat      <- test_res$p.value
+            method_cat <- trimws(test_res$method)
+        }
+        
+        # Cramér's V effect size
+        es_cat <- {
+            v <- tryCatch(rstatix::cramer_v(cont_tab), error = function(e) NA)
+            if (!is.na(v)) sprintf("V = %.3f", v) else "V = NA"
+        }
+        
+        # Header row (variable name + p-value)
+        result_rows <- c(result_rows, list(
+            empty_row(vname, "", "", p_cat, method_cat, es_cat)
+        ))
+        
+        # Level rows (indented with 2 spaces for readability)
+        for (j in seq_len(n_levels)) {
+            result_rows <- c(result_rows, list(
+                empty_row(paste0("  ", rownames(cont_tab)[j]),
+                          g1_cells[j], g2_cells[j])
+            ))
+        }
+    }
+}
+```
+
+## Combine everything
+We can combine everything now to have one table
+```{r}
+out <- dplyr::bind_rows(result_rows)
+
+# Format p-values: < 0.001 notation, round to 3 decimal places elsewhere
+out[["p-value"]] <- sapply(out[["p-value"]], function(p) {
+    if (is.na(p)) return("")
+    if (p < 0.001) return("< 0.001")
+    formatC(p, digits = 3, format = "f")
+})
+
+out
+
+```
+
+## Save it
+We can now save it as html, and later on open it and save it as pdf.
+
+This is the helper function needed to create it.
+```{r}
+format_desc_table <- function(tbl, output = "html", save_pdf = FALSE, pdf_path = "table.pdf") {
+  
+  # ── Extract methods for footnotes ─────────────────────────────────────────
+  is_header      <- !is.na(tbl[["p-value"]]) & tbl[["p-value"]] != ""
+  methods_raw    <- tbl[["Method"]][is_header]
+  unique_methods <- unique(methods_raw[methods_raw != ""])
+  
+  # ── Inject superscript letters next to p-values ───────────────────────────
+  pval_col <- tbl[["p-value"]]
+  pval_col[is_header] <- mapply(function(p, m) {
+    if (m == "" || is.na(m)) return(p)
+    idx <- which(unique_methods == m)
+    if (output == "html") {
+      paste0(p, "<sup>", letters[idx], "</sup>")
+    } else {
+      paste0(p, "$^", letters[idx], "$")
+    }
+  }, tbl[["p-value"]][is_header], methods_raw, SIMPLIFY = TRUE)
+  
+  # ── Drop Method column ────────────────────────────────────────────────────
+  out              <- tbl[, !colnames(tbl) %in% "Method"]
+  out[["p-value"]] <- pval_col
+  
+  # ── Significance colouring ────────────────────────────────────────────────
+  p_numeric <- suppressWarnings(as.numeric(tbl[["p-value"]]))
+  p_sig     <- p_numeric < 0.05 | tbl[["p-value"]] == "< 0.001"
+  p_color   <- ifelse(p_sig & !is.na(p_sig), "red", "black")
+  
+  # ── Identify categorical header rows (p-value present, group cols empty) ──
+  # These are variable name rows for categorical vars — need bold separately
+  g1_col       <- colnames(out)[2]
+  is_cat_header <- is_header & (is.na(out[[g1_col]]) | out[[g1_col]] == "")
+  
+  # ── Alignment ─────────────────────────────────────────────────────────────
+  align <- c("l", rep("c", ncol(out) - 1))
+  
+  # ── Build table ───────────────────────────────────────────────────────────
+  tab <- kbl(out,
+             escape = FALSE,
+             align  = align,
+             format = output) |>
+    # Bold all header rows (continuous vars + categorical var names)
+    row_spec(seq_len(nrow(out)), extra_css = "height: 2em;") |>
+    column_spec(1, width = "18em") |>
+    column_spec(which(colnames(out) == "p-value"), color = p_color)
+  
+  # Bold categorical variable name rows in column 1
+  # (row_spec bold applies to whole row; column_spec lets us target just col 1
+  #  for the level rows that should NOT be bold)
+  if (any(is_cat_header)) {
+    tab <- tab |>
+      column_spec(1,
+                  width = "18em",
+                  bold  = is_cat_header)   # TRUE only for categorical headers
+  }
+  
+  tab <- tab |>
+    footnote(
+      general           = "Continuous variables expressed as mean ± SD; categorical as n (%).",
+      # One test per line via <br> in HTML, \\\\ newline in LaTeX   # ← CHANGE 3
+      alphabet          = if (output == "html") {
+                            paste0(unique_methods, "<br>")
+                          } else {
+                            unique_methods                  # LaTeX handles line breaks natively
+                          },
+      general_title     = "",
+      alphabet_title    = "Statistical tests: ",
+      footnote_as_chunk = FALSE,     # FALSE so each alphabet entry stays separate
+      escape            = FALSE
+    )
+  
+  if (output == "html") {
+    tab <- tab |> kable_classic(full_width = FALSE)
+  } else {
+    tab <- tab |> kable_styling(
+      latex_options = c("striped", "hold_position", "scale_down"),
+      font_size     = 9
+    )
+  }
+  
+  # ── Optionally save as HTML ───────────────────────────────────────────────
+  if (save_pdf) {
+    save_kable(tab, file = gsub("\\.pdf$", ".html", pdf_path), self_contained = TRUE)
+    message("Saved as HTML (open in browser → Print → Save as PDF): ",
+            gsub("\\.pdf$", ".html", pdf_path))
+  }
+  
+  tab
+}
+```
+
+And here is how we can call it.
+```{r}
+format_desc_table(out, output = "html", save_pdf = TRUE, pdf_path = "my_table.pdf")
+```
+
+
